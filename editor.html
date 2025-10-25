@@ -3,77 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resim Editörü</title>
+<title>Proje Editör</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body { margin:0; display:flex; flex-direction:column; align-items:center; font-family:sans-serif; background:#222; color:#fff; }
-  h1 { margin:20px; }
-  canvas { border:2px solid #fff; cursor:crosshair; margin-bottom:20px; }
-  input[type="file"] { margin-bottom:10px; }
-  button { padding:10px 20px; margin:5px; font-size:1rem; border:none; border-radius:10px; cursor:pointer; background:#ff6ec7; color:#fff; }
-  button:hover { background:#6e7dff; }
+  body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
+    background-size: 400% 400%;
+    animation: gradientBG 25s ease infinite;
+  }
+
+  @keyframes gradientBG {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+
+  /* Üst menü çubuğu */
+  .topbar {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Hamburger Menü */
+  .hamburger {
+    width: 30px;
+    height: 3px;
+    background: #fff;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .hamburger::before,
+  .hamburger::after {
+    content: '';
+    width: 30px;
+    height: 3px;
+    background: #fff;
+    position: absolute;
+    left: 0;
+    transition: 0.3s;
+  }
+
+  .hamburger::before { top: -10px; }
+  .hamburger::after { top: 10px; }
+
+  .hamburger.active {
+    background: transparent;
+  }
+  .hamburger.active::before {
+    transform: rotate(45deg) translate(5px,5px);
+  }
+  .hamburger.active::after {
+    transform: rotate(-45deg) translate(5px,-5px);
+  }
+
+  /* Ayarlar paneli */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(15px);
+    padding: 20px;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+    transition: left 0.3s ease;
+    z-index: 3;
+    color: #fff;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+
+  .sidebar h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .sidebar label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .sidebar input[type=color] {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+
+  /* Çizim alanı */
+  #canvasContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  canvas {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    cursor: crosshair;
+  }
+
 </style>
 </head>
 <body>
 
-<h1>Resim Editörü</h1>
-<input type="file" id="imgLoader" accept="image/*">
-<canvas id="canvas" width="800" height="500"></canvas>
-<div>
-  <button onclick="downloadCanvas()">Resmi İndir</button>
-  <button onclick="clearCanvas()">Temizle</button>
+<div class="topbar">
+  <div class="hamburger" id="hamburger"></div>
+  <h1 style="color:white; margin-left:20px; font-size:1.5rem;">Proje Editör</h1>
+</div>
+
+<div class="sidebar" id="sidebar">
+  <h2>Ayarlar</h2>
+  <label for="colorPicker">Kalem Rengi:</label>
+  <input type="color" id="colorPicker" value="#000000">
+</div>
+
+<div id="canvasContainer">
+  <canvas id="drawingCanvas" width="800" height="500"></canvas>
 </div>
 
 <script>
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+  // Hamburger menü
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
 
-let painting = false;
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    sidebar.classList.toggle('active');
+  });
 
-canvas.addEventListener('mousedown', () => painting = true);
-canvas.addEventListener('mouseup', () => painting = false);
-canvas.addEventListener('mouseleave', () => painting = false);
+  // Çizim işlemleri
+  const canvas = document.getElementById('drawingCanvas');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  let penColor = document.getElementById('colorPicker').value;
 
-canvas.addEventListener('mousemove', draw);
+  // Renk değişimi
+  document.getElementById('colorPicker').addEventListener('input', (e) => {
+    penColor = e.target.value;
+  });
 
-function draw(e){
-  if(!painting) return;
-  ctx.lineWidth = 5;
-  ctx.lineCap = 'round';
-  ctx.strokeStyle = '#ffde6e';
-  ctx.lineTo(e.offsetX, e.offsetY);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(e.offsetX, e.offsetY);
-}
+  canvas.addEventListener('mousedown', () => drawing = true);
+  canvas.addEventListener('mouseup', () => drawing = false);
+  canvas.addEventListener('mouseout', () => drawing = false);
 
-// Resim yükleme
-document.getElementById('imgLoader').addEventListener('change', function(e){
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  reader.onload = function(event){
-    const img = new Image();
-    img.onload = function(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.drawImage(img,0,0,canvas.width,canvas.height);
-    }
-    img.src = event.target.result;
-  }
-  reader.readAsDataURL(file);
-});
+  canvas.addEventListener('mousemove', (e) => {
+    if(!drawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-// Temizle
-function clearCanvas(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-}
-
-// İndir
-function downloadCanvas(){
-  const link = document.createElement('a');
-  link.download = 'edited_image.png';
-  link.href = canvas.toDataURL();
-  link.click();
-}
+    ctx.fillStyle = penColor;
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fill();
+  });
 </script>
 
 </body>
 </html>
+
+
