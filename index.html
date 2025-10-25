@@ -200,63 +200,7 @@
   });
 </script>
 <style>
-  /* Proje Oluştur butonu stili */
-  .create-project {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    padding: 20px 40px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #fff;
-    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7);
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    animation: appear 0.5s forwards;
-    z-index: 100;
-  }
-
-  @keyframes appear {
-    0% {transform: translate(-50%, -50%) scale(0);}
-    60% {transform: translate(-50%, -50%) scale(1.2);}
-    100% {transform: translate(-50%, -50%) scale(1);}
-  }
-
-  .create-project:hover {
-    animation: pulse 1s infinite;
-  }
-
-  @keyframes pulse {
-    0% {transform: translate(-50%, -50%) scale(1);}
-    50% {transform: translate(-50%, -50%) scale(1.1);}
-    100% {transform: translate(-50%, -50%) scale(1);}
-  }
-</style>
-
-<script>
-  // Giriş Yap butonunu seç
-  const loginButton = document.querySelector('.login-container button');
-
-  loginButton.addEventListener('click', () => {
-    // Eğer zaten varsa sil
-    let existingBtn = document.querySelector('.create-project');
-    if(existingBtn) existingBtn.remove();
-
-    // Yeni Proje Oluştur butonu oluştur
-    const projectBtn = document.createElement('button');
-    projectBtn.classList.add('create-project');
-    projectBtn.textContent = 'Proje Oluştur';
-    document.body.appendChild(projectBtn);
-
-    // Butona tıklayınca uyarı gösterebiliriz
-    projectBtn.addEventListener('click', () => {
-      alert('Proje oluşturma ekranı yakında!');
-    });
-  });
-</script>
+  
 
 
 
