@@ -3,196 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animasyonlu Çizim Editörü</title>
+<title>Canva Tarzı Gelişmiş Editor</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body, html {margin:0; padding:0; height:100%; font-family:'Roboto',sans-serif; overflow:hidden;}
-  body {
-    background: linear-gradient(120deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
-    background-size: 400% 400%;
-    animation: gradientBG 30s ease infinite;
+  /* Genel body */
+  body{
+    margin:0; font-family:'Roboto',sans-serif; overflow:hidden;
+    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
+    background-size: 400% 400%; animation: gradientBG 25s ease infinite;
+    height:100vh; display:flex; justify-content:center; align-items:center;
   }
-  @keyframes gradientBG {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-  }
-
-  /* Header ve hamburger menü */
-  #header {
-    position: fixed; top:0; left:0; width:100%; height:60px; background:rgba(0,0,0,0.5);
-    display:flex; align-items:center; padding:0 20px; z-index:1000; color:#fff;
-  }
-  #hamburger {
-    width:40px; height:40px; cursor:pointer; position:relative;
-    display:flex; flex-direction:column; justify-content:space-around;
-  }
-  #hamburger div {
-    width:100%; height:5px; background:white; border-radius:5px;
-    transition: all 0.3s ease;
-  }
-  #hamburger.active div:nth-child(1){transform:rotate(45deg) translate(7px,7px);}
-  #hamburger.active div:nth-child(2){opacity:0;}
-  #hamburger.active div:nth-child(3){transform:rotate(-45deg) translate(8px,-8px);}
-  
-  #menu {
-    position: fixed; top:60px; left:-250px; width:250px; height:100%; background:rgba(0,0,0,0.7);
-    padding:20px; box-sizing:border-box; transition:left 0.5s ease; z-index:999;
-    overflow-y:auto; display:flex; flex-direction:column; gap:15px;
-  }
-  #menu.active {left:0;}
-  #menu h3 {color:#fff; margin-bottom:10px;}
-  .tool-btn {
-    padding:12px 15px; background:linear-gradient(45deg,#ff6ec7,#6e7dff);
-    color:white; font-weight:bold; border:none; border-radius:12px; cursor:pointer;
-    transition: all 0.3s ease; text-align:left;
-  }
-  .tool-btn:hover {
-    transform:scale(1.05) rotate(-2deg);
-    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  @keyframes gradientBG{
+    0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
   }
 
-  /* Canvas alanı */
-  #canvasContainer {
-    position: absolute; top:60px; left:0; right:0; bottom:0; background:white;
-    display:flex; justify-content:center; align-items:center;
+  /* Tahta alanı */
+  #canvasContainer{
+    position:relative; background:#fff; width:90%; height:90%; border-radius:15px;
+    box-shadow:0 0 50px rgba(0,0,0,0.5); overflow:hidden;
   }
-  canvas {
-    background:white; box-shadow:0 0 30px rgba(0,0,0,0.2); border-radius:10px;
+  canvas{
+    width:100%; height:100%; cursor:url('kalem.png'), auto;
   }
+
+  /* Hamburger Menü */
+  #hamburger{
+    position:absolute; top:15px; left:15px; width:40px; height:40px;
+    background:#6e7dff; border-radius:8px; cursor:pointer; z-index:1000;
+    display:flex; justify-content:center; align-items:center; transition:0.3s;
+  }
+  #hamburger:hover{transform:scale(1.1);}
+  #hamburger div{
+    width:25px; height:3px; background:#fff; margin:3px 0; border-radius:2px;
+    transition:0.3s;
+  }
+
+  /* Menü paneli */
+  #menuPanel{
+    position:absolute; top:0; left:-300px; width:300px; height:100%; background:rgba(0,0,0,0.85);
+    color:#fff; padding:20px; transition:0.5s; overflow-y:auto;
+  }
+  #menuPanel.active{left:0;}
+
+  /* Araç butonları */
+  .toolBtn{
+    display:block; width:100%; padding:12px; margin:10px 0; border:none;
+    border-radius:10px; background:#ff6ec7; color:#fff; font-weight:bold;
+    cursor:pointer; transition:0.3s; text-align:left; font-size:1rem;
+  }
+  .toolBtn:hover{transform:scale(1.05);}
+  .toolBtn.selected{border:3px solid #fff;}
 
   /* Renk paleti */
-  #colors {
-    display:flex; gap:10px; margin-top:10px;
+  .colorBtn{
+    display:inline-block; width:30px; height:30px; margin:5px; border-radius:50%;
+    border:2px solid #fff; cursor:pointer; transition:0.3s;
   }
-  .color-btn {
-    width:30px; height:30px; border-radius:50%; cursor:pointer;
-    transition: all 0.3s ease;
-  }
-  .color-btn:hover {transform:scale(1.2);}
+  .colorBtn.selected{box-shadow:0 0 10px #fff; transform:scale(1.2);}
 </style>
 </head>
 <body>
 
-<div id="header">
-  <div id="hamburger">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-  <h2 style="margin-left:20px;">Animasyonlu Çizim Editörü</h2>
-</div>
-
-<div id="menu">
-  <h3>Araçlar</h3>
-  <button class="tool-btn" data-tool="pencil">Kalem ✏️</button>
-  <button class="tool-btn" data-tool="brush">Fırça 🖌️</button>
-  <button class="tool-btn" data-tool="eraser">Silgi 🧽</button>
-  <button class="tool-btn" data-tool="line">Çizgi ➖</button>
-  <button class="tool-btn" data-tool="rectangle">Dikdörtgen ⬛</button>
-  <button class="tool-btn" data-tool="circle">Daire ⚪</button>
-  <button class="tool-btn" data-tool="triangle">Üçgen 🔺</button>
-  <button class="tool-btn" data-tool="text">Yazı 🅰️</button>
-  <button class="tool-btn" data-tool="emoji">Emoji 😀</button>
-  <button class="tool-btn" data-tool="sticker">Sticker 🏷️</button>
-  <button class="tool-btn" data-tool="undo">Geri Al ↩️</button>
-  <button class="tool-btn" data-tool="redo">İleri Al ↪️</button>
-  <h3>Renkler</h3>
-  <div id="colors">
-    <div class="color-btn" style="background:#FF0000" data-color="#FF0000"></div>
-    <div class="color-btn" style="background:#00FF00" data-color="#00FF00"></div>
-    <div class="color-btn" style="background:#0000FF" data-color="#0000FF"></div>
-    <div class="color-btn" style="background:#FFFF00" data-color="#FFFF00"></div>
-    <div class="color-btn" style="background:#FF00FF" data-color="#FF00FF"></div>
-    <div class="color-btn" style="background:#00FFFF" data-color="#00FFFF"></div>
-  </div>
-</div>
-
 <div id="canvasContainer">
-  <canvas id="canvas" width="1200" height="700"></canvas>
+  <canvas id="editorCanvas"></canvas>
+
+  <div id="hamburger">
+    <div></div><div></div><div></div>
+  </div>
+
+  <div id="menuPanel">
+    <h2>Araçlar</h2>
+    <button class="toolBtn" data-tool="kalem">Kalem</button>
+    <button class="toolBtn" data-tool="fırça">Fırça</button>
+    <button class="toolBtn" data-tool="silgi">Silgi</button>
+    <button class="toolBtn" data-tool="çizgi">Çizgi</button>
+    <button class="toolBtn" data-tool="dikdörtgen">Dikdörtgen</button>
+    <button class="toolBtn" data-tool="daire">Daire</button>
+    <button class="toolBtn" data-tool="üçgen">Üçgen</button>
+    <button class="toolBtn" data-tool="yazı">Yazı</button>
+    <h3>Renk Seçimi</h3>
+    <div id="colorPalette">
+      <div class="colorBtn" style="background:red;" data-color="red"></div>
+      <div class="colorBtn" style="background:blue;" data-color="blue"></div>
+      <div class="colorBtn" style="background:green;" data-color="green"></div>
+      <div class="colorBtn" style="background:yellow;" data-color="yellow"></div>
+      <div class="colorBtn" style="background:purple;" data-color="purple"></div>
+      <div class="colorBtn" style="background:orange;" data-color="orange"></div>
+      <div class="colorBtn" style="background:pink;" data-color="pink"></div>
+      <div class="colorBtn" style="background:black;" data-color="black"></div>
+      <div class="colorBtn" style="background:gray;" data-color="gray"></div>
+      <div class="colorBtn" style="background:brown;" data-color="brown"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-  // Hamburger menü
+  // Hamburger aç/kapa
   const hamburger = document.getElementById('hamburger');
-  const menu = document.getElementById('menu');
-  hamburger.addEventListener('click',()=>{
-    hamburger.classList.toggle('active');
-    menu.classList.toggle('active');
-  });
+  const menu = document.getElementById('menuPanel');
+  hamburger.addEventListener('click', ()=>menu.classList.toggle('active'));
 
-  // Canvas ve araçlar
-  const canvas = document.getElementById('canvas');
+  // Canvas setup
+  const canvas = document.getElementById('editorCanvas');
   const ctx = canvas.getContext('2d');
-  let drawing=false, currentTool='pencil', currentColor='#000000', startX=0, startY=0;
-  canvas.addEventListener('mousedown',e=>{
-    drawing=true; startX=e.offsetX; startY=e.offsetY;
-    if(currentTool==='text') {
-      let text = prompt("Yazıyı girin:");
-      if(text){ctx.fillStyle=currentColor; ctx.font='20px Arial'; ctx.fillText(text,e.offsetX,e.offsetY);}
-    }
-  });
-  canvas.addEventListener('mouseup',()=>{drawing=false; ctx.beginPath();});
-  canvas.addEventListener('mousemove',draw);
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
 
-  function draw(e){
-    if(!drawing) return;
-    ctx.strokeStyle=currentColor;
-    ctx.fillStyle=currentColor;
-    ctx.lineWidth=currentTool==='brush'?10:2;
-    ctx.lineCap='round';
+  let drawing = false;
+  let currentTool = 'kalem';
+  let currentColor = 'black';
+  let lineWidth = 5;
 
-    if(currentTool==='pencil'||currentTool==='brush'){
-      ctx.lineTo(e.offsetX,e.offsetY);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(e.offsetX,e.offsetY);
-    } else if(currentTool==='eraser'){
-      ctx.clearRect(e.offsetX-10,e.offsetY-10,20,20);
-    } else if(currentTool==='line'){
-      ctx.beginPath();
-      ctx.moveTo(startX,startY);
-      ctx.lineTo(e.offsetX,e.offsetY);
-      ctx.stroke();
-    } else if(currentTool==='rectangle'){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.fillRect(startX,startY,e.offsetX-startX,e.offsetY-startY);
-    } else if(currentTool==='circle'){
-      let radius=Math.hypot(e.offsetX-startX,e.offsetY-startY);
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.beginPath();
-      ctx.arc(startX,startY,radius,0,Math.PI*2);
-      ctx.fill();
-    }
-  }
-
-  // Araç butonları
-  document.querySelectorAll('.tool-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      currentTool=btn.dataset.tool;
-      if(currentTool==='undo'){alert("Undo yapıldı (örnek)");}
-      if(currentTool==='redo'){alert("Redo yapıldı (örnek)");}
+  // Tool seçimi
+  const toolBtns = document.querySelectorAll('.toolBtn');
+  toolBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      toolBtns.forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      currentTool = btn.dataset.tool;
+      setCursor(currentTool);
     });
   });
 
-  // Renk butonları
-  document.querySelectorAll('.color-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>currentColor=btn.dataset.color);
+  // Renk seçimi
+  const colorBtns = document.querySelectorAll('.colorBtn');
+  colorBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      colorBtns.forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      currentColor = btn.dataset.color;
+    });
   });
 
-  // Mouse simgesi
-  const cursors={
-    pencil:"url('https://cdn-icons-png.flaticon.com/512/84/84380.png'), auto",
-    brush:"url('https://cdn-icons-png.flaticon.com/512/2991/2991148.png'), auto",
-    eraser:"url('https://cdn-icons-png.flaticon.com/512/2561/2561572.png'), auto",
-    line:"crosshair",
-    rectangle:"crosshair",
-    circle:"crosshair",
-    text:"text",
-    emoji:"pointer",
-    sticker:"pointer"
-  };
-  canvas.addEventListener('mousemove',()=>{canvas.style.cursor=cursors[currentTool]||'default';});
+  // Mouse iconu
+  function setCursor(tool){
+    switch(tool){
+      case 'kalem': canvas.style.cursor = 'url("kalem.png"), auto'; break;
+      case 'fırça': canvas.style.cursor = 'url("firca.png"), auto'; break;
+      case 'silgi': canvas.style.cursor = 'url("silgi.png"), auto'; break;
+      default: canvas.style.cursor = 'crosshair';
+    }
+  }
+  setCursor(currentTool);
+
+  // Çizim
+  canvas.addEventListener('mousedown', e=>{drawing=true; ctx.beginPath(); ctx.moveTo(e.offsetX,e.offsetY);});
+  canvas.addEventListener('mousemove', e=>{
+    if(!drawing) return;
+    ctx.strokeStyle = currentColor;
+    ctx.lineWidth = lineWidth;
+    ctx.lineTo(e.offsetX,e.offsetY);
+    ctx.stroke();
+  });
+  canvas.addEventListener('mouseup', ()=>drawing=false);
+  canvas.addEventListener('mouseleave', ()=>drawing=false);
 </script>
 
 </body>
