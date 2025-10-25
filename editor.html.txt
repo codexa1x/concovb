@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resim Editörü</title>
+<style>
+  body { margin:0; display:flex; flex-direction:column; align-items:center; font-family:sans-serif; background:#222; color:#fff; }
+  h1 { margin:20px; }
+  canvas { border:2px solid #fff; cursor:crosshair; margin-bottom:20px; }
+  input[type="file"] { margin-bottom:10px; }
+  button { padding:10px 20px; margin:5px; font-size:1rem; border:none; border-radius:10px; cursor:pointer; background:#ff6ec7; color:#fff; }
+  button:hover { background:#6e7dff; }
+</style>
+</head>
+<body>
+
+<h1>Resim Editörü</h1>
+<input type="file" id="imgLoader" accept="image/*">
+<canvas id="canvas" width="800" height="500"></canvas>
+<div>
+  <button onclick="downloadCanvas()">Resmi İndir</button>
+  <button onclick="clearCanvas()">Temizle</button>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let painting = false;
+
+canvas.addEventListener('mousedown', () => painting = true);
+canvas.addEventListener('mouseup', () => painting = false);
+canvas.addEventListener('mouseleave', () => painting = false);
+
+canvas.addEventListener('mousemove', draw);
+
+function draw(e){
+  if(!painting) return;
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = '#ffde6e';
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX, e.offsetY);
+}
+
+// Resim yükleme
+document.getElementById('imgLoader').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onload = function(event){
+    const img = new Image();
+    img.onload = function(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    }
+    img.src = event.target.result;
+  }
+  reader.readAsDataURL(file);
+});
+
+// Temizle
+function clearCanvas(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+// İndir
+function downloadCanvas(){
+  const link = document.createElement('a');
+  link.download = 'edited_image.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+</script>
+
+</body>
+</html>
