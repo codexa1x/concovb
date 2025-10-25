@@ -9,178 +9,148 @@
   body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
+    background: #222;
     overflow: hidden;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
-    background-size: 400% 400%;
-    animation: gradientBG 25s ease infinite;
+    cursor: url('https://upload.wikimedia.org/wikipedia/commons/8/82/Red_Pizza_icon.png'), auto;
   }
 
-  @keyframes gradientBG {
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
-  }
-
-  /* Üst menü çubuğu */
-  .topbar {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(10px);
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Hamburger Menü */
-  .hamburger {
-    width: 30px;
-    height: 3px;
-    background: #fff;
-    position: relative;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  .hamburger::before,
-  .hamburger::after {
-    content: '';
-    width: 30px;
-    height: 3px;
-    background: #fff;
+  /* Pizza hamburger */
+  #menuToggle {
     position: absolute;
-    left: 0;
-    transition: 0.3s;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 100;
   }
 
-  .hamburger::before { top: -10px; }
-  .hamburger::after { top: 10px; }
-
-  .hamburger.active {
-    background: transparent;
-  }
-  .hamburger.active::before {
-    transform: rotate(45deg) translate(5px,5px);
-  }
-  .hamburger.active::after {
-    transform: rotate(-45deg) translate(5px,-5px);
+  #menuToggle img {
+    width: 100%;
+    transition: transform 0.3s;
   }
 
-  /* Ayarlar paneli */
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: -250px;
-    width: 250px;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(15px);
+  #menu {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
     padding: 20px;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
-    transition: left 0.3s ease;
-    z-index: 3;
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    width: 200px;
     color: #fff;
   }
-  .sidebar.active {
-    left: 0;
+
+  #menu label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .sidebar h2 {
-    margin-top: 0;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+  #menu input[type=color],
+  #menu input[type=range],
+  #menu select {
+    cursor: pointer;
   }
 
-  .sidebar label {
+  /* Canvas */
+  #canvas {
     display: block;
-    margin-bottom: 10px;
+    margin: 0;
+    background: #333;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  button#createBtn {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #ff6ec7;
+    color: #fff;
+    cursor: pointer;
     font-weight: bold;
   }
 
-  .sidebar input[type=color] {
-    width: 100%;
-    height: 40px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-
-  /* Çizim alanı */
-  #canvasContainer {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
-
-  canvas {
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.4);
-    cursor: crosshair;
+  button#createBtn:hover {
+    background: #6e7dff;
   }
 
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="hamburger" id="hamburger"></div>
-  <h1 style="color:white; margin-left:20px; font-size:1.5rem;">Proje Editör</h1>
+<!-- Pizza Hamburger -->
+<div id="menuToggle">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Red_Pizza_icon.png" alt="Pizza Menü">
 </div>
 
-<div class="sidebar" id="sidebar">
-  <h2>Ayarlar</h2>
-  <label for="colorPicker">Kalem Rengi:</label>
-  <input type="color" id="colorPicker" value="#000000">
+<!-- Menü -->
+<div id="menu">
+  <label>Kalem Rengi: <input type="color" id="colorPicker" value="#ff0000"></label>
+  <label>Fırça Boyutu: <input type="range" id="brushSize" min="1" max="50" value="5"></label>
+  <label>Mouse İmleci:
+    <select id="cursorSelect">
+      <option value="default">Klasik</option>
+      <option value="crosshair">Artı</option>
+      <option value="pointer">İşaretçi</option>
+      <option value="url('https://upload.wikimedia.org/wikipedia/commons/8/82/Red_Pizza_icon.png'), auto">Pizza</option>
+    </select>
+  </label>
+  <button id="createBtn">Proje Oluştur</button>
 </div>
 
-<div id="canvasContainer">
-  <canvas id="drawingCanvas" width="800" height="500"></canvas>
-</div>
+<!-- Canvas -->
+<canvas id="canvas"></canvas>
 
 <script>
-  // Hamburger menü
-  const hamburger = document.getElementById('hamburger');
-  const sidebar = document.getElementById('sidebar');
+const menuToggle = document.getElementById('menuToggle');
+const menu = document.getElementById('menu');
+const createBtn = document.getElementById('createBtn');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    sidebar.classList.toggle('active');
-  });
+// Menu aç/kapa
+menuToggle.addEventListener('click', () => {
+  if(menu.style.display === 'flex') menu.style.display = 'none';
+  else menu.style.display = 'flex';
+});
 
-  // Çizim işlemleri
-  const canvas = document.getElementById('drawingCanvas');
-  const ctx = canvas.getContext('2d');
-  let drawing = false;
-  let penColor = document.getElementById('colorPicker').value;
+// Kalem ayarları
+let drawing = false;
+let color = document.getElementById('colorPicker').value;
+let brushSize = document.getElementById('brushSize').value;
 
-  // Renk değişimi
-  document.getElementById('colorPicker').addEventListener('input', (e) => {
-    penColor = e.target.value;
-  });
+document.getElementById('colorPicker').addEventListener('change', e => color = e.target.value);
+document.getElementById('brushSize').addEventListener('change', e => brushSize = e.target.value);
 
-  canvas.addEventListener('mousedown', () => drawing = true);
-  canvas.addEventListener('mouseup', () => drawing = false);
-  canvas.addEventListener('mouseout', () => drawing = false);
+// Mouse imleci
+document.getElementById('cursorSelect').addEventListener('change', e => {
+  canvas.style.cursor = e.target.value;
+});
 
-  canvas.addEventListener('mousemove', (e) => {
-    if(!drawing) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+// Çizim fonksiyonu
+canvas.addEventListener('mousedown', e => drawing = true);
+canvas.addEventListener('mouseup', e => drawing = false);
+canvas.addEventListener('mousemove', e => {
+  if(!drawing) return;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(e.clientX, e.clientY, brushSize, 0, Math.PI*2);
+  ctx.fill();
+});
 
-    ctx.fillStyle = penColor;
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI * 2);
-    ctx.fill();
-  });
+// Proje Oluştur yönlendirme
+createBtn.addEventListener('click', () => {
+  window.location.href = "editor2.html"; // burası ikinci editör sayfası
+});
 </script>
 
 </body>
