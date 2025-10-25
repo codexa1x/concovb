@@ -3,94 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Proje Editör</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>Animasyonlu Çizim Editörü</title>
 <style>
-  body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background: #222;
-    overflow: hidden;
-    cursor: url('https://upload.wikimedia.org/wikipedia/commons/8/82/Red_Pizza_icon.png'), auto;
+  body, html {
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
   }
 
-  /* Pizza hamburger */
-  #menuToggle {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    z-index: 100;
+  @keyframes gradientBG {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
   }
 
-  #menuToggle img {
-    width: 100%;
-    transition: transform 0.3s;
+  canvas { display:block; position:absolute; top:0; left:0; }
+
+  /* Hamburger menu */
+  #hamburger {
+    position: absolute; top: 15px; left: 15px;
+    width: 30px; height: 25px; cursor: pointer; z-index: 1000;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  #hamburger div {
+    width: 100%; height: 4px; background: #fff; border-radius: 2px;
   }
 
+  /* Menü */
   #menu {
-    position: absolute;
-    top: 80px;
-    left: 20px;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 20px;
-    display: none;
-    flex-direction: column;
-    gap: 15px;
-    width: 200px;
-    color: #fff;
+    position: absolute; top: 0; left: -250px; width: 250px; height: 100%;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+    padding: 20px; box-sizing: border-box; transition: left 0.3s ease;
+    color: #fff; z-index: 900;
   }
-
-  #menu label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  #menu input[type=color],
-  #menu input[type=range],
-  #menu select {
-    cursor: pointer;
-  }
-
-  /* Canvas */
-  #canvas {
-    display: block;
-    margin: 0;
-    background: #333;
-    width: 100vw;
-    height: 100vh;
-  }
-
-  button#createBtn {
-    margin-top: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    background: #ff6ec7;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-  button#createBtn:hover {
-    background: #6e7dff;
+  #menu.show { left: 0; }
+  #menu label { display:block; margin:15px 0; font-size:16px; }
+  #menu select, #menu input[type=color], #menu input[type=range] {
+    width: 100%; margin-top:5px;
   }
 
 </style>
 </head>
 <body>
 
-<!-- Pizza Hamburger -->
-<div id="menuToggle">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Red_Pizza_icon.png" alt="Pizza Menü">
+<div id="hamburger">
+  <div></div>
+  <div></div>
+  <div></div>
 </div>
 
-<!-- Menü -->
 <div id="menu">
   <label>Kalem Rengi: <input type="color" id="colorPicker" value="#ff0000"></label>
   <label>Fırça Boyutu: <input type="range" id="brushSize" min="1" max="50" value="5"></label>
@@ -99,58 +62,65 @@
       <option value="default">Klasik</option>
       <option value="crosshair">Artı</option>
       <option value="pointer">İşaretçi</option>
-      <option value="url('https://upload.wikimedia.org/wikipedia/commons/8/82/Red_Pizza_icon.png'), auto">Pizza</option>
+      <option value="url('https://cdn-icons-png.flaticon.com/512/1404/1404945.png') 16 16, auto">Pizza</option>
     </select>
   </label>
-  <button id="createBtn">Proje Oluştur</button>
 </div>
 
-<!-- Canvas -->
 <canvas id="canvas"></canvas>
 
 <script>
-const menuToggle = document.getElementById('menuToggle');
-const menu = document.getElementById('menu');
-const createBtn = document.getElementById('createBtn');
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+  // Hamburger menü aç/kapa
+  const hamburger = document.getElementById('hamburger');
+  const menu = document.getElementById('menu');
+  hamburger.addEventListener('click', () => {
+    menu.classList.toggle('show');
+  });
 
-// Menu aç/kapa
-menuToggle.addEventListener('click', () => {
-  if(menu.style.display === 'flex') menu.style.display = 'none';
-  else menu.style.display = 'flex';
-});
+  // Canvas ayarları
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
-// Kalem ayarları
-let drawing = false;
-let color = document.getElementById('colorPicker').value;
-let brushSize = document.getElementById('brushSize').value;
+  let painting = false;
+  let brushColor = document.getElementById('colorPicker').value;
+  let brushSize = document.getElementById('brushSize').value;
 
-document.getElementById('colorPicker').addEventListener('change', e => color = e.target.value);
-document.getElementById('brushSize').addEventListener('change', e => brushSize = e.target.value);
+  function startPosition(e){ painting=true; draw(e); }
+  function endPosition(){ painting=false; ctx.beginPath(); }
+  function draw(e){
+    if(!painting) return;
+    ctx.lineWidth = brushSize;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = brushColor;
 
-// Mouse imleci
-document.getElementById('cursorSelect').addEventListener('change', e => {
-  canvas.style.cursor = e.target.value;
-});
+    ctx.lineTo(e.clientX, e.clientY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX, e.clientY);
+  }
 
-// Çizim fonksiyonu
-canvas.addEventListener('mousedown', e => drawing = true);
-canvas.addEventListener('mouseup', e => drawing = false);
-canvas.addEventListener('mousemove', e => {
-  if(!drawing) return;
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.arc(e.clientX, e.clientY, brushSize, 0, Math.PI*2);
-  ctx.fill();
-});
+  canvas.addEventListener('mousedown', startPosition);
+  canvas.addEventListener('mouseup', endPosition);
+  canvas.addEventListener('mousemove', draw);
 
-// Proje Oluştur yönlendirme
-createBtn.addEventListener('click', () => {
-  window.location.href = "editor2.html"; // burası ikinci editör sayfası
-});
+  // Menü kontrolleri
+  const colorPicker = document.getElementById('colorPicker');
+  const brushSlider = document.getElementById('brushSize');
+  const cursorSelect = document.getElementById('cursorSelect');
+
+  colorPicker.addEventListener('input', ()=>{ brushColor = colorPicker.value; });
+  brushSlider.addEventListener('input', ()=>{ brushSize = brushSlider.value; });
+  cursorSelect.addEventListener('change', ()=>{ canvas.style.cursor = cursorSelect.value; });
+
+  // Pencere boyutu değişince canvası güncelle
+  window.addEventListener('resize', ()=>{
+    const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.putImageData(imgData,0,0);
+  });
 </script>
 
 </body>
