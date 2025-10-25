@@ -3,58 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gelişmiş Canva Tarzı Editor</title>
+<title>Canva Gelişmiş Editor</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body{
-    margin:0; font-family:'Roboto',sans-serif; overflow:hidden;
-    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
-    background-size: 400% 400%; animation: gradientBG 25s ease infinite;
-    height:100vh;
-  }
-  @keyframes gradientBG{
-    0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
-  }
+body{
+  margin:0; font-family:'Roboto',sans-serif; overflow:hidden;
+  background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
+  background-size: 400% 400%; animation: gradientBG 25s ease infinite;
+  height:100vh;
+}
+@keyframes gradientBG{
+  0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
+}
+#canvasContainer{
+  position:relative; background:#fff; width:90%; height:90%; margin:5%; border-radius:15px;
+  box-shadow:0 0 50px rgba(0,0,0,0.5); overflow:hidden;
+}
+canvas{
+  width:100%; height:100%; cursor:crosshair;
+}
+#hamburger{
+  position:absolute; top:15px; left:15px; width:45px; height:45px; background:#6e7dff;
+  border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer;
+  z-index:1000; transition:0.3s;
+}
+#hamburger:hover{transform:scale(1.1);}
+#hamburger div{width:25px; height:3px; background:#fff; margin:4px 0; border-radius:2px; transition:0.3s;}
+#menuPanel{
+  position:absolute; top:0; left:-320px; width:320px; height:100%; background:rgba(0,0,0,0.9);
+  color:#fff; padding:20px; transition:0.5s; overflow-y:auto;
+}
+#menuPanel.active{left:0;}
+h2,h3{margin:15px 0;}
+.toolBtn{
+  display:block; width:100%; padding:12px; margin:10px 0; border:none;
+  border-radius:12px; background:#ff6ec7; color:#fff; font-weight:bold;
+  cursor:pointer; transition:0.3s; text-align:left; font-size:1rem;
+}
+.toolBtn:hover{transform:scale(1.05);}
+.toolBtn.selected{border:3px solid #fff;}
+.colorBtn{
+  display:inline-block; width:30px; height:30px; margin:5px; border-radius:50%;
+  border:2px solid #fff; cursor:pointer; transition:0.3s;
+}
+.colorBtn.selected{box-shadow:0 0 15px #fff; transform:scale(1.3);}
 
-  #canvasContainer{
-    position:relative; background:#fff; width:90%; height:90%; margin:5%; border-radius:15px;
-    box-shadow:0 0 50px rgba(0,0,0,0.5); overflow:hidden;
-  }
-  canvas{
-    width:100%; height:100%; cursor:crosshair;
-  }
-
-  /* Hamburger Menü */
-  #hamburger{
-    position:absolute; top:15px; left:15px; width:45px; height:45px; background:#6e7dff;
-    border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer;
-    z-index:1000; transition:0.3s;
-  }
-  #hamburger:hover{transform:scale(1.1);}
-  #hamburger div{
-    width:25px; height:3px; background:#fff; margin:4px 0; border-radius:2px; transition:0.3s;
-  }
-
-  #menuPanel{
-    position:absolute; top:0; left:-320px; width:320px; height:100%; background:rgba(0,0,0,0.9);
-    color:#fff; padding:20px; transition:0.5s; overflow-y:auto;
-  }
-  #menuPanel.active{left:0;}
-  h2,h3{margin:15px 0;}
-
-  .toolBtn{
-    display:block; width:100%; padding:12px; margin:10px 0; border:none;
-    border-radius:12px; background:#ff6ec7; color:#fff; font-weight:bold;
-    cursor:pointer; transition:0.3s; text-align:left; font-size:1rem;
-  }
-  .toolBtn:hover{transform:scale(1.05);}
-  .toolBtn.selected{border:3px solid #fff;}
-
-  .colorBtn{
-    display:inline-block; width:30px; height:30px; margin:5px; border-radius:50%;
-    border:2px solid #fff; cursor:pointer; transition:0.3s;
-  }
-  .colorBtn.selected{box-shadow:0 0 15px #fff; transform:scale(1.3);}
+/* Metin kutusu stili */
+.textBox{
+  position:absolute; min-width:50px; min-height:30px; border:2px dashed #000;
+  background:rgba(255,255,255,0.8); padding:5px; font-size:18px;
+  cursor:text; resize:both; overflow:auto;
+}
+.textBox:focus{outline:none; border:2px solid #6e7dff;}
 </style>
 </head>
 <body>
@@ -90,83 +90,101 @@
 </div>
 
 <script>
-  // Hamburger aç/kapa
-  const hamburger = document.getElementById('hamburger');
-  const menu = document.getElementById('menuPanel');
-  hamburger.addEventListener('click', ()=>menu.classList.toggle('active'));
+const hamburger = document.getElementById('hamburger');
+const menu = document.getElementById('menuPanel');
+hamburger.addEventListener('click', ()=>menu.classList.toggle('active'));
 
-  // Canvas setup
-  const canvas = document.getElementById('editorCanvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+const canvas = document.getElementById('editorCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
 
-  let drawing=false;
-  let currentTool='kalem';
-  let currentColor='black';
-  let lineWidth=5;
+let drawing=false;
+let currentTool='kalem';
+let currentColor='black';
+let lineWidth=5;
 
-  // Araç seçimi
-  const toolBtns = document.querySelectorAll('.toolBtn');
-  toolBtns.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      toolBtns.forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected');
-      currentTool=btn.dataset.tool;
-      setCursor(currentTool);
-      if(currentTool==='metin') canvas.style.cursor='text';
-    });
+const toolBtns = document.querySelectorAll('.toolBtn');
+toolBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    toolBtns.forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    currentTool=btn.dataset.tool;
+    setCursor(currentTool);
   });
+});
 
-  // Renk seçimi
-  const colorBtns=document.querySelectorAll('.colorBtn');
-  colorBtns.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      colorBtns.forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected');
-      currentColor=btn.dataset.color;
-    });
+const colorBtns=document.querySelectorAll('.colorBtn');
+colorBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    colorBtns.forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    currentColor=btn.dataset.color;
   });
+});
 
-  // Mouse iconları
-  function setCursor(tool){
-    switch(tool){
-      case 'kalem': canvas.style.cursor='url("hamburger.png"), auto'; break;
-      case 'fırça': canvas.style.cursor='url("pizza.png"), auto'; break;
-      case 'silgi': canvas.style.cursor='url("silgi.png"), auto'; break;
-      default: canvas.style.cursor='crosshair';
-    }
+function setCursor(tool){
+  switch(tool){
+    case 'kalem': canvas.style.cursor='url("hamburger.png"), auto'; break;
+    case 'fırça': canvas.style.cursor='url("pizza.png"), auto'; break;
+    case 'silgi': canvas.style.cursor='url("silgi.png"), auto'; break;
+    default: canvas.style.cursor='crosshair';
   }
-  setCursor(currentTool);
+}
+setCursor(currentTool);
 
-  // Çizim
-  canvas.addEventListener('mousedown', e=>{
-    if(currentTool==='metin'){
-      const text=prompt("Metni girin:");
-      if(text){
-        ctx.fillStyle=currentColor;
-        ctx.font="20px Arial";
-        ctx.fillText(text,e.offsetX,e.offsetY);
-      }
-      return;
+// Çizim
+canvas.addEventListener('mousedown', e=>{
+  if(currentTool==='metin') {
+    createTextBox(e.offsetX,e.offsetY);
+    return;
+  }
+  drawing=true;
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX,e.offsetY);
+});
+canvas.addEventListener('mousemove', e=>{
+  if(!drawing) return;
+  ctx.strokeStyle = currentTool==='silgi' ? '#fff' : currentColor;
+  ctx.lineWidth=lineWidth;
+  ctx.lineTo(e.offsetX,e.offsetY);
+  ctx.stroke();
+});
+canvas.addEventListener('mouseup', ()=>drawing=false);
+canvas.addEventListener('mouseleave', ()=>drawing=false);
+
+// Metin kutusu oluşturma
+function createTextBox(x,y){
+  const box = document.createElement('div');
+  box.className='textBox';
+  box.contentEditable=true;
+  box.style.left=x+'px';
+  box.style.top=y+'px';
+  box.style.color=currentColor;
+
+  // Taşınabilir yap
+  let offsetX=0, offsetY=0, dragging=false;
+  box.addEventListener('mousedown', e=>{
+    dragging=true;
+    offsetX=e.offsetX;
+    offsetY=e.offsetY;
+    box.style.zIndex=1000;
+  });
+  document.addEventListener('mousemove', e=>{
+    if(dragging){
+      box.style.left=(e.clientX-offsetX-canvas.getBoundingClientRect().left)+'px';
+      box.style.top=(e.clientY-offsetY-canvas.getBoundingClientRect().top)+'px';
     }
-    drawing=true;
-    ctx.beginPath();
-    ctx.moveTo(e.offsetX,e.offsetY);
   });
-  canvas.addEventListener('mousemove', e=>{
-    if(!drawing) return;
-    ctx.strokeStyle=currentColor;
-    ctx.lineWidth=lineWidth;
-    ctx.lineTo(e.offsetX,e.offsetY);
-    ctx.stroke();
-  });
-  canvas.addEventListener('mouseup', ()=>drawing=false);
-  canvas.addEventListener('mouseleave', ()=>drawing=false);
+  document.addEventListener('mouseup', ()=>dragging=false);
+
+  document.getElementById('canvasContainer').appendChild(box);
+}
 </script>
 
 </body>
 </html>
+
 
 
 
