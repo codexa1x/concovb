@@ -200,7 +200,78 @@
   });
 </script>
 <style>
+  <!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proje Sayfası</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff6ec7, #6e7dff, #6effc7);
+    background-size: 600% 600%;
+    animation: gradientBG 20s ease infinite;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  @keyframes gradientBG {
+    0% {background-position:0% 50%}
+    50% {background-position:100% 50%}
+    100% {background-position:0% 50%}
+  }
+
+  /* Proje Oluştur Butonu */
+  .create-project {
+    padding: 25px 50px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    animation: appear 1s forwards;
+  }
+
+  @keyframes appear {
+    0% {transform: scale(0);}
+    60% {transform: scale(1.2);}
+    100% {transform: scale(1);}
+  }
+
+  .create-project:hover {
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0% {transform: scale(1);}
+    50% {transform: scale(1.1);}
+    100% {transform: scale(1);}
+  }
+</style>
+</head>
+<body>
+
+<button class="create-project">Proje Oluştur</button>
+
+<script>
+  const btn = document.querySelector('.create-project');
+  btn.addEventListener('click', () => {
+    alert('Proje oluşturma ekranı yakında!');
+  });
+</script>
+
+</body>
+</html>
+
   
+
 
 
 
