@@ -3,76 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Animasyonlu Giriş/Kayıt Formu</title>
-    
+    <title>Kayıt Ol / Giriş Yap Formu</title>
     <link rel="stylesheet" href="style.css">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <div class="container">
+        <div class="form-card" id="formCard">
+            
+            <div class="form-header">
+                <button id="loginTab" class="tab-button">Giriş Yap</button>
+                <button id="signupTab" class="tab-button active">Kayıt Ol</button>
+            </div>
 
-    <div class="main-container" id="mainContainer">
-        
-        <div class="form-wrapper active" id="loginFormWrapper">
-            <h2>Giriş Yap</h2>
-            <form id="loginForm">
+            <div class="form-carousel" id="formCarousel">
                 
-                <div class="input-group">
-                    <input type="text" id="login-username" required>
-                    <label for="login-username">Kullanıcı Adı</label>
-                    <i class="fas fa-user"></i>
-                </div>
-                
-                <div class="input-group">
-                    <input type="password" id="login-password" required>
-                    <label for="login-password">Şifre</label>
-                    <i class="fas fa-lock"></i>
-                </div>
-                
-                <button type="submit" class="auth-button login-button">GİRİŞ YAP</button>
+                <div class="form-panel signup-panel">
+                    <h1>Sign Up</h1>
+                    <form action="#" method="POST">
+                        <input type="email" placeholder="e-mail" required>
+                        <input type="password" placeholder="password" required>
+                        <input type="password" placeholder="repeat password" required>
 
-                <div class="links">
-                    <a href="#">Şifremi Unuttum</a>
-                    <a href="#" id="showRegister">Hesap Oluştur</a>
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember-signup">
+                            <label for="remember-signup">Remember me</label>
+                        </div>
+
+                        <div class="social-login-text">
+                            Sign up with social account
+                        </div>
+                        <div class="social-icons">
+                            <div class="social-icon google"></div>
+                            <div class="social-icon facebook"></div>
+                            <div class="social-icon twitter"></div>
+                        </div>
+
+                        <button type="submit" class="signup-button">Sign up</button>
+                    </form>
+                    
+                    <div class="footer-text">
+                        Read User License Agreement
+                    </div>
                 </div>
-            </form>
+
+                <div class="form-panel login-panel">
+                    <h1>Log In</h1>
+                    <form action="#" method="POST">
+                        <input type="email" placeholder="e-mail" required>
+                        <input type="password" placeholder="password" required>
+
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember-login">
+                            <label for="remember-login">Remember me</label>
+                        </div>
+
+                        <button type="submit" class="signup-button">Log In</button>
+                    </form>
+
+                    <p class="forgot-password">Şifremi Unuttum?</p>
+                </div>
+                
+            </div>
         </div>
-
-        <div class="form-wrapper" id="registerFormWrapper">
-            <h2>Kayıt Ol</h2>
-            <form id="registerForm">
-                
-                <div class="input-group">
-                    <input type="text" id="register-name" required>
-                    <label for="register-name">Adınız ve Soyadınız</label>
-                    <i class="fas fa-id-badge"></i>
-                </div>
-                
-                <div class="input-group">
-                    <input type="email" id="register-email" required>
-                    <label for="register-email">E-posta (Gmail)</label>
-                    <i class="fas fa-envelope"></i>
-                </div>
-                
-                <div class="input-group">
-                    <input type="password" id="register-password" required>
-                    <label for="register-password">Şifre Oluştur</label>
-                    <i class="fas fa-lock"></i>
-                </div>
-                
-                <button type="submit" class="auth-button register-button">KAYDOL</button>
-
-                <div class="links">
-                    <a href="#" id="showLogin">Zaten Hesabım Var</a>
-                </div>
-            </form>
-        </div>
-
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
+
+
 
 
 
