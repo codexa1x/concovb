@@ -262,6 +262,117 @@ toolBtns.forEach(btn=>{
 .eraserBtn:hover{transform:scale(1.1);}
 .eraserBtn.selected{background:#6e7dff; box-shadow:0 0 10px #fff;}
 </style>
+<!-- Metin Ayarları Paneli -->
+<div id="textPanel" style="
+    position:absolute; top:80px; left:10px; background:rgba(0,0,0,0.8); 
+    padding:15px; border-radius:10px; display:none; z-index:1000;
+    transition:0.3s; color:#fff; font-family:sans-serif;">
+  <div>
+    <strong>Renk:</strong>
+    <input type="color" id="textColor" value="#000000">
+  </div>
+  <div>
+    <strong>Yön:</strong>
+    <select id="textDirection">
+      <option value="horizontal">Yatay</option>
+      <option value="vertical">Dikey</option>
+    </select>
+  </div>
+  <div>
+    <strong>Stil:</strong>
+    <label><input type="checkbox" id="bold"> Kalın</label>
+    <label><input type="checkbox" id="italic"> İtalik</label>
+    <label><input type="checkbox" id="underline"> Altı Çizili</label>
+  </div>
+</div>
+
+<script>
+const textPanel = document.getElementById('textPanel');
+const textColorInput = document.getElementById('textColor');
+const textDirection = document.getElementById('textDirection');
+const boldCheckbox = document.getElementById('bold');
+const italicCheckbox = document.getElementById('italic');
+const underlineCheckbox = document.getElementById('underline');
+
+let currentTextSettings = {
+  color: '#000000',
+  direction: 'horizontal',
+  bold: false,
+  italic: false,
+  underline: false
+};
+
+// Metin aracı seçildiğinde panel aç/kapat
+toolBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    if(btn.dataset.tool==='metin'){
+      textPanel.style.display='block';
+      textPanel.style.transform='scale(0)';
+      setTimeout(()=> textPanel.style.transform='scale(1)', 10);
+    } else {
+      textPanel.style.display='none';
+    }
+  });
+});
+
+// Ayarları güncelle
+textColorInput.addEventListener('change', e=> currentTextSettings.color=e.target.value);
+textDirection.addEventListener('change', e=> currentTextSettings.direction=e.target.value);
+boldCheckbox.addEventListener('change', e=> currentTextSettings.bold=e.target.checked);
+italicCheckbox.addEventListener('change', e=> currentTextSettings.italic=e.target.checked);
+underlineCheckbox.addEventListener('change', e=> currentTextSettings.underline=e.target.checked);
+
+// Beyaz tahtaya tıklayınca dikdörtgen ve yazı ekleme
+canvas.addEventListener('click', e=>{
+  if(selectedTool==='metin'){
+    const x = e.offsetX;
+    const y = e.offsetY;
+
+    const textDiv = document.createElement('div');
+    textDiv.contentEditable = true;
+    textDiv.style.position='absolute';
+    textDiv.style.left=x+'px';
+    textDiv.style.top=y+'px';
+    textDiv.style.color=currentTextSettings.color;
+    textDiv.style.fontWeight=currentTextSettings.bold?'bold':'normal';
+    textDiv.style.fontStyle=currentTextSettings.italic?'italic':'normal';
+    textDiv.style.textDecoration=currentTextSettings.underline?'underline':'none';
+    textDiv.style.background='rgba(255,255,255,0.2)';
+    textDiv.style.padding='5px';
+    textDiv.style.minWidth='50px';
+    textDiv.style.minHeight='20px';
+    textDiv.style.border='1px dashed #000';
+    textDiv.style.userSelect='text';
+
+    if(currentTextSettings.direction==='vertical'){
+      textDiv.style.writingMode='vertical-rl';
+    }
+
+    document.body.appendChild(textDiv);
+    textDiv.focus();
+
+    // Enter ile bitirme
+    textDiv.addEventListener('keydown', function(e){
+      if(e.key==='Enter'){
+        e.preventDefault();
+        textDiv.contentEditable=false;
+        textDiv.style.border='none';
+      }
+    });
+  }
+});
+</script>
+
+<style>
+#textPanel select, #textPanel input, #textPanel label{
+  margin:5px; cursor:pointer; transition:0.3s;
+}
+#textPanel input[type=color]:hover, #textPanel select:hover, #textPanel label:hover{
+  transform:scale(1.1);
+}
+</style>
+
+
 
 
 
