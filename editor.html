@@ -55,6 +55,13 @@ h2,h3{margin:15px 0;}
   cursor:text; resize:both; overflow:auto;
 }
 .textBox:focus{outline:none; border:2px solid #6e7dff;}
+
+/* Sağ tık menüsü */
+.contextMenu{
+  position:absolute; background:#333; color:#fff; padding:5px 10px; border-radius:5px;
+  display:none; z-index:2000; cursor:pointer;
+}
+.contextMenu:hover{background:#555;}
 </style>
 </head>
 <body>
@@ -88,6 +95,8 @@ h2,h3{margin:15px 0;}
     </div>
   </div>
 </div>
+
+<div id="contextMenu" class="contextMenu">Sil</div>
 
 <script>
 const hamburger = document.getElementById('hamburger');
@@ -178,14 +187,35 @@ function createTextBox(x,y){
   });
   document.addEventListener('mouseup', ()=>dragging=false);
 
+  // Sağ tık menüsü
+  box.addEventListener('contextmenu', e=>{
+    e.preventDefault();
+    const menu = document.getElementById('contextMenu');
+    menu.style.left=e.pageX+'px';
+    menu.style.top=e.pageY+'px';
+    menu.style.display='block';
+
+    menu.onclick = ()=>{
+      box.remove();
+      menu.style.display='none';
+    }
+
+    document.addEventListener('click', ()=>{
+      menu.style.display='none';
+    }, {once:true});
+  });
+
   document.getElementById('canvasContainer').appendChild(box);
 }
+
+// Canvas sağ tık engelle
+canvas.addEventListener('contextmenu', e=>{
+  if(currentTool==='metin') e.preventDefault();
+});
 </script>
 
 </body>
 </html>
-
-
 
 
 
