@@ -3,23 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animasyonlu Çizim Editörü</title>
+<title>Gelişmiş Çizim Editörü</title>
 <style>
   body, html {
     margin: 0; padding: 0; height: 100%; overflow: hidden;
     font-family: Arial, sans-serif;
-    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
-    background-size: 400% 400%;
-    animation: gradientBG 20s ease infinite;
+    background: #f0f0f0; /* Artık beyaz tahta arka plan */
   }
 
-  @keyframes gradientBG {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-  }
-
-  canvas { display:block; position:absolute; top:0; left:0; }
+  canvas { display:block; position:absolute; top:0; left:0; background:white; }
 
   /* Hamburger menu */
   #hamburger {
@@ -28,21 +20,22 @@
     display: flex; flex-direction: column; justify-content: space-between;
   }
   #hamburger div {
-    width: 100%; height: 4px; background: #fff; border-radius: 2px;
+    width: 100%; height: 4px; background: #333; border-radius: 2px;
   }
 
   /* Menü */
   #menu {
-    position: absolute; top: 0; left: -250px; width: 250px; height: 100%;
-    background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
-    padding: 20px; box-sizing: border-box; transition: left 0.3s ease;
-    color: #fff; z-index: 900;
+    position: absolute; top: 0; left: -300px; width: 300px; height: 100%;
+    background: rgba(0,0,0,0.85); color: #fff; padding: 20px;
+    box-sizing: border-box; transition: left 0.3s ease; z-index: 999;
   }
   #menu.show { left: 0; }
   #menu label { display:block; margin:15px 0; font-size:16px; }
-  #menu select, #menu input[type=color], #menu input[type=range] {
-    width: 100%; margin-top:5px;
+  #menu select, #menu input[type=color], #menu input[type=range], #menu button {
+    width: 100%; margin-top:5px; padding:5px; font-size:16px; border-radius:5px; border:none;
   }
+  #menu button { margin-top:10px; cursor:pointer; background:#ff6ec7; color:white; }
+  #menu button:hover { background:#6e7dff; }
 
 </style>
 </head>
@@ -63,21 +56,24 @@
       <option value="crosshair">Artı</option>
       <option value="pointer">İşaretçi</option>
       <option value="url('https://cdn-icons-png.flaticon.com/512/1404/1404945.png') 16 16, auto">Pizza</option>
+      <option value="url('https://cdn-icons-png.flaticon.com/512/32/32339.png') 16 16, auto">Kalem</option>
+      <option value="url('https://cdn-icons-png.flaticon.com/512/61/61848.png') 16 16, auto">Yıldız</option>
     </select>
   </label>
+  <button id="eraserBtn">Silgi</button>
+  <button id="undoBtn">Geri Al</button>
+  <button id="clearBtn">Temizle</button>
 </div>
 
 <canvas id="canvas"></canvas>
 
 <script>
-  // Hamburger menü aç/kapa
+  // Hamburger menü
   const hamburger = document.getElementById('hamburger');
   const menu = document.getElementById('menu');
-  hamburger.addEventListener('click', () => {
-    menu.classList.toggle('show');
-  });
+  hamburger.addEventListener('click', ()=>{ menu.classList.toggle('show'); });
 
-  // Canvas ayarları
+  // Canvas
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
@@ -86,15 +82,22 @@
   let painting = false;
   let brushColor = document.getElementById('colorPicker').value;
   let brushSize = document.getElementById('brushSize').value;
+  let undoStack = [];
 
-  function startPosition(e){ painting=true; draw(e); }
-  function endPosition(){ painting=false; ctx.beginPath(); }
+  function startPosition(e){
+    painting=true;
+    saveState();
+    draw(e);
+  }
+  function endPosition(){
+    painting=false;
+    ctx.beginPath();
+  }
   function draw(e){
     if(!painting) return;
     ctx.lineWidth = brushSize;
     ctx.lineCap = 'round';
     ctx.strokeStyle = brushColor;
-
     ctx.lineTo(e.clientX, e.clientY);
     ctx.stroke();
     ctx.beginPath();
@@ -106,24 +109,48 @@
   canvas.addEventListener('mousemove', draw);
 
   // Menü kontrolleri
-  const colorPicker = document.getElementById('colorPicker');
-  const brushSlider = document.getElementById('brushSize');
-  const cursorSelect = document.getElementById('cursorSelect');
+  document.getElementById('colorPicker').addEventListener('input', e=>{ brushColor = e.target.value; });
+  document.getElementById('brushSize').addEventListener('input', e=>{ brushSize = e.target.value; });
+  document.getElementById('cursorSelect').addEventListener('change', e=>{ canvas.style.cursor = e.target.value; });
 
-  colorPicker.addEventListener('input', ()=>{ brushColor = colorPicker.value; });
-  brushSlider.addEventListener('input', ()=>{ brushSize = brushSlider.value; });
-  cursorSelect.addEventListener('change', ()=>{ canvas.style.cursor = cursorSelect.value; });
+  // Silgi
+  document.getElementById('eraserBtn').addEventListener('click', ()=>{ brushColor='white'; });
 
-  // Pencere boyutu değişince canvası güncelle
+  // Geri Al
+  function saveState(){
+    undoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+    if(undoStack.length>50) undoStack.shift();
+  }
+  document.getElementById('undoBtn').addEventListener('click', ()=>{
+    if(undoStack.length>0){
+      ctx.putImageData(undoStack.pop(),0,0);
+    }
+  });
+
+  // Temizle
+  document.getElementById('clearBtn').addEventListener('click', ()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    undoStack=[];
+  });
+
+  // Pencere boyutu değişince canvası koru
   window.addEventListener('resize', ()=>{
     const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     ctx.putImageData(imgData,0,0);
   });
-</script>
 
+  // Başlangıçta beyaz tahta
+  ctx.fillStyle = "white";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+</script>
 </body>
 </html>
+
+
 
 
