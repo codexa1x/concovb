@@ -3,131 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animasyonlu Gelişmiş Editör</title>
+<title>Editor</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:'Roboto',sans-serif;background:#f0f0f0;overflow:hidden;}
-#sidebar{position:fixed;top:0;left:0;width:200px;height:100%;background:#222;padding:10px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
-.tool-card{background:#333;color:#fff;padding:8px;border-radius:10px;display:flex;align-items:center;gap:10px;cursor:grab;transition:0.3s;}
-.tool-card:hover{background:#555;transform:scale(1.05);}
-.tool-card button{border:none;padding:5px 10px;border-radius:5px;background:#ff6ec7;color:#fff;cursor:pointer;transition:0.3s;}
-.tool-card button:hover{background:#6e7dff;}
-#canvas-container{position:absolute;left:200px;top:0;right:0;bottom:0;display:flex;justify-content:center;align-items:center;}
-canvas{background:#fff;border:2px solid #ccc;}
-.text-box{position:absolute;border:1px dashed #333;min-width:50px;min-height:30px;padding:5px;cursor:text;background:rgba(255,255,255,0.8);transition:0.3s;}
-#delete-confirm{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#222;color:#fff;padding:10px 20px;border-radius:10px;display:none;z-index:2000;}
-#text-menu{position:absolute;background:#333;color:#fff;padding:10px;border-radius:10px;display:none;flex-direction:column;gap:5px;animation:fadeIn 0.3s;}
-#text-menu button{background:#555;color:#fff;border:none;padding:5px;border-radius:5px;cursor:pointer;transition:0.3s;}
-#text-menu button:hover{background:#6e7dff;}
-#text-menu input[type=color]{cursor:pointer;}
-@keyframes fadeIn{0%{opacity:0;transform:scale(0.8);}100%{opacity:1;transform:scale(1);}}
+  body, html {
+    margin:0; padding:0; height:100%; font-family:'Roboto', sans-serif; overflow:hidden;
+    display:flex; background:#f0f0f0;
+  }
+  /* Sol panel */
+  .sidebar {
+    width:250px; background:#1f1f1f; color:#fff; display:flex; flex-direction:column; padding:15px;
+    box-shadow:2px 0 10px rgba(0,0,0,0.3); animation: slideIn 1s ease forwards;
+  }
+  @keyframes slideIn { from{transform:translateX(-100%);} to{transform:translateX(0);} }
+  .sidebar h2 { margin:10px 0; text-align:center; }
+  .btn { padding:10px; margin:5px 0; border:none; border-radius:10px; cursor:pointer; transition:0.3s; font-weight:bold; }
+  .btn:hover { transform:scale(1.05); box-shadow:0 0 15px rgba(255,255,255,0.4); }
+
+  .btn-text { background:#ff6ec7; color:#fff; }
+  .btn-eraser { background:#6e7dff; color:#fff; }
+  .btn-theme { background:#6effc7; color:#000; }
+  .btn-mouse { background:#ffde6e; color:#000; }
+
+  /* Tahta */
+  .canvas-container { flex:1; position:relative; background:#fff; margin:20px; border-radius:15px; box-shadow:0 0 20px rgba(0,0,0,0.2); overflow:hidden; }
+  canvas { width:100%; height:100%; display:block; cursor:crosshair; }
+
+  /* Metin kutusu */
+  .text-box { position:absolute; min-width:50px; min-height:30px; padding:5px; border:1px dashed #333; cursor:text; background:rgba(255,255,255,0.8); }
+  .text-box p { margin:0; }
+
+  /* Tema seçenekleri */
+  .theme-options { display:flex; flex-wrap:wrap; margin-top:10px; }
+  .theme-color { width:30px; height:30px; border-radius:50%; margin:5px; cursor:pointer; border:2px solid #fff; transition:0.3s; }
+  .theme-color:hover { transform:scale(1.2); }
+
+  /* Mouse imleçleri */
+  .cursor-hamburger { cursor:url('https://i.imgur.com/KbR3nPp.png'), auto; }
+  .cursor-pizza { cursor:url('https://i.imgur.com/NMlRZL0.png'), auto; }
+
 </style>
 </head>
 <body>
 
-<div id="sidebar">
-<div class="tool-card" draggable="true" id="draw-tool"><span>✏️ Çizim</span><button>Seç</button></div>
-<div class="tool-card" draggable="true" id="erase-tool"><span>🧽 Silgi</span><button>Seç</button></div>
-<div class="tool-card" draggable="true" id="text-tool"><span>🅰️ Metin</span><button>Seç</button></div>
-<div class="tool-card" draggable="true" id="hamburger-cursor"><span>🍔 Hamburger</span><button>Seç</button></div>
-<div class="tool-card" draggable="true" id="pizza-cursor"><span>🍕 Pizza</span><button>Seç</button></div>
+<div class="sidebar">
+  <h2>Araçlar</h2>
+  <button class="btn btn-text" id="addTextBtn">Metin Ekle</button>
+  <button class="btn btn-eraser" id="eraserBtn">Silgi</button>
+  <button class="btn btn-theme" id="themeBtn">Tema</button>
+  <button class="btn btn-mouse" id="mouseBtn">Mouse</button>
+
+  <div class="theme-options" id="themeOptions" style="display:none;">
+    <div class="theme-color" style="background:#ffffff;"></div>
+    <div class="theme-color" style="background:#ff6ec7;"></div>
+    <div class="theme-color" style="background:#6e7dff;"></div>
+    <div class="theme-color" style="background:#6effc7;"></div>
+    <div class="theme-color" style="background:#ffde6e;"></div>
+  </div>
 </div>
 
-<div id="canvas-container">
-<canvas id="canvas" width="1200" height="700"></canvas>
-</div>
-
-<div id="delete-confirm">✅ Başarıyla silindi</div>
-
-<div id="text-menu">
-<button id="bold-btn">Kalın</button>
-<button id="italic-btn">İtalik</button>
-<button id="underline-btn">Altı Çizili</button>
-<select id="font-select">
-<option value="Roboto">Roboto</option>
-<option value="Arial">Arial</option>
-<option value="Courier New">Courier</option>
-</select>
-<input type="color" id="text-color">
+<div class="canvas-container">
+  <canvas id="canvas"></canvas>
 </div>
 
 <script>
-const canvas=document.getElementById('canvas');
-const ctx=canvas.getContext('2d');
-let drawing=false,currentTool='draw',brushColor='#000',brushSize=5;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
 
-// Araç seçim
-document.getElementById('draw-tool').querySelector('button').addEventListener('click',()=>currentTool='draw');
-document.getElementById('erase-tool').querySelector('button').addEventListener('click',()=>currentTool='erase');
-document.getElementById('text-tool').querySelector('button').addEventListener('click',()=>currentTool='text');
-document.getElementById('hamburger-cursor').querySelector('button').addEventListener('click',()=>{canvas.style.cursor='url(https://img.icons8.com/emoji/48/hamburger.png),auto';});
-document.getElementById('pizza-cursor').querySelector('button').addEventListener('click',()=>{canvas.style.cursor='url(https://img.icons8.com/emoji/48/pizza.png),auto';});
-
-// Çizim
-canvas.addEventListener('mousedown',e=>{
-if(currentTool==='draw'||currentTool==='erase')drawing=true;
-if(currentTool==='text')addTextBox(e.offsetX,e.offsetY);
+// Temalar
+const themeOptions = document.getElementById('themeOptions');
+document.getElementById('themeBtn').addEventListener('click', ()=>{
+  themeOptions.style.display = themeOptions.style.display==='none' ? 'flex' : 'none';
 });
-canvas.addEventListener('mouseup',()=>drawing=false);
-canvas.addEventListener('mouseout',()=>drawing=false);
-canvas.addEventListener('mousemove',e=>{
-if(!drawing)return;
-if(currentTool==='draw'){ctx.fillStyle=brushColor;ctx.fillRect(e.offsetX-2,e.offsetY-2,brushSize,brushSize);}
-if(currentTool==='erase'){ctx.clearRect(e.offsetX-10,e.offsetY-10,20,20);}
+document.querySelectorAll('.theme-color').forEach(el=>{
+  el.addEventListener('click', ()=> {
+    document.querySelector('.canvas-container').style.background = el.style.background;
+  });
 });
 
-function addTextBox(x,y){
-const box=document.createElement('div');
-box.className='text-box';
-box.contentEditable=true;
-box.style.left=x+'px';
-box.style.top=y+'px';
-box.style.color='#000';
-box.style.fontFamily='Roboto';
-document.body.appendChild(box);
-box.focus();
-
-// Sağ tık menüsü
-box.addEventListener('contextmenu',e=>{
-e.preventDefault();
-const menu=document.getElementById('text-menu');
-menu.style.left=e.pageX+'px';
-menu.style.top=e.pageY+'px';
-menu.style.display='flex';
-
-function applyStyle(){
-box.style.fontWeight=document.getElementById('bold-btn').style.fontWeight==='bold'?'normal':'bold';
-box.style.fontStyle=document.getElementById('italic-btn').style.fontStyle==='italic'?'normal':'italic';
-box.style.textDecoration=document.getElementById('underline-btn').style.textDecoration==='underline'?'none':'underline';
-box.style.fontFamily=document.getElementById('font-select').value;
-box.style.color=document.getElementById('text-color').value;
-}
-menu.querySelectorAll('button,select,input').forEach(el=>{
-el.onchange=applyStyle;
-el.onclick=applyStyle;
+// Mouse değişimi
+const canvasContainer = document.querySelector('.canvas-container');
+document.getElementById('mouseBtn').addEventListener('click', ()=>{
+  canvasContainer.classList.toggle('cursor-hamburger');
+  canvasContainer.classList.remove('cursor-pizza');
 });
 
-document.addEventListener('click',function hideMenu(e){
-if(!menu.contains(e.target)){menu.style.display='none';document.removeEventListener('click',hideMenu);}
+// Metin ekleme
+let addTextMode = false;
+document.getElementById('addTextBtn').addEventListener('click', ()=>{
+  addTextMode = !addTextMode;
 });
-});
-}
-
-// Metin seçenekleri animasyon
-document.getElementById('bold-btn').addEventListener('click',()=>{document.execCommand('bold');});
-document.getElementById('italic-btn').addEventListener('click',()=>{document.execCommand('italic');});
-document.getElementById('underline-btn').addEventListener('click',()=>{document.execCommand('underline');});
-document.getElementById('font-select').addEventListener('change',()=>{document.execCommand('fontName',false,document.getElementById('font-select').value);});
-document.getElementById('text-color').addEventListener('change',()=>{document.execCommand('foreColor',false,document.getElementById('text-color').value);});
-
-// Sağ tıkla silme
-document.body.addEventListener('contextmenu',e=>{
-if(e.target.classList.contains('text-box')){
-e.preventDefault();
-}
+canvas.addEventListener('click', (e)=>{
+  if(addTextMode){
+    const box = document.createElement('div');
+    box.className = 'text-box';
+    box.style.left = e.offsetX+'px';
+    box.style.top = e.offsetY+'px';
+    box.contentEditable = true;
+    box.innerHTML = 'Yeni Metin';
+    document.querySelector('.canvas-container').appendChild(box);
+    box.focus();
+  }
 });
 
+// Silgi
+let eraserMode = false;
+document.getElementById('eraserBtn').addEventListener('click', ()=> {
+  eraserMode = !eraserMode;
+});
+canvas.addEventListener('mousemove', (e)=>{
+  if(eraserMode && e.buttons){
+    ctx.clearRect(e.offsetX-10,e.offsetY-10,20,20);
+  }
+});
 </script>
+
 </body>
 </html>
 
