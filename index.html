@@ -165,6 +165,13 @@ function handleCredentialResponse(response) {
     alert("Giriş başarılı! Konsolu kontrol et.");
 }
 </script>
+function handleCredentialResponse(response) {
+    console.log("Google JWT ID Token:", response.credential);
+    // Giriş başarılı → kullanıcıyı proje sayfasına yönlendir
+    window.location.href = 'proje.html';
+}
+
+
 
 
 
