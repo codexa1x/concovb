@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Çok Animasyonlu Giriş Paneli</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+  body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+    background: linear-gradient(270deg, #ff6ec7, #6e7dff, #6effc7);
+    background-size: 600% 600%;
+    animation: gradientBG 20s ease infinite;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @keyframes gradientBG {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+
+  .login-container {
+    position: relative;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 50px 40px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.2);
+    width: 350px;
+    text-align: center;
+    animation: slideFade 1s ease forwards;
+  }
+
+  @keyframes slideFade {
+    from {opacity:0; transform:translateY(-50px);}
+    to {opacity:1; transform:translateY(0);}
+  }
+
+  .login-container h2 {
+    color: #fff;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+  }
+
+  .login-container input {
+    width: 100%;
+    padding: 15px;
+    margin: 15px 0;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 1rem;
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    transition: 0.3s;
+  }
+
+  .login-container input:focus {
+    background: rgba(255,255,255,0.45);
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+  }
+
+  .login-container button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #ff6ec7;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+  }
+
+  .login-container button:hover {
+    background: #6e7dff;
+    transform: scale(1.05);
+  }
+
+  .social-login {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+
+  .social-login button {
+    width: 45%;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .social-login button:hover {
+    background: rgba(255,255,255,0.5);
+    transform: scale(1.1);
+  }
+
+  /* Floating shapes */
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.2;
+    animation: float 10s infinite;
+  }
+  .shape:nth-child(1){width:80px;height:80px;background:#fff;top:10%;left:5%;animation-delay:0s;}
+  .shape:nth-child(2){width:50px;height:50px;background:#ff6ec7;top:20%;left:80%;animation-delay:2s;}
+  .shape:nth-child(3){width:100px;height:100px;background:#6effc7;top:70%;left:20%;animation-delay:4s;}
+  .shape:nth-child(4){width:40px;height:40px;background:#6e7dff;top:60%;left:70%;animation-delay:1s;}
+
+  @keyframes float {
+    0%{transform: translateY(0px) rotate(0deg);}
+    50%{transform: translateY(-50px) rotate(180deg);}
+    100%{transform: translateY(0px) rotate(360deg);}
+  }
+</style>
+</head>
+<body>
+
+<div class="shape"></div>
+<div class="shape"></div>
+<div class="shape"></div>
+<div class="shape"></div>
+
+<div class="login-container">
+  <h2>Giriş Yap</h2>
+  <input type="text" placeholder="Kullanıcı Adı">
+  <input type="password" placeholder="Şifre">
+  <button>Giriş</button>
+
+  <div class="social-login">
+    <button>Google</button>
+    <button>GitHub</button>
+  </div>
+</div>
+
+</body>
+</html>
+
