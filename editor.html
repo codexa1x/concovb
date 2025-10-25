@@ -3,119 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animasyonlu Çizim Editörü</title>
+<title>Canva Benzeri Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body, html {
-    margin:0; padding:0; height:100%; overflow:hidden; font-family:sans-serif;
-    background: linear-gradient(120deg, #f6d365, #fda085, #a1c4fd, #c2e9fb);
-    background-size: 600% 600%;
-    animation: gradientBG 20s ease infinite;
-    cursor: url('https://upload.wikimedia.org/wikipedia/commons/3/32/Red_triangle_cursor.svg') 16 16, auto;
-  }
-  @keyframes gradientBG {
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
-  }
-  canvas { position:absolute; top:0; left:0; }
-
-  #hamburger {
-    position:absolute; top:15px; left:15px; width:30px; height:25px;
-    cursor:pointer; z-index:1000; display:flex; flex-direction:column; justify-content:space-between;
-  }
-  #hamburger div { width:100%; height:4px; background:#333; border-radius:2px; }
-
-  #menu {
-    position:absolute; top:0; left:-320px; width:320px; height:100%;
-    background:rgba(0,0,0,0.85); color:white; padding:20px; transition:left 0.3s ease; z-index:999;
-  }
-  #menu.show { left:0; }
-  #menu label { display:block; margin:15px 0; font-size:16px; }
-  #menu select, #menu input[type=color], #menu input[type=range], #menu button {
-    width:100%; margin-top:5px; padding:5px; border-radius:5px; border:none; font-size:16px;
-  }
-  #menu button { margin-top:10px; cursor:pointer; background:#ff6ec7; color:white; }
-  #menu button:hover { background:#6e7dff; }
+  body, html {margin:0; padding:0; font-family:'Roboto',sans-serif; overflow:hidden; height:100%;}
+  body {background: linear-gradient(270deg, #ff6ec7, #6e7dff, #6effc7); background-size:600% 600%; animation:gradientBG 20s ease infinite;}
+  @keyframes gradientBG {0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  
+  /* Hamburger Menü */
+  #menuBtn {position:absolute; top:15px; left:15px; width:40px; height:40px; cursor:pointer; z-index:10;}
+  #menuBtn div {width:100%; height:5px; background:#fff; margin:6px 0; border-radius:3px; transition:0.3s;}
+  #sideMenu {position:absolute; top:0; left:-250px; width:250px; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(10px); padding:20px; color:#fff; transition:0.3s;}
+  #sideMenu h2 {margin-top:0;}
+  #sideMenu label {display:block; margin:10px 0 5px;}
+  #sideMenu input[type=color], #sideMenu select, #sideMenu button {width:100%; padding:8px; margin-bottom:10px; border:none; border-radius:5px;}
+  
+  canvas {border:2px solid #fff; display:block; margin:auto; background:#fff; cursor:url(''), auto;}
 </style>
 </head>
 <body>
 
-<div id="hamburger">
+<!-- Hamburger Menü -->
+<div id="menuBtn">
   <div></div><div></div><div></div>
 </div>
 
-<div id="menu">
-  <label>Kalem Rengi: <input type="color" id="colorPicker" value="#ff0000"></label>
-  <label>Fırça Boyutu: <input type="range" id="brushSize" min="1" max="50" value="5"></label>
-  <label>Mouse İmleci:
-    <select id="cursorSelect">
-      <option value="default">Klasik</option>
-      <option value="crosshair">Artı</option>
-      <option value="pointer">İşaretçi</option>
-      <option value="url('https://upload.wikimedia.org/wikipedia/commons/3/32/Red_triangle_cursor.svg') 16 16, auto">Üçgen</option>
-      <option value="url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Blue_circle_cursor.svg') 16 16, auto">Daire</option>
-    </select>
-  </label>
-  <button id="eraserBtn">Silgi</button>
+<div id="sideMenu">
+  <h2>Ayarlar</h2>
+  <label for="tool">Araç Seç:</label>
+  <select id="tool">
+    <option value="pen">Kalem</option>
+    <option value="marker">Marker</option>
+    <option value="neon">Neon</option>
+    <option value="eraser">Silgi</option>
+    <option value="shape">Şekil</option>
+    <option value="text">Metin</option>
+  </select>
+
+  <label for="color">Renk Seç:</label>
+  <input type="color" id="color" value="#000000">
+
+  <label for="cursor">Mouse İmleci:</label>
+  <select id="cursor">
+    <option value="default">Klasik</option>
+    <option value="pizza">Pizza</option>
+    <option value="hamburger">Hamburger</option>
+  </select>
+
   <button id="undoBtn">Geri Al</button>
+  <button id="redoBtn">İleri Al</button>
   <button id="clearBtn">Temizle</button>
+  <button id="saveBtn">Kaydet (PNG)</button>
 </div>
 
-<canvas id="canvas"></canvas>
+<canvas id="canvas" width="1200" height="700"></canvas>
 
 <script>
-const hamburger=document.getElementById('hamburger');
-const menu=document.getElementById('menu');
-hamburger.addEventListener('click',()=>{menu.classList.toggle('show');});
+  // Menü aç/kapa
+  const menuBtn = document.getElementById('menuBtn');
+  const sideMenu = document.getElementById('sideMenu');
+  let menuOpen = false;
+  menuBtn.addEventListener('click',()=> {
+    if(menuOpen){sideMenu.style.left='-250px'; menuOpen=false;}
+    else{sideMenu.style.left='0'; menuOpen=true;}
+  });
 
-const canvas=document.getElementById('canvas');
-const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+  // Canvas setup
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let painting=false, tool='pen', color='#000000', cursorType='default';
+  let undoStack=[], redoStack=[];
 
-let painting=false;
-let brushColor=document.getElementById('colorPicker').value;
-let brushSize=document.getElementById('brushSize').value;
-let undoStack=[];
+  function startPos(e){painting=true; draw(e);}
+  function endPos(){painting=false; ctx.beginPath(); saveState();}
+  function draw(e){
+    if(!painting) return;
+    ctx.lineWidth = (tool==='marker')?15:(tool==='neon')?8:5;
+    ctx.lineCap='round';
+    ctx.strokeStyle=color;
+    if(tool==='eraser'){ctx.strokeStyle='#fff'; ctx.lineWidth=20;}
+    ctx.lineTo(e.clientX-canvas.offsetLeft, e.clientY-canvas.offsetTop);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX-canvas.offsetLeft, e.clientY-canvas.offsetTop);
+  }
 
-function startPosition(e){painting=true; saveState(); draw(e);}
-function endPosition(){painting=false; ctx.beginPath();}
-function draw(e){
-  if(!painting) return;
-  ctx.lineWidth=brushSize;
-  ctx.lineCap='round';
-  ctx.strokeStyle=brushColor;
-  ctx.lineTo(e.clientX,e.clientY);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(e.clientX,e.clientY);
-}
+  canvas.addEventListener('mousedown',startPos);
+  canvas.addEventListener('mouseup',endPos);
+  canvas.addEventListener('mousemove',draw);
 
-canvas.addEventListener('mousedown',startPosition);
-canvas.addEventListener('mouseup',endPosition);
-canvas.addEventListener('mousemove',draw);
+  // Tool change
+  document.getElementById('tool').addEventListener('change', e=> tool=e.target.value);
+  document.getElementById('color').addEventListener('change', e=> color=e.target.value);
 
-document.getElementById('colorPicker').addEventListener('input',e=>{brushColor=e.target.value;});
-document.getElementById('brushSize').addEventListener('input',e=>{brushSize=e.target.value;});
-document.getElementById('cursorSelect').addEventListener('change',e=>{canvas.style.cursor=e.target.value;});
+  // Mouse cursor change
+  document.getElementById('cursor').addEventListener('change', e=>{
+    cursorType = e.target.value;
+    if(cursorType==='default') canvas.style.cursor='default';
+    else canvas.style.cursor=`url('${cursorType}.png'), auto`;
+  });
 
-document.getElementById('eraserBtn').addEventListener('click',()=>{brushColor='white';});
+  // Undo/Redo/Clear
+  function saveState(){undoStack.push(canvas.toDataURL()); redoStack=[];}
+  document.getElementById('undoBtn').addEventListener('click', ()=>{
+    if(undoStack.length>0){redoStack.push(canvas.toDataURL()); let img=new Image(); img.src=undoStack.pop(); img.onload=()=>ctx.drawImage(img,0,0);}
+  });
+  document.getElementById('redoBtn').addEventListener('click', ()=>{
+    if(redoStack.length>0){undoStack.push(canvas.toDataURL()); let img=new Image(); img.src=redoStack.pop(); img.onload=()=>ctx.drawImage(img,0,0);}
+  });
+  document.getElementById('clearBtn').addEventListener('click', ()=>{ctx.clearRect(0,0,canvas.width,canvas.height); saveState();});
+  document.getElementById('saveBtn').addEventListener('click', ()=>{
+    const link=document.createElement('a');
+    link.download='canvas.png';
+    link.href=canvas.toDataURL();
+    link.click();
+  });
 
-function saveState(){undoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height)); if(undoStack.length>50) undoStack.shift();}
-document.getElementById('undoBtn').addEventListener('click',()=>{if(undoStack.length>0){ctx.putImageData(undoStack.pop(),0,0);}});
-document.getElementById('clearBtn').addEventListener('click',()=>{ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='white'; ctx.fillRect(0,0,canvas.width,canvas.height); undoStack=[];});
-
-window.addEventListener('resize',()=>{
-  const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
-  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  ctx.putImageData(imgData,0,0);
-});
-
-ctx.fillStyle='white';
-ctx.fillRect(0,0,canvas.width,canvas.height);
+  // Başlangıç için state kaydet
+  saveState();
 </script>
 </body>
 </html>
+
 
 
 
