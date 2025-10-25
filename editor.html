@@ -3,139 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animasyonlu Çizim Editörü</title>
+<title>Gelişmiş Çizim Editörü</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body { margin:0; font-family:'Roboto',sans-serif; background:#f0f0f0; overflow:hidden; }
-  #toolbar {
-    position:fixed; top:0; left:0; width:100%; background:#333; padding:10px; display:flex; align-items:center;
-    gap:10px; z-index:1000; animation:fadeSlideDown 1s ease forwards;
-  }
-  @keyframes fadeSlideDown {from{opacity:0; transform:translateY(-50px);} to{opacity:1; transform:translateY(0);}}
-  .tool-btn {
-    background:#555; color:#fff; border:none; padding:10px 15px; border-radius:8px; cursor:pointer;
-    transition:0.3s; position:relative;
-  }
-  .tool-btn:hover { background:#777; transform:scale(1.05);}
-  #color-picker { width:40px; height:40px; border-radius:50%; border:none; cursor:pointer; }
-  #canvas-container { position:absolute; top:60px; left:0; right:0; bottom:0; display:flex; justify-content:center; align-items:center; }
-  canvas { background:#fff; border:2px solid #ccc; box-shadow:0 0 20px rgba(0,0,0,0.2); }
-  #text-options {
-    display:none; position:absolute; top:50px; left:50%; transform:translateX(-50%);
-    background:#222; color:#fff; padding:10px; border-radius:10px; z-index:1000; display:flex; gap:10px;
-    flex-wrap:wrap; animation:fadeIn 0.5s ease forwards;
-  }
-  @keyframes fadeIn {from{opacity:0;} to{opacity:1;}}
-  #text-options button, #text-options select { padding:5px 8px; border-radius:5px; border:none; cursor:pointer;}
-  .text-box { position:absolute; border:1px dashed #333; min-width:50px; min-height:30px; padding:5px; cursor:text;}
+body{margin:0;font-family:'Roboto',sans-serif;overflow:hidden;background:#f5f5f5}
+#toolbar{position:fixed;top:0;left:0;width:100%;background:#222;padding:10px;display:flex;flex-wrap:wrap;gap:10px;z-index:1000;animation:fadeDown 1s ease forwards}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-50px)}to{opacity:1;transform:translateY(0)}}
+.tool-btn{background:#555;color:#fff;border:none;padding:10px 15px;border-radius:10px;cursor:pointer;transition:0.3s;position:relative}
+.tool-btn:hover{background:#777;transform:scale(1.05)}
+#color-picker{width:40px;height:40px;border-radius:50%;border:none;cursor:pointer}
+#canvas-container{position:absolute;top:60px;left:0;right:0;bottom:0;display:flex;justify-content:center;align-items:center}
+canvas{background:#fff;border:2px solid #ccc;box-shadow:0 0 20px rgba(0,0,0,0.2)}
+#text-options{display:none;position:absolute;top:50px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px;border-radius:10px;z-index:1000;display:flex;gap:10px;flex-wrap:wrap;animation:fadeIn 0.5s ease forwards}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+#text-options button,#text-options select{padding:5px 8px;border-radius:5px;border:none;cursor:pointer}
+.text-box{position:absolute;border:1px dashed #333;min-width:50px;min-height:30px;padding:5px;cursor:text;background:rgba(255,255,255,0.8)}
 </style>
 </head>
 <body>
 
 <div id="toolbar">
-  <button class="tool-btn" id="draw-btn">Çiz</button>
-  <button class="tool-btn" id="erase-btn">Silgi</button>
-  <button class="tool-btn" id="text-btn">Metin Ekle</button>
-  <input type="color" id="color-picker" title="Renk Seç">
-  <button class="tool-btn" id="hamburger-cursor">🍔</button>
-  <button class="tool-btn" id="pizza-cursor">🍕</button>
+<button class="tool-btn" id="draw-btn">Çiz</button>
+<button class="tool-btn" id="erase-btn">Silgi</button>
+<button class="tool-btn" id="text-btn">Metin Ekle</button>
+<input type="color" id="color-picker" title="Renk Seç">
+<button class="tool-btn" id="hamburger-cursor">🍔</button>
+<button class="tool-btn" id="pizza-cursor">🍕</button>
+<!-- Ekstra özellikler -->
+<button class="tool-btn" id="circle-btn">Daire</button>
+<button class="tool-btn" id="rect-btn">Dikdörtgen</button>
+<button class="tool-btn" id="line-btn">Çizgi</button>
+<button class="tool-btn" id="fill-btn">Doldur</button>
+<button class="tool-btn" id="undo-btn">Geri Al</button>
+<button class="tool-btn" id="redo-btn">İleri Al</button>
+<button class="tool-btn" id="save-btn">Kaydet</button>
+<button class="tool-btn" id="load-btn">Yükle</button>
+<button class="tool-btn" id="grid-btn">Izgara</button>
+<button class="tool-btn" id="zoom-in-btn">Büyüt</button>
+<button class="tool-btn" id="zoom-out-btn">Küçült</button>
+<button class="tool-btn" id="flip-btn">Döndür</button>
+<button class="tool-btn" id="opacity-btn">Opaklık</button>
+<button class="tool-btn" id="shadow-btn">Gölge</button>
+<button class="tool-btn" id="pattern-btn">Desen</button>
+<button class="tool-btn" id="brush-size-btn">Fırça Boyutu</button>
+<button class="tool-btn" id="eraser-size-btn">Silgi Boyutu</button>
+<button class="tool-btn" id="gradient-btn">Gradyan</button>
+<button class="tool-btn" id="sticker-btn">Sticker</button>
+<button class="tool-btn" id="layer-btn">Katman</button>
+<button class="tool-btn" id="blur-btn">Bulanıklaştır</button>
+<button class="tool-btn" id="brightness-btn">Parlaklık</button>
+<button class="tool-btn" id="contrast-btn">Kontrast</button>
+<button class="tool-btn" id="saturation-btn">Doygunluk</button>
+<button class="tool-btn" id="text-align-btn">Hizala</button>
+<button class="tool-btn" id="import-btn">Resim Yükle</button>
+<button class="tool-btn" id="export-btn">Dışa Aktar</button>
+<button class="tool-btn" id="magic-btn">Sihirli</button>
+<button class="tool-btn" id="clone-btn">Klon</button>
+<button class="tool-btn" id="eraser-mode-btn">Silgi Modu</button>
+<button class="tool-btn" id="shadow-mode-btn">Gölge Modu</button>
+<button class="tool-btn" id="mirror-btn">Ayna</button>
+<button class="tool-btn" id="skew-btn">Eğim</button>
+<button class="tool-btn" id="rounded-btn">Yuvarlat</button>
+<button class="tool-btn" id="gradient-text-btn">Gradyan Metin</button>
+<button class="tool-btn" id="line-style-btn">Çizgi Stili</button>
+<button class="tool-btn" id="dot-btn">Nokta</button>
+<button class="tool-btn" id="sparkle-btn">Parıltı</button>
+<button class="tool-btn" id="noise-btn">Gürültü</button>
+<button class="tool-btn" id="texture-btn">Doku</button>
+<button class="tool-btn" id="blend-btn">Karıştır</button>
+<button class="tool-btn" id="shape-btn">Özel Şekil</button>
+<button class="tool-btn" id="tilt-btn">Eğim</button>
+<button class="tool-btn" id="rotate-btn">Döndür</button>
+<button class="tool-btn" id="flip-x-btn">X-Ayna</button>
+<button class="tool-btn" id="flip-y-btn">Y-Ayna</button>
+<button class="tool-btn" id="glow-btn">Parıltı</button>
+<button class="tool-btn" id="shadow-text-btn">Metin Gölge</button>
+<button class="tool-btn" id="border-btn">Kenarlık</button>
+<button class="tool-btn" id="pattern-fill-btn">Desen Doldur</button>
+<button class="tool-btn" id="gradient-fill-btn">Gradyan Doldur</button>
+<button class="tool-btn" id="eraser-soft-btn">Yumuşak Silgi</button>
+<button class="tool-btn" id="eraser-hard-btn">Sert Silgi</button>
+<button class="tool-btn" id="clone-layer-btn">Katman Kopya</button>
+<button class="tool-btn" id="merge-btn">Katman Birleştir</button>
+<button class="tool-btn" id="filter-btn">Filtreler</button>
+<button class="tool-btn" id="resize-btn">Boyutlandır</button>
+<button class="tool-btn" id="grid-size-btn">Izgara Boyutu</button>
+<button class="tool-btn" id="snap-btn">Yakala</button>
+<button class="tool-btn" id="help-btn">Yardım</button>
 </div>
 
 <div id="text-options">
-  <select id="font-select">
-    <option value="Roboto">Roboto</option>
-    <option value="Arial">Arial</option>
-    <option value="Courier New">Courier New</option>
-  </select>
-  <input type="color" id="text-color" title="Metin Rengi">
-  <button id="bold-btn">B</button>
-  <button id="italic-btn">I</button>
-  <button id="underline-btn">U</button>
+<select id="font-select">
+<option value="Roboto">Roboto</option>
+<option value="Arial">Arial</option>
+<option value="Courier New">Courier New</option>
+<option value="Times New Roman">Times New Roman</option>
+<option value="Verdana">Verdana</option>
+</select>
+<input type="color" id="text-color" title="Metin Rengi">
+<button id="bold-btn">B</button>
+<button id="italic-btn">I</button>
+<button id="underline-btn">U</button>
+<button id="strike-btn">S</button>
+<button id="shadow-btn">Gölge</button>
+<button id="highlight-btn">Vurgu</button>
 </div>
 
 <div id="canvas-container">
-  <canvas id="canvas" width="1200" height="700"></canvas>
+<canvas id="canvas" width="1200" height="700"></canvas>
 </div>
 
 <script>
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
+let drawing=false,currentTool='draw',brushColor='#000000',brushSize=5;
+let undoStack=[],redoStack=[];
+document.getElementById('hamburger-cursor').addEventListener('click',()=>{canvas.style.cursor='url(https://img.icons8.com/emoji/48/hamburger.png),auto'});
+document.getElementById('pizza-cursor').addEventListener('click',()=>{canvas.style.cursor='url(https://img.icons8.com/emoji/48/pizza.png),auto'});
+document.getElementById('color-picker').addEventListener('change',e=>brushColor=e.target.value);
+document.getElementById('draw-btn').addEventListener('click',()=>currentTool='draw');
+document.getElementById('erase-btn').addEventListener('click',()=>currentTool='erase');
+document.getElementById('text-btn').addEventListener('click',()=>{currentTool='text';document.getElementById('text-options').style.display='flex';});
+canvas.addEventListener('mousedown',e=>{if(currentTool==='draw'||currentTool==='erase')drawing=true;if(currentTool==='text')addTextBox(e.offsetX,e.offsetY)});
+canvas.addEventListener('mouseup',()=>drawing=false);
+canvas.addEventListener('mouseout',()=>drawing=false);
+canvas.addEventListener('mousemove',e=>{if(!drawing)return;if(currentTool==='draw'){ctx.fillStyle=brushColor;ctx.fillRect(e.offsetX-2,e.offsetY-2,brushSize,brushSize)}if(currentTool==='erase'){ctx.clearRect(e.offsetX-10,e.offsetY-10,20,20)}});
 
-let drawing = false;
-let currentTool = 'draw';
-let brushColor = '#000000';
-let brushSize = 5;
-
-// Mouse cursor değişimi
-document.getElementById('hamburger-cursor').addEventListener('click', () => {
-  canvas.style.cursor = 'url(https://img.icons8.com/emoji/48/hamburger.png), auto';
-});
-document.getElementById('pizza-cursor').addEventListener('click', () => {
-  canvas.style.cursor = 'url(https://img.icons8.com/emoji/48/pizza.png), auto';
-});
-
-// Renk seçimi
-document.getElementById('color-picker').addEventListener('change', (e) => {
-  brushColor = e.target.value;
-});
-
-// Araçlar
-document.getElementById('draw-btn').addEventListener('click', () => currentTool='draw');
-document.getElementById('erase-btn').addEventListener('click', () => currentTool='erase');
-document.getElementById('text-btn').addEventListener('click', () => {
-  currentTool='text';
-  document.getElementById('text-options').style.display='flex';
-});
-
-// Çizim işlemleri
-canvas.addEventListener('mousedown', (e) => {
-  if(currentTool==='draw' || currentTool==='erase') drawing = true;
-  if(currentTool==='text') addTextBox(e.offsetX, e.offsetY);
-});
-canvas.addEventListener('mouseup', () => drawing=false);
-canvas.addEventListener('mouseout', () => drawing=false);
-canvas.addEventListener('mousemove', (e) => {
-  if(!drawing) return;
-  if(currentTool==='draw'){
-    ctx.fillStyle = brushColor;
-    ctx.fillRect(e.offsetX-2, e.offsetY-2, brushSize, brushSize);
-  }
-  if(currentTool==='erase'){
-    ctx.clearRect(e.offsetX-10, e.offsetY-10, 20, 20);
-  }
-});
-
-// Metin kutusu ekleme
-function addTextBox(x, y){
-  const box = document.createElement('div');
-  box.className='text-box';
-  box.contentEditable=true;
-  box.style.left=x+'px';
-  box.style.top=y+'px';
-  box.style.color = document.getElementById('text-color').value || '#000';
-  box.style.fontFamily = document.getElementById('font-select').value;
-  document.body.appendChild(box);
-
-  box.addEventListener('keydown', (e)=>{
-    if(e.key==='Enter'){ e.preventDefault(); box.blur(); }
-  });
-
-  box.addEventListener('contextmenu', (e)=>{
-    e.preventDefault();
-    if(confirm('Bu metni silmek istiyor musunuz?')) box.remove();
-  });
+function addTextBox(x,y){
+const box=document.createElement('div');
+box.className='text-box';
+box.contentEditable=true;
+box.style.left=x+'px';
+box.style.top=y+'px';
+box.style.color=document.getElementById('text-color').value;
+box.style.fontFamily=document.getElementById('font-select').value;
+document.body.appendChild(box);
+box.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();box.blur()}});
+box.addEventListener('contextmenu',e=>{e.preventDefault();if(confirm('Silinsin mi?'))box.remove()});
 }
 
-// Metin seçenekleri
-document.getElementById('bold-btn').addEventListener('click', ()=>document.execCommand('bold'));
-document.getElementById('italic-btn').addEventListener('click', ()=>document.execCommand('italic'));
-document.getElementById('underline-btn').addEventListener('click', ()=>document.execCommand('underline'));
-document.getElementById('text-color').addEventListener('change', ()=>document.execCommand('foreColor', false, document.getElementById('text-color').value));
-document.getElementById('font-select').addEventListener('change', ()=>document.execCommand('fontName', false, document.getElementById('font-select').value));
+document.getElementById('bold-btn').addEventListener('click',()=>document.execCommand('bold'));
+document.getElementById('italic-btn').addEventListener('click',()=>document.execCommand('italic'));
+document.getElementById('underline-btn').addEventListener('click',()=>document.execCommand('underline'));
+document.getElementById('strike-btn').addEventListener('click',()=>document.execCommand('strikeThrough'));
+document.getElementById('text-color').addEventListener('change',()=>document.execCommand('foreColor',false,document.getElementById('text-color').value));
+document.getElementById('font-select').addEventListener('change',()=>document.execCommand('fontName',false,document.getElementById('font-select').value));
 </script>
 
 </body>
 </html>
+
 
 
 
