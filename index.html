@@ -200,8 +200,37 @@
   });
 </script>
 <style>
+  <!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Login Test</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+<h2>Google ile Giriş</h2>
+<div id="g_id_onload"
+     data-client_id="163465820187-506eeqppvr7ioj1cuak28tlbn508kuhb.apps.googleusercontent.com"
+     data-context="signin"
+     data-ux_mode="popup"
+     data-callback="handleCredentialResponse">
+</div>
+
+<div class="g_id_signin" data-type="standard"></div>
+
+<script>
+function handleCredentialResponse(response) {
+    console.log("Google JWT ID Token:", response.credential);
+    alert("Giriş başarılı! Konsolu kontrol et.");
+}
+</script>
+</body>
+</html>
+
 
   
+
 
 
 
