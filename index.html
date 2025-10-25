@@ -1,133 +1,73 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Özel Animasyonlu Giriş Paneli</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<style>
-  body {
-    margin:0; font-family:'Roboto',sans-serif; overflow:hidden;
-    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
-    background-size: 400% 400%;
-    animation: gradientBG 25s ease infinite;
-    height: 100vh; display:flex; justify-content:center; align-items:center;
-  }
-  @keyframes gradientBG {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-  }
-
-  .login-container {
-    position: relative;
-    background: rgba(0,0,0,0.4); 
-    backdrop-filter: blur(15px);
-    border-radius: 25px; 
-    padding: 50px 40px; 
-    box-shadow: 0 0 50px rgba(0,0,0,0.4);
-    width: 380px; 
-    text-align: center;
-    animation: fadeSlide 1.2s ease forwards;
-  }
-  @keyframes fadeSlide {from{opacity:0; transform:translateY(-60px);} to{opacity:1; transform:translateY(0);}}
-
-  .login-container h2 {color:#fff; margin-bottom:30px; letter-spacing:2px; font-size:2rem;}
-  .login-container input {
-    width:100%; padding:15px; margin:15px 0; border:none; border-radius:12px; outline:none; font-size:1rem;
-    background: rgba(255,255,255,0.15); color:#fff; transition:0.3s;
-  }
-  .login-container input:focus {
-    background: rgba(255,255,255,0.35);
-    box-shadow: 0 0 15px rgba(255,255,255,0.5);
-  }
-
-  .login-container button.login-btn {
-    width:100%; padding:15px; border:none; border-radius:12px; background:#ff6ec7; 
-    color:#fff; font-size:1rem; cursor:pointer; transition:0.3s; margin-top:10px;
-  }
-  .login-container button.login-btn:hover {background:#6e7dff; transform:scale(1.05);}
-
-  .social-login {
-    display:flex; justify-content:space-between; margin-top:20px;
-  }
-  .social-login button {
-    width:48%; border:none; border-radius:12px; padding:12px;
-    font-weight:bold; cursor:pointer; transition:0.3s;
-  }
-  .social-login button.google {background:#4285F4; color:#fff;}
-  .social-login button.github {background:#333; color:#fff;}
-  .social-login button:hover {transform:scale(1.05); opacity:0.9;}
-
-  .shape {
-    position:absolute; border-radius:50%; opacity:0.2; animation:float 12s infinite linear;
-  }
-  .shape:nth-child(1){width:100px;height:100px;background:#fff;top:10%;left:10%; animation-delay:0s;}
-  .shape:nth-child(2){width:60px;height:60px;background:#ff6ec7;top:30%;left:80%; animation-delay:2s;}
-  .shape:nth-child(3){width:120px;height:120px;background:#6effc7;top:70%;left:20%; animation-delay:4s;}
-  .shape:nth-child(4){width:50px;height:50px;background:#6e7dff;top:60%;left:70%; animation-delay:1s;}
-  .shape:nth-child(5){width:80px;height:80px;background:#ffde6e;top:40%;left:50%; animation-delay:3s;}
-  @keyframes float {
-    0%{transform:translateY(0px) rotate(0deg);}
-    50%{transform:translateY(-60px) rotate(180deg);}
-    100%{transform:translateY(0px) rotate(360deg);}
-  }
-
-  .alert {
-    position: fixed; top:20px; right:20px; padding:15px 20px;
-    background: rgba(0,0,0,0.7); color:#fff; border-radius:12px; font-weight:bold;
-    animation:slideAlert 0.5s ease forwards;
-  }
-  @keyframes slideAlert {from{opacity:0; transform:translateY(-20px);} to{opacity:1; transform:translateY(0);}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animasyonlu Giriş/Kayıt</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-<div class="shape"></div>
-<div class="shape"></div>
-<div class="shape"></div>
-<div class="shape"></div>
-<div class="shape"></div>
+    <div class="main-container" id="mainContainer">
+        
+        <div class="form-wrapper active" id="loginFormWrapper">
+            <h2>Giriş Yap</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="login-username" required>
+                    <label for="login-username">Kullanıcı Adı</label>
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" required>
+                    <label for="login-password">Şifre</label>
+                    <i class="fas fa-lock"></i>
+                </div>
+                
+                <button type="submit" class="auth-button login-button">GİRİŞ YAP</button>
 
-<div class="login-container">
-  <h2>Giriş Yap</h2>
-  <input type="text" placeholder="Kullanıcı Adı">
-  <input type="password" placeholder="Şifre">
-  <button class="login-btn">Giriş</button>
+                <div class="links">
+                    <a href="#">Şifremi Unuttum</a>
+                    <a href="#" id="showRegister">Hesap Oluştur</a>
+                </div>
+            </form>
+        </div>
 
-  <div class="social-login">
-    <!-- Google Sign-In -->
-    <div id="g_id_onload"
-         data-client_id="163465820187-506eeqppvr7ioj1cuak28tlbn508kuhb.apps.googleusercontent.com"
-         data-context="signin"
-         data-ux_mode="popup"
-         data-callback="handleCredentialResponse">
+        <div class="form-wrapper" id="registerFormWrapper">
+            <h2>Kayıt Ol</h2>
+            <form id="registerForm">
+                <div class="input-group">
+                    <input type="text" id="register-name" required>
+                    <label for="register-name">Adınız ve Soyadınız</label>
+                    <i class="fas fa-id-badge"></i>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="register-email" required>
+                    <label for="register-email">E-posta (Gmail)</label>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="register-password" required>
+                    <label for="register-password">Şifre Oluştur</label>
+                    <i class="fas fa-lock"></i>
+                </div>
+                
+                <button type="submit" class="auth-button register-button">KAYDOL</button>
+
+                <div class="links">
+                    <a href="#" id="showLogin">Zaten Hesabım Var</a>
+                </div>
+            </form>
+        </div>
+
     </div>
-    <div class="g_id_signin" data-type="standard"></div>
 
-    <button class="github" id="githubBtn">GitHub</button>
-  </div>
-</div>
-
-<script>
-function handleCredentialResponse(response) {
-    console.log("Google JWT ID Token:", response.credential);
-    // Giriş başarılı → kullanıcıyı boş sayfaya yönlendir
-    window.location.href = 'proje.html';
-}
-
-// GitHub yönlendirme
-document.getElementById("githubBtn").addEventListener("click", function(){
-    const client_id = "YOUR_GITHUB_CLIENT_ID"; 
-    const redirect_uri = "https://yourdomain.com/github-callback"; 
-    const githubURL = `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=user`;
-    window.location.href = githubURL;
-});
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
+
+
 
 
 
