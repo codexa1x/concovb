@@ -17,6 +17,7 @@
     background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
     background-size: 400% 400%;
     animation: gradientBG 25s ease infinite;
+    flex-direction: column;
   }
 
   @keyframes gradientBG {
@@ -29,12 +30,31 @@
     font-size: 4rem;
     color: #fff;
     text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin-bottom: 50px;
     animation: floatText 3s ease-in-out infinite alternate;
   }
 
   @keyframes floatText {
     0% { transform: translateY(0px); }
-    100% { transform: translateY(-30px); }
+    100% { transform: translateY(-20px); }
+  }
+
+  button {
+    padding: 20px 50px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    background: #ff6ec7;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    transition: transform 0.3s, background 0.3s;
+  }
+
+  button:hover {
+    background: #6e7dff;
+    transform: scale(1.1);
   }
 
   /* Floating shapes */
@@ -49,7 +69,6 @@
   .shape:nth-child(3){width:120px;height:120px;background:#6effc7;top:70%;left:20%; animation-delay:4s;}
   .shape:nth-child(4){width:50px;height:50px;background:#6e7dff;top:60%;left:70%; animation-delay:1s;}
   .shape:nth-child(5){width:80px;height:80px;background:#ffde6e;top:40%;left:50%; animation-delay:3s;}
-
   @keyframes floatShape {
     0% { transform: translateY(0px) rotate(0deg);}
     50% { transform: translateY(-60px) rotate(180deg);}
@@ -67,7 +86,10 @@
 <div class="shape"></div>
 
 <h1>Proje Oluştur</h1>
+<button onclick="window.location.href='editor.html'">Proje Oluştur</button>
 
 </body>
 </html>
+
+
 
