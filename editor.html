@@ -318,6 +318,67 @@ themes.forEach(theme=>{
 
 sidebar.appendChild(themeContainer);
 </script>
+// Metin ekleme ve sürükleme
+canvas.addEventListener('click', (e)=>{
+  if(addTextMode){
+    const box = document.createElement('div');
+    box.className = 'text-box';
+    box.style.left = e.offsetX + 'px';
+    box.style.top = e.offsetY + 'px';
+    box.contentEditable = true;
+    box.innerHTML = 'Yeni Metin';
+    document.querySelector('.canvas-container').appendChild(box);
+    box.focus();
+
+    // Metin sürükleme
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    box.addEventListener('mousedown', (ev)=>{
+      isDragging = true;
+      offsetX = ev.offsetX;
+      offsetY = ev.offsetY;
+      box.style.cursor = 'move';
+    });
+
+    document.addEventListener('mousemove', (ev)=>{
+      if(isDragging){
+        box.style.left = (ev.clientX - canvas.getBoundingClientRect().left - offsetX) + 'px';
+        box.style.top = (ev.clientY - canvas.getBoundingClientRect().top - offsetY) + 'px';
+      }
+    });
+
+    document.addEventListener('mouseup', ()=>{
+      isDragging = false;
+      box.style.cursor = 'text';
+    });
+  }
+});
+// Sağ tık ile silme
+document.querySelector('.canvas-container').addEventListener('contextmenu', (e)=>{
+  e.preventDefault();
+  if(e.target.classList.contains('text-box')){
+    const confirmDiv = document.createElement('div');
+    confirmDiv.style.position = 'absolute';
+    confirmDiv.style.left = e.pageX + 'px';
+    confirmDiv.style.top = e.pageY + 'px';
+    confirmDiv.style.padding = '5px 10px';
+    confirmDiv.style.background = 'rgba(0,0,0,0.8)';
+    confirmDiv.style.color = '#fff';
+    confirmDiv.style.borderRadius = '8px';
+    confirmDiv.style.cursor = 'pointer';
+    confirmDiv.textContent = '🗑 Sil';
+    document.body.appendChild(confirmDiv);
+
+    confirmDiv.addEventListener('click', ()=>{
+      e.target.remove();
+      confirmDiv.textContent = 'Başarıyla silindi';
+      setTimeout(()=> confirmDiv.remove(), 2000);
+    });
+  }
+});
+
+
 
 
 
