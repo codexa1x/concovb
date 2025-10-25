@@ -3,125 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editor</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>Proje Oluştur</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
 <style>
-  body, html {
-    margin:0; padding:0; height:100%; font-family:'Roboto', sans-serif; overflow:hidden;
-    display:flex; background:#f0f0f0;
+  body {
+    margin:0;
+    padding:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fff;
+    overflow:hidden;
+    font-family: 'Roboto', sans-serif;
   }
-  /* Sol panel */
-  .sidebar {
-    width:250px; background:#1f1f1f; color:#fff; display:flex; flex-direction:column; padding:15px;
-    box-shadow:2px 0 10px rgba(0,0,0,0.3); animation: slideIn 1s ease forwards;
+
+  h1 {
+    font-size:3rem;
+    font-weight:700;
+    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: animateText 5s ease infinite;
+    text-align:center;
   }
-  @keyframes slideIn { from{transform:translateX(-100%);} to{transform:translateX(0);} }
-  .sidebar h2 { margin:10px 0; text-align:center; }
-  .btn { padding:10px; margin:5px 0; border:none; border-radius:10px; cursor:pointer; transition:0.3s; font-weight:bold; }
-  .btn:hover { transform:scale(1.05); box-shadow:0 0 15px rgba(255,255,255,0.4); }
 
-  .btn-text { background:#ff6ec7; color:#fff; }
-  .btn-eraser { background:#6e7dff; color:#fff; }
-  .btn-theme { background:#6effc7; color:#000; }
-  .btn-mouse { background:#ffde6e; color:#000; }
+  @keyframes animateText {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
 
-  /* Tahta */
-  .canvas-container { flex:1; position:relative; background:#fff; margin:20px; border-radius:15px; box-shadow:0 0 20px rgba(0,0,0,0.2); overflow:hidden; }
-  canvas { width:100%; height:100%; display:block; cursor:crosshair; }
+  /* Floating shapes */
+  .shape {
+    position:absolute;
+    border-radius:50%;
+    opacity:0.3;
+    animation: float 12s infinite linear;
+  }
+  .shape:nth-child(1){width:100px;height:100px;background:#ff6ec7;top:10%;left:15%;animation-delay:0s;}
+  .shape:nth-child(2){width:60px;height:60px;background:#6e7dff;top:40%;left:80%;animation-delay:2s;}
+  .shape:nth-child(3){width:120px;height:120px;background:#6effc7;top:70%;left:30%;animation-delay:4s;}
+  .shape:nth-child(4){width:50px;height:50px;background:#ffde6e;top:60%;left:60%;animation-delay:1s;}
+  .shape:nth-child(5){width:80px;height:80px;background:#ff6ec7;top:25%;left:50%;animation-delay:3s;}
 
-  /* Metin kutusu */
-  .text-box { position:absolute; min-width:50px; min-height:30px; padding:5px; border:1px dashed #333; cursor:text; background:rgba(255,255,255,0.8); }
-  .text-box p { margin:0; }
-
-  /* Tema seçenekleri */
-  .theme-options { display:flex; flex-wrap:wrap; margin-top:10px; }
-  .theme-color { width:30px; height:30px; border-radius:50%; margin:5px; cursor:pointer; border:2px solid #fff; transition:0.3s; }
-  .theme-color:hover { transform:scale(1.2); }
-
-  /* Mouse imleçleri */
-  .cursor-hamburger { cursor:url('https://i.imgur.com/KbR3nPp.png'), auto; }
-  .cursor-pizza { cursor:url('https://i.imgur.com/NMlRZL0.png'), auto; }
+  @keyframes float {
+    0%{transform:translateY(0px) rotate(0deg);}
+    50%{transform:translateY(-60px) rotate(180deg);}
+    100%{transform:translateY(0px) rotate(360deg);}
+  }
 
 </style>
 </head>
 <body>
 
-<div class="sidebar">
-  <h2>Araçlar</h2>
-  <button class="btn btn-text" id="addTextBtn">Metin Ekle</button>
-  <button class="btn btn-eraser" id="eraserBtn">Silgi</button>
-  <button class="btn btn-theme" id="themeBtn">Tema</button>
-  <button class="btn btn-mouse" id="mouseBtn">Mouse</button>
+<!-- Floating shapes -->
+<div class="shape"></div>
+<div class="shape"></div>
+<div class="shape"></div>
+<div class="shape"></div>
+<div class="shape"></div>
 
-  <div class="theme-options" id="themeOptions" style="display:none;">
-    <div class="theme-color" style="background:#ffffff;"></div>
-    <div class="theme-color" style="background:#ff6ec7;"></div>
-    <div class="theme-color" style="background:#6e7dff;"></div>
-    <div class="theme-color" style="background:#6effc7;"></div>
-    <div class="theme-color" style="background:#ffde6e;"></div>
-  </div>
-</div>
-
-<div class="canvas-container">
-  <canvas id="canvas"></canvas>
-</div>
-
-<script>
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
-
-// Temalar
-const themeOptions = document.getElementById('themeOptions');
-document.getElementById('themeBtn').addEventListener('click', ()=>{
-  themeOptions.style.display = themeOptions.style.display==='none' ? 'flex' : 'none';
-});
-document.querySelectorAll('.theme-color').forEach(el=>{
-  el.addEventListener('click', ()=> {
-    document.querySelector('.canvas-container').style.background = el.style.background;
-  });
-});
-
-// Mouse değişimi
-const canvasContainer = document.querySelector('.canvas-container');
-document.getElementById('mouseBtn').addEventListener('click', ()=>{
-  canvasContainer.classList.toggle('cursor-hamburger');
-  canvasContainer.classList.remove('cursor-pizza');
-});
-
-// Metin ekleme
-let addTextMode = false;
-document.getElementById('addTextBtn').addEventListener('click', ()=>{
-  addTextMode = !addTextMode;
-});
-canvas.addEventListener('click', (e)=>{
-  if(addTextMode){
-    const box = document.createElement('div');
-    box.className = 'text-box';
-    box.style.left = e.offsetX+'px';
-    box.style.top = e.offsetY+'px';
-    box.contentEditable = true;
-    box.innerHTML = 'Yeni Metin';
-    document.querySelector('.canvas-container').appendChild(box);
-    box.focus();
-  }
-});
-
-// Silgi
-let eraserMode = false;
-document.getElementById('eraserBtn').addEventListener('click', ()=> {
-  eraserMode = !eraserMode;
-});
-canvas.addEventListener('mousemove', (e)=>{
-  if(eraserMode && e.buttons){
-    ctx.clearRect(e.offsetX-10,e.offsetY-10,20,20);
-  }
-});
-</script>
+<h1>Proje Oluştur</h1>
 
 </body>
 </html>
+
+
 
 
 
