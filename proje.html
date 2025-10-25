@@ -4,62 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proje Sayfası</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
   body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
+    overflow: hidden;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(270deg, #ff6ec7, #6e7dff, #6effc7);
-    background-size: 600% 600%;
-    animation: gradientBG 20s ease infinite;
-    overflow: hidden;
+    background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
+    background-size: 400% 400%;
+    animation: gradientBG 25s ease infinite;
   }
 
   @keyframes gradientBG {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
   }
 
   h1 {
     font-size: 4rem;
-    color: white;
-    text-shadow: 0 0 20px rgba(0,0,0,0.4);
-    animation: floatText 3s ease-in-out infinite;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    animation: floatText 3s ease-in-out infinite alternate;
   }
 
   @keyframes floatText {
     0% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-    100% { transform: translateY(0px); }
+    100% { transform: translateY(-30px); }
   }
 
   /* Floating shapes */
   .shape {
     position: absolute;
     border-radius: 50%;
-    opacity: 0.3;
-    animation: float 10s infinite;
+    opacity: 0.2;
+    animation: floatShape 15s infinite linear;
   }
-  .shape:nth-child(1){width:80px;height:80px;background:#fff;top:10%;left:5%;animation-delay:0s;}
-  .shape:nth-child(2){width:50px;height:50px;background:#ff6ec7;top:20%;left:80%;animation-delay:2s;}
-  .shape:nth-child(3){width:100px;height:100px;background:#6effc7;top:70%;left:20%;animation-delay:4s;}
-  .shape:nth-child(4){width:40px;height:40px;background:#6e7dff;top:60%;left:70%;animation-delay:1s;}
+  .shape:nth-child(1){width:100px;height:100px;background:#fff;top:10%;left:5%; animation-delay:0s;}
+  .shape:nth-child(2){width:60px;height:60px;background:#ff6ec7;top:30%;left:80%; animation-delay:2s;}
+  .shape:nth-child(3){width:120px;height:120px;background:#6effc7;top:70%;left:20%; animation-delay:4s;}
+  .shape:nth-child(4){width:50px;height:50px;background:#6e7dff;top:60%;left:70%; animation-delay:1s;}
+  .shape:nth-child(5){width:80px;height:80px;background:#ffde6e;top:40%;left:50%; animation-delay:3s;}
 
-  @keyframes float {
-    0%{transform: translateY(0px) rotate(0deg);}
-    50%{transform: translateY(-50px) rotate(180deg);}
-    100%{transform: translateY(0px) rotate(360deg);}
+  @keyframes floatShape {
+    0% { transform: translateY(0px) rotate(0deg);}
+    50% { transform: translateY(-60px) rotate(180deg);}
+    100% { transform: translateY(0px) rotate(360deg);}
   }
 </style>
 </head>
 <body>
 
+<!-- Floating shapes -->
+<div class="shape"></div>
 <div class="shape"></div>
 <div class="shape"></div>
 <div class="shape"></div>
@@ -69,3 +70,4 @@
 
 </body>
 </html>
+
