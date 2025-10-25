@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gelişmiş Çizim Editörü</title>
+<title>Animasyonlu Gelişmiş Editör</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
 body{margin:0;font-family:'Roboto',sans-serif;background:#f0f0f0;overflow:hidden;}
@@ -14,9 +14,13 @@ body{margin:0;font-family:'Roboto',sans-serif;background:#f0f0f0;overflow:hidden
 .tool-card button:hover{background:#6e7dff;}
 #canvas-container{position:absolute;left:200px;top:0;right:0;bottom:0;display:flex;justify-content:center;align-items:center;}
 canvas{background:#fff;border:2px solid #ccc;}
-#text-options{position:absolute;top:10px;left:220px;background:#222;color:#fff;padding:10px;border-radius:10px;display:flex;gap:5px;flex-wrap:wrap;display:none;}
-.text-box{position:absolute;border:1px dashed #333;min-width:50px;min-height:30px;padding:5px;cursor:text;background:rgba(255,255,255,0.8);}
+.text-box{position:absolute;border:1px dashed #333;min-width:50px;min-height:30px;padding:5px;cursor:text;background:rgba(255,255,255,0.8);transition:0.3s;}
 #delete-confirm{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#222;color:#fff;padding:10px 20px;border-radius:10px;display:none;z-index:2000;}
+#text-menu{position:absolute;background:#333;color:#fff;padding:10px;border-radius:10px;display:none;flex-direction:column;gap:5px;animation:fadeIn 0.3s;}
+#text-menu button{background:#555;color:#fff;border:none;padding:5px;border-radius:5px;cursor:pointer;transition:0.3s;}
+#text-menu button:hover{background:#6e7dff;}
+#text-menu input[type=color]{cursor:pointer;}
+@keyframes fadeIn{0%{opacity:0;transform:scale(0.8);}100%{opacity:1;transform:scale(1);}}
 </style>
 </head>
 <body>
@@ -29,45 +33,33 @@ canvas{background:#fff;border:2px solid #ccc;}
 <div class="tool-card" draggable="true" id="pizza-cursor"><span>🍕 Pizza</span><button>Seç</button></div>
 </div>
 
-<div id="text-options">
-<select id="font-select">
-<option value="Roboto">Roboto</option>
-<option value="Arial">Arial</option>
-<option value="Courier New">Courier</option>
-</select>
-<input type="color" id="text-color">
-<button id="bold-btn">B</button>
-<button id="italic-btn">I</button>
-</div>
-
 <div id="canvas-container">
 <canvas id="canvas" width="1200" height="700"></canvas>
 </div>
 
 <div id="delete-confirm">✅ Başarıyla silindi</div>
 
+<div id="text-menu">
+<button id="bold-btn">Kalın</button>
+<button id="italic-btn">İtalik</button>
+<button id="underline-btn">Altı Çizili</button>
+<select id="font-select">
+<option value="Roboto">Roboto</option>
+<option value="Arial">Arial</option>
+<option value="Courier New">Courier</option>
+</select>
+<input type="color" id="text-color">
+</div>
+
 <script>
 const canvas=document.getElementById('canvas');
 const ctx=canvas.getContext('2d');
 let drawing=false,currentTool='draw',brushColor='#000',brushSize=5;
 
-// Sürükle bırak sidebar araçları
-const tools=document.querySelectorAll('.tool-card');
-tools.forEach(tool=>{
-tool.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',tool.id);});
-});
-document.getElementById('sidebar').addEventListener('dragover',e=>e.preventDefault());
-document.getElementById('sidebar').addEventListener('drop',e=>{
-e.preventDefault();
-const id=e.dataTransfer.getData('text/plain');
-const dragged=document.getElementById(id);
-document.getElementById('sidebar').appendChild(dragged);
-});
-
 // Araç seçim
 document.getElementById('draw-tool').querySelector('button').addEventListener('click',()=>currentTool='draw');
 document.getElementById('erase-tool').querySelector('button').addEventListener('click',()=>currentTool='erase');
-document.getElementById('text-tool').querySelector('button').addEventListener('click',()=>{currentTool='text';document.getElementById('text-options').style.display='flex';});
+document.getElementById('text-tool').querySelector('button').addEventListener('click',()=>currentTool='text');
 document.getElementById('hamburger-cursor').querySelector('button').addEventListener('click',()=>{canvas.style.cursor='url(https://img.icons8.com/emoji/48/hamburger.png),auto';});
 document.getElementById('pizza-cursor').querySelector('button').addEventListener('click',()=>{canvas.style.cursor='url(https://img.icons8.com/emoji/48/pizza.png),auto';});
 
@@ -90,43 +82,56 @@ box.className='text-box';
 box.contentEditable=true;
 box.style.left=x+'px';
 box.style.top=y+'px';
-box.style.color=document.getElementById('text-color').value;
-box.style.fontFamily=document.getElementById('font-select').value;
+box.style.color='#000';
+box.style.fontFamily='Roboto';
 document.body.appendChild(box);
-box.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();box.blur();}});
+box.focus();
+
+// Sağ tık menüsü
 box.addEventListener('contextmenu',e=>{
 e.preventDefault();
-const menu=document.createElement('div');
-menu.style.position='absolute';
+const menu=document.getElementById('text-menu');
 menu.style.left=e.pageX+'px';
 menu.style.top=e.pageY+'px';
-menu.style.background='#333';
-menu.style.color='#fff';
-menu.style.padding='5px 10px';
-menu.style.borderRadius='5px';
-menu.style.cursor='pointer';
-menu.innerHTML='🗑 Sil';
-document.body.appendChild(menu);
-menu.addEventListener('click',()=>{
-box.remove();
-menu.remove();
-const conf=document.getElementById('delete-confirm');
-conf.style.display='block';
-setTimeout(()=>{conf.style.display='none';},2000);
+menu.style.display='flex';
+
+function applyStyle(){
+box.style.fontWeight=document.getElementById('bold-btn').style.fontWeight==='bold'?'normal':'bold';
+box.style.fontStyle=document.getElementById('italic-btn').style.fontStyle==='italic'?'normal':'italic';
+box.style.textDecoration=document.getElementById('underline-btn').style.textDecoration==='underline'?'none':'underline';
+box.style.fontFamily=document.getElementById('font-select').value;
+box.style.color=document.getElementById('text-color').value;
+}
+menu.querySelectorAll('button,select,input').forEach(el=>{
+el.onchange=applyStyle;
+el.onclick=applyStyle;
 });
-document.addEventListener('click',()=>{menu.remove();},{once:true});
+
+document.addEventListener('click',function hideMenu(e){
+if(!menu.contains(e.target)){menu.style.display='none';document.removeEventListener('click',hideMenu);}
+});
 });
 }
 
-// Metin seçenekleri
-document.getElementById('bold-btn').addEventListener('click',()=>document.execCommand('bold'));
-document.getElementById('italic-btn').addEventListener('click',()=>document.execCommand('italic'));
-document.getElementById('font-select').addEventListener('change',()=>document.execCommand('fontName',false,document.getElementById('font-select').value));
-document.getElementById('text-color').addEventListener('change',()=>document.execCommand('foreColor',false,document.getElementById('text-color').value));
-</script>
+// Metin seçenekleri animasyon
+document.getElementById('bold-btn').addEventListener('click',()=>{document.execCommand('bold');});
+document.getElementById('italic-btn').addEventListener('click',()=>{document.execCommand('italic');});
+document.getElementById('underline-btn').addEventListener('click',()=>{document.execCommand('underline');});
+document.getElementById('font-select').addEventListener('change',()=>{document.execCommand('fontName',false,document.getElementById('font-select').value);});
+document.getElementById('text-color').addEventListener('change',()=>{document.execCommand('foreColor',false,document.getElementById('text-color').value);});
 
+// Sağ tıkla silme
+document.body.addEventListener('contextmenu',e=>{
+if(e.target.classList.contains('text-box')){
+e.preventDefault();
+}
+});
+
+</script>
 </body>
 </html>
+
+
 
 
 
