@@ -18,18 +18,26 @@
     font-family: 'Roboto', sans-serif;
   }
 
-  h1 {
+  .button {
     font-size:3rem;
     font-weight:700;
+    padding:30px 60px;
+    border-radius:30px;
+    border:none;
+    cursor:pointer;
     background: linear-gradient(45deg, #ff6ec7, #6e7dff, #6effc7, #ffde6e);
     background-size: 400% 400%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: animateText 5s ease infinite;
-    text-align:center;
+    color:#fff;
+    animation: animateGradient 5s ease infinite;
+    transition: transform 0.3s, box-shadow 0.3s;
   }
 
-  @keyframes animateText {
+  .button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+  }
+
+  @keyframes animateGradient {
     0%{background-position:0% 50%;}
     50%{background-position:100% 50%;}
     100%{background-position:0% 50%;}
@@ -65,10 +73,11 @@
 <div class="shape"></div>
 <div class="shape"></div>
 
-<h1>Proje Oluştur</h1>
+<button class="button" onclick="location.href='editor.html'">Proje Oluştur</button>
 
 </body>
 </html>
+
 
 
 
