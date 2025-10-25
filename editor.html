@@ -216,6 +216,54 @@ canvas.addEventListener('contextmenu', e=>{
 
 </body>
 </html>
+<!-- Silgi Seçenekleri Paneli -->
+<div id="eraserPanel" style="
+    position:absolute; top:80px; left:340px; background:rgba(0,0,0,0.8); 
+    padding:10px; border-radius:10px; display:none; z-index:1000;
+    transition:0.3s;">
+  <button class="eraserBtn" data-size="5">Küçük</button>
+  <button class="eraserBtn" data-size="15">Orta</button>
+  <button class="eraserBtn" data-size="30">Büyük</button>
+</div>
+
+<script>
+// Silgi paneli ve butonları
+const eraserPanel = document.getElementById('eraserPanel');
+const eraserBtns = document.querySelectorAll('.eraserBtn');
+
+eraserBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    eraserBtns.forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    lineWidth = parseInt(btn.dataset.size);
+  });
+});
+
+// Silgi aracı seçildiğinde paneli aç/kapat
+toolBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    if(btn.dataset.tool==='silgi'){
+      eraserPanel.style.display='block';
+      // animasyon ekleyelim
+      eraserPanel.style.transform='scale(0)';
+      setTimeout(()=>{ eraserPanel.style.transform='scale(1)'; }, 10);
+    } else {
+      eraserPanel.style.display='none';
+    }
+  });
+});
+</script>
+
+<style>
+.eraserBtn{
+  margin:5px; padding:10px; border:none; border-radius:8px;
+  background:#ff6ec7; color:#fff; cursor:pointer; transition:0.3s;
+}
+.eraserBtn:hover{transform:scale(1.1);}
+.eraserBtn.selected{background:#6e7dff; box-shadow:0 0 10px #fff;}
+</style>
+
+
 
 
 
