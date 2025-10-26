@@ -3,73 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kayıt Ol / Giriş Yap Formu</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Yapay Zeka Sohbet Arayüzü (Temalı)</title>
+    
+    <style>
+        /* CSS Başlangıcı - Genel Stil */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.5s ease; /* Tema geçişi için animasyon */
+        }
+
+        #chat-container {
+            width: 90%;
+            max-width: 500px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 15px; /* Daha şekilli bir köşe */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 80vh; 
+            transition: box-shadow 0.3s ease;
+        }
+
+        #chat-display {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #e5ddd5;
+            /* Hafif animasyonlu scrollbar */
+            scroll-behavior: smooth;
+        }
+
+        /* Mesaj Balonu Temeli */
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 75%;
+            line-height: 1.5;
+            opacity: 0; /* Başlangıçta gizle */
+            transform: translateY(20px); /* Aşağıdan başla */
+            animation: message-fade-in 0.4s ease-out forwards; /* Mesaj animasyonu */
+        }
+
+        /* Yeni mesajlar için animasyon anahtarları */
+        @keyframes message-fade-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-message {
+            background-color: #34b7f1; /* Mavi ton */
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px; /* Ok şekli efekti */
+        }
+
+        .ai-message {
+            background-color: #ffffff;
+            border: 1px solid #eee;
+            margin-right: auto;
+            border-bottom-left-radius: 5px; /* Ok şekli efekti */
+        }
+        
+        /* Tema Seçenekleri Alanı */
+        #theme-selector {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .theme-btn {
+            padding: 8px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .theme-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Giriş Alanı ve Düğme */
+        #input-area {
+            display: flex;
+            border-top: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        #user-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 25px; /* Yuvarlak input */
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        #send-button {
+            background-color: #128c7e; /* Yeşil ton */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px; /* Yuvarlak düğme */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s;
+        }
+
+        #send-button:active {
+            transform: scale(0.95); /* Tıklama animasyonu */
+        }
+
+        /* Tema CSS Sınıfları */
+
+        /* 1. Gece Mavisi Tema */
+        .theme-dark .user-message { background-color: #5b54fa; }
+        .theme-dark .ai-message { background-color: #2c2f33; color: white; border: none; }
+        .theme-dark #chat-display { background-color: #1e2124; }
+        .theme-dark body { background-color: #121212; }
+        .theme-dark #chat-container { background-color: #2c2f33; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); }
+
+        /* 2. Ateş Kırmızısı Tema */
+        .theme-fire .user-message { background-color: #ff5722; }
+        .theme-fire .ai-message { background-color: #fff9f9; }
+        .theme-fire #chat-display { background-color: #ffe0b2; }
+        .theme-fire body { background-color: #ffccbc; }
+        
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-card" id="formCard">
-            
-            <div class="form-header">
-                <button id="loginTab" class="tab-button">Giriş Yap</button>
-                <button id="signupTab" class="tab-button active">Kayıt Ol</button>
-            </div>
 
-            <div class="form-carousel" id="formCarousel">
-                
-                <div class="form-panel signup-panel">
-                    <h1>Sign Up</h1>
-                    <form action="#" method="POST">
-                        <input type="email" placeholder="e-mail" required>
-                        <input type="password" placeholder="password" required>
-                        <input type="password" placeholder="repeat password" required>
+    <div id="chat-container">
+        
+        <div id="theme-selector">
+            <button class="theme-btn" id="default-theme" style="background-color: #dcf8c6;">Standart</button>
+            <button class="theme-btn" id="dark-theme" style="background-color: #2c2f33; color: white;">Gece Mavisi</button>
+            <button class="theme-btn" id="fire-theme" style="background-color: #ff5722; color: white;">Ateş Kırmızısı</button>
+        </div>
 
-                        <div class="remember-me">
-                            <input type="checkbox" id="remember-signup">
-                            <label for="remember-signup">Remember me</label>
-                        </div>
-
-                        <div class="social-login-text">
-                            Sign up with social account
-                        </div>
-                        <div class="social-icons">
-                            <div class="social-icon google"></div>
-                            <div class="social-icon facebook"></div>
-                            <div class="social-icon twitter"></div>
-                        </div>
-
-                        <button type="submit" class="signup-button">Sign up</button>
-                    </form>
-                    
-                    <div class="footer-text">
-                        Read User License Agreement
-                    </div>
-                </div>
-
-                <div class="form-panel login-panel">
-                    <h1>Log In</h1>
-                    <form action="#" method="POST">
-                        <input type="email" placeholder="e-mail" required>
-                        <input type="password" placeholder="password" required>
-
-                        <div class="remember-me">
-                            <input type="checkbox" id="remember-login">
-                            <label for="remember-login">Remember me</label>
-                        </div>
-
-                        <button type="submit" class="signup-button">Log In</button>
-                    </form>
-
-                    <p class="forgot-password">Şifremi Unuttum?</p>
-                </div>
-                
+        <div id="chat-display">
+            <div class="message ai-message">
+                Merhaba! Temanızı seçebilir ve benimle sohbete başlayabilirsiniz.
             </div>
         </div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="Bir mesaj yazın...">
+            <button id="send-button">Gönder</button>
+        </div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script>
+        // JavaScript Başlangıcı
+        
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const chatDisplay = document.getElementById('chat-display');
+        const chatContainer = document.getElementById('chat-container');
+        const body = document.body; // Tema için body etiketini de hedef alıyoruz
+        
+        // --- TEMA YÖNETİMİ ---
+
+        document.getElementById('default-theme').addEventListener('click', () => applyTheme(''));
+        document.getElementById('dark-theme').addEventListener('click', () => applyTheme('theme-dark'));
+        document.getElementById('fire-theme').addEventListener('click', () => applyTheme('theme-fire'));
+
+        function applyTheme(themeClass) {
+            // Body'den eski temaları kaldır, yenisini ekle
+            body.classList.remove('theme-dark', 'theme-fire'); 
+            if (themeClass) {
+                body.classList.add(themeClass);
+            }
+        }
+        
+        // --- CHATBOT MANTIĞI (Önceki Koddan) ---
+
+        function aiCevapVer(girdi) {
+            const girdiKucuk = girdi.toLowerCase();
+            
+            if (girdiKucuk.includes("merhaba") || girdiKucuk.includes("selam")) {
+                return "Selam! Temanızı beğendiniz mi? Size nasıl yardımcı olabilirim?";
+            } else if (girdiKucuk.includes("tema") || girdiKucuk.includes("renk")) {
+                return "Yeni temalar ekledim! Yukarıdaki butonlardan farklı stiller deneyebilirsiniz.";
+            } else if (girdiKucuk.includes("animasyon")) {
+                return "Yeni mesajlar aşağıdan yukarıya doğru hafif bir animasyonla ekleniyor. Küçük detaylar önemlidir!";
+            } else if (girdiKucuk.includes("kimsin") || girdiKucuk.includes("adın")) {
+                return "Ben, Google tarafından eğitilmiş büyük bir dil modelinin temalı bir simülasyonuyum.";
+            } else if (girdiKucuk.includes("teşekkür")) {
+                return "Rica ederim! Görünümdeki iyileştirmeleri fark etmenize sevindim.";
+            } else {
+                return "Hmm, güzel bir soru. Daha şekilli cevaplar için daha spesifik sormanız gerekebilir!";
+            }
+        }
+
+        // Mesajı Ekrana Ekleme Fonksiyonu
+        function addMessage(text, type) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${type}-message`;
+            msgDiv.textContent = text;
+            chatDisplay.appendChild(msgDiv);
+            
+            // Otomatik aşağı kaydırma
+            chatDisplay.scrollTop = chatDisplay.scrollHeight;
+            
+            // Animasyonun tekrar tetiklenmesi için sınıfı ekledikten sonra zorunlu repaint
+            msgDiv.style.animation = 'none'; 
+            void msgDiv.offsetWidth; 
+            msgDiv.style.animation = null; 
+        }
+
+        // Gönderme İşlemi
+        function sendMessage() {
+            const userText = userInput.value.trim();
+            
+            if (userText === "") { return; }
+
+            // 1. Kullanıcı Mesajını Ekle
+            addMessage(userText, 'user');
+            
+            // 2. Input kutusunu temizle
+            userInput.value = '';
+
+            // 3. Yapay Zekadan Cevap Al ve Ekle
+            setTimeout(() => {
+                const aiResponse = aiCevapVer(userText);
+                addMessage(aiResponse, 'ai');
+            }, 500); // 0.5 saniye bekleme
+        }
+
+        // Olay Dinleyicileri
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // JavaScript Bitişi
+    </script>
+
 </body>
-</html>
+                </html>
+
+
 
 
 
