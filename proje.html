@@ -154,67 +154,25 @@
 </main>
 
 <script>
-function toggleThemeMenu() {
-  const menu = document.getElementById('theme-menu');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
+<main style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:80vh;">
 
-function setTheme(theme) {
-  document.body.className = theme;
-  toggleThemeMenu();
-}
+  <input type="text" id="mathInput" placeholder="Ör: 2x(3+4)^2" 
+         style="padding:12px; font-size:18px; width:250px; border-radius:10px; border:2px solid #ccc;
+                transition: all 0.5s; text-align:center;">
+  
+  <button onclick="solveMath()" 
+          style="margin-top:15px; padding:12px 20px; font-size:18px; border:none; border-radius:12px;
+                 background:linear-gradient(45deg,#2196f3,#21cbf3); color:white; cursor:pointer;
+                 transition: all 0.3s;">
+    Çöz
+  </button>
+  
+  <p id="result" style="font-size:22px; font-weight:bold; margin-top:20px; opacity:0; transform:translateY(-20px);
+                        transition: all 0.7s;"></p>
 
-function solveMath() {
-  let input = document.getElementById("mathInput").value;
-  input = input.replace(/\^/g, "**"); // ^ yerine JS üslü işlemi
+</main>
 
-  const mathFunctions = {
-    sqrt: Math.sqrt,
-    sin: x => Math.sin(x * Math.PI / 180),
-    cos: x => Math.cos(x * Math.PI / 180),
-    tan: x => Math.tan(x * Math.PI / 180),
-    log: Math.log10,
-    ln: Math.log,
-    abs: Math.abs,
-    floor: Math.floor,
-    ceil: Math.ceil,
-    round: Math.round,
-    exp: Math.exp,
-    pow: Math.pow
-  };
 
-  for (let fn in mathFunctions) { window[fn] = mathFunctions[fn]; }
-
-  const resultEl = document.getElementById("result");
-  resultEl.classList.remove("show");
-
-  let answer;
-  setTimeout(() => { // animasyon için hafif gecikme
-    try {
-      answer = eval(input);
-      if (answer === undefined) throw "Hata!";
-      resultEl.textContent = "Cevap: " + answer;
-      resultEl.style.color = "#4caf50";
-    } catch(e) {
-      resultEl.textContent = "Hata: Geçersiz ifade!";
-      resultEl.style.color = "red";
-    }
-    resultEl.classList.add("show");
-  }, 100);
-}
-</script>
-
-</body>
-</html>
-<p>Matematik sorunu gir (ör: 2x(3+4)^2, sqrt(16), log(100), sin(30))</p>
-<input type="text" id="mathInput" placeholder="Sorunu yaz...">
-<br>
-<button onclick="solveMath()">Çöz</button>
-<p id="result"></p>
-</script>
-
-</body>
-</html>
 
 
 
