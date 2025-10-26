@@ -3,175 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rextro Sosyal Chat</title>
+<title>Rextro Chat</title>
 <style>
+* { box-sizing:border-box; margin:0; padding:0; }
 body {
-    margin:0; padding:0; font-family:Arial, sans-serif;
-    background: linear-gradient(120deg, #6e8efb, #a777e3);
-    display:flex; justify-content:center; align-items:flex-start; height:100vh;
-    color:white;
-}
-
-.sidebar {
-    width:250px;
-    background: rgba(0,0,0,0.3);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #36393f;
+    color: #fff;
+    display:flex;
     height:100vh;
-    padding:20px;
-    overflow-y:auto;
-    animation: slideIn 1s ease;
+    overflow:hidden;
 }
 
-.sidebar h2 { text-align:center; }
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #2f3136;
+    display:flex;
+    flex-direction:column;
+    padding:10px;
+}
+
+.sidebar h2 {
+    text-align:center;
+    margin-bottom:15px;
+    font-size:18px;
+}
 
 .friends {
-    margin-top:20px;
+    flex:1;
+    overflow-y:auto;
 }
 
 .friend {
-    background: rgba(255,255,255,0.1);
     padding:10px;
-    margin:5px 0;
-    border-radius:10px;
+    border-radius:5px;
     cursor:pointer;
-    transition:0.3s;
+    transition:0.2s;
 }
 
 .friend:hover {
-    background: rgba(255,255,255,0.3);
-    transform: scale(1.05);
+    background-color: #40444b;
 }
 
-.chat-container {
+/* Chat area */
+.chat-area {
     flex:1;
     display:flex;
     flex-direction:column;
-    margin-left:20px;
-    animation: fadeIn 1s ease;
+    background-color:#36393f;
 }
 
 .chat-header {
-    text-align:center;
-    background: rgba(0,0,0,0.2);
     padding:15px;
-    border-radius:10px;
+    background-color:#2f3136;
+    border-bottom:1px solid #202225;
+    font-weight:bold;
 }
 
 .messages {
     flex:1;
-    overflow-y:auto;
     padding:10px;
+    overflow-y:auto;
 }
 
 .message {
-    background: rgba(255,255,255,0.2);
-    margin:5px;
-    padding:10px;
-    border-radius:10px;
+    background-color:#40444b;
+    padding:8px 12px;
+    border-radius:8px;
+    margin-bottom:10px;
     max-width:70%;
-    animation: float 0.5s ease;
+    animation: float 0.3s ease;
 }
 
 .message.self {
-    background: #fff;
-    color:#6e8efb;
+    background-color:#7289da;
+    color:white;
     margin-left:auto;
 }
 
 .input-box {
     display:flex;
-    margin-top:10px;
+    padding:10px;
+    border-top:1px solid #202225;
 }
 
 .input-box input {
     flex:1;
     padding:10px;
-    border-radius:10px 0 0 10px;
-    border:none; outline:none;
+    border:none;
+    border-radius:5px;
+    outline:none;
+    background-color:#40444b;
+    color:white;
 }
 
 .input-box button {
+    margin-left:5px;
     padding:10px 20px;
     border:none;
-    border-radius:0 10px 10px 0;
-    background:#fff; color:#6e8efb;
-    font-weight:bold; cursor:pointer; transition:0.3s;
+    border-radius:5px;
+    background-color:#7289da;
+    color:white;
+    cursor:pointer;
+    transition:0.2s;
 }
 
 .input-box button:hover {
-    background:#6e8efb; color:white;
+    background-color:#5b6eae;
 }
 
 /* Animations */
-@keyframes float { 0%{transform:translateY(10px);} 50%{transform:translateY(0);} 100%{transform:translateY(10px);} }
-@keyframes slideIn { from{transform:translateX(-100px);opacity:0;} to{transform:translateX(0);opacity:1;} }
-@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes float {
+    0% {transform:translateY(5px);}
+    50% {transform:translateY(0);}
+    100% {transform:translateY(5px);}
+}
+
+/* Login overlay */
+#loginOverlay {
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background-color: rgba(54,57,63,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:10;
+}
+
+#loginOverlay input {
+    padding:10px;
+    border-radius:5px;
+    border:none;
+    margin-bottom:10px;
+    outline:none;
+}
+
+#loginOverlay button {
+    padding:10px 20px;
+    border:none;
+    border-radius:5px;
+    background-color:#7289da;
+    color:white;
+    cursor:pointer;
+}
+
+#loginOverlay button:hover {
+    background-color:#5b6eae;
+}
 </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <h2>Arkadaşlar</h2>
-    <div class="friends" id="friends">
-        <!-- Arkadaşlar buraya eklenecek -->
-    </div>
-    <input type="text" id="friendInput" placeholder="Yeni arkadaş ekle" style="width:100%; padding:5px; border-radius:5px; border:none; margin-top:10px;">
-    <button onclick="addFriend()" style="width:100%; padding:10px; margin-top:5px; border:none; border-radius:5px; background:#fff; color:#6e8efb; cursor:pointer;">Ekle</button>
+<div id="loginOverlay">
+    <h2>Kullanıcı Adını Gir</h2>
+    <input type="text" id="usernameInput" placeholder="İsminizi yazın" />
+    <button onclick="login()">Giriş Yap</button>
 </div>
 
-<div class="chat-container">
+<div class="sidebar">
+    <h2>Arkadaşlar</h2>
+    <div class="friends" id="friendsList"></div>
+</div>
+
+<div class="chat-area">
     <div class="chat-header" id="chatHeader">Sohbet Seç</div>
     <div class="messages" id="messages"></div>
     <div class="input-box">
-        <input type="text" id="messageInput" placeholder="Mesajını yaz..." disabled>
-        <button onclick="sendMessage()" id="sendBtn" disabled>Gönder</button>
+        <input type="text" id="messageInput" placeholder="Mesaj yaz..." disabled />
+        <button id="sendBtn" onclick="sendMessage()" disabled>Gönder</button>
     </div>
 </div>
 
 <script>
+let username = "";
 let currentFriend = null;
+let users = [];
 
-function addFriend() {
-    const input = document.getElementById("friendInput");
-    const name = input.value.trim();
-    if(!name) return;
+function login() {
+    const input = document.getElementById("usernameInput");
+    if(input.value.trim() === "") return;
+    username = input.value.trim();
+    if(!users.includes(username)) users.push(username);
+    document.getElementById("loginOverlay").style.display="none";
 
-    const friendDiv = document.createElement("div");
-    friendDiv.className = "friend";
-    friendDiv.textContent = name;
-    friendDiv.onclick = () => selectFriend(name);
-    document.getElementById("friends").appendChild(friendDiv);
-    input.value = "";
+    // Otomatik arkadaş listesine ekle (diğer kullanıcılar eklenebilir)
+    renderFriends();
 }
 
-function selectFriend(name) {
-    currentFriend = name;
-    document.getElementById("chatHeader").textContent = "Sohbet: " + name;
-    document.getElementById("messages").innerHTML = ""; // mesajları temizle
-    document.getElementById("messageInput").disabled = false;
-    document.getElementById("sendBtn").disabled = false;
+function renderFriends() {
+    const friendsList = document.getElementById("friendsList");
+    friendsList.innerHTML = "";
+    users.forEach(user => {
+        if(user === username) return; // kendisi görünmesin
+        const div = document.createElement("div");
+        div.className="friend";
+        div.textContent=user;
+        div.onclick = ()=> selectFriend(user);
+        friendsList.appendChild(div);
+    });
+}
+
+function selectFriend(friendName) {
+    currentFriend = friendName;
+    document.getElementById("chatHeader").textContent = "Sohbet: "+friendName;
+    document.getElementById("messages").innerHTML="";
+    document.getElementById("messageInput").disabled=false;
+    document.getElementById("sendBtn").disabled=false;
 }
 
 function sendMessage() {
-    if(!currentFriend) return;
     const input = document.getElementById("messageInput");
-    if(input.value.trim() === "") return;
+    if(input.value.trim()==="" || !currentFriend) return;
 
     const msg = document.createElement("div");
-    msg.className = "message self";
-    msg.textContent = input.value;
+    msg.className="message self";
+    msg.textContent = username + ": "+input.value;
     document.getElementById("messages").appendChild(msg);
-    input.value = "";
-    document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+    input.value="";
+    document.getElementById("messages").scrollTop=document.getElementById("messages").scrollHeight;
 }
-</script>
 
+// Örnek: başka kullanıcı eklemek (frontend demo için)
+function addDemoUser(name) {
+    if(!users.includes(name)) users.push(name);
+    renderFriends();
+}
+
+// Demo kullanıcı ekleyelim
+addDemoUser("Ahmet");
+addDemoUser("Ayşe");
+addDemoUser("Mehmet");
+</script>
 </body>
 </html>
-
-
-
-
-
 
 
 
