@@ -1,178 +1,75 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evren Matematik Çözücü 🌐</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    transition: background 1s, color 1s;
-    overflow-x: hidden;
-  }
-
-  header {
-    background: #4caf50;
-    color: white;
-    padding: 20px;
-    position: relative;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  }
-
-  .theme-toggle {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-    cursor: pointer;
-    font-size: 24px;
-    transition: transform 0.5s;
-  }
-
-  .theme-toggle:hover { transform: rotate(360deg); }
-
-  .theme-menu {
-    display: none;
-    position: absolute;
-    left: 20px;
-    top: 60px;
-    background: rgba(255,255,255,0.95);
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    animation: slideDown 0.5s ease forwards;
-  }
-
-  .theme-menu button {
-    display: block;
-    margin: 5px 0;
-    padding: 8px 12px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    transition: transform 0.3s, background 0.3s;
-  }
-
-  .theme-menu button:hover {
-    transform: scale(1.2) rotate(-5deg);
-    background: #2196f3;
-    color: white;
-  }
-
-  @keyframes slideDown {
-    0% {opacity:0; transform: translateY(-20px);}
-    100% {opacity:1; transform: translateY(0);}
-  }
-
-  main { padding: 40px; }
-
-  input {
-    padding: 12px;
-    font-size: 16px;
-    width: 300px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 2px solid #ccc;
-    transition: border 0.5s, box-shadow 0.5s;
-  }
-
-  input:focus {
-    border: 2px solid #2196f3;
-    box-shadow: 0 0 15px #2196f3;
-    outline: none;
-  }
-
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    background-color: #2196f3;
-    color: white;
-    margin: 5px;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-
-  button:hover {
-    transform: scale(1.1) rotate(-2deg);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  }
-
-  #result {
-    margin-top: 20px;
-    font-size: 22px;
-    font-weight: bold;
-    transition: all 0.7s ease;
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  #result.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Temalar */
-  body.light { background: #f0f8ff; color: #333; transition: background 1s, color 1s; }
-  body.dark { background: #121212; color: #eee; transition: background 1s, color 1s; }
-  body.colorful {
-    background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
-    color: #111;
-    background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rextro Müzik Sitesi</title>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6e8efb, #a777e3);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-top: 30px;
+            text-shadow: 2px 2px 4px #000;
+        }
+        .song-list {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+        .song {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        .song:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.2);
+        }
+        audio {
+            outline: none;
+        }
+    </style>
 </head>
-<body class="light">
-
-<header>
-  <div class="theme-toggle" onclick="toggleThemeMenu()">🎨</div>
-  <h1>Evren Matematik Çözücü</h1>
-</header>
-
-<div id="theme-menu" class="theme-menu">
-  <button onclick="setTheme('light')">🌞 Açık Tema</button>
-  <button onclick="setTheme('dark')">🌚 Koyu Tema</button>
-  <button onclick="setTheme('colorful')">🌈 Renkli Tema</button>
-</div>
-
-<main>
-  <p>Matematik sorunu gir (ör: 2*(3+4)^2, sqrt(16), log(100), sin(30))</p>
-  <input type="text" id="mathInput" placeholder="Sorunu yaz...">
-  <br>
-  <button onclick="solveMath()">Çöz</button>
-  <p id="result"></p>
-</main>
-
-<script>
-<main style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:80vh;">
-
-  <input type="text" id="mathInput" placeholder="Ör: 2x(3+4)^2" 
-         style="padding:12px; font-size:18px; width:250px; border-radius:10px; border:2px solid #ccc;
-                transition: all 0.5s; text-align:center;">
-  
-  <button onclick="solveMath()" 
-          style="margin-top:15px; padding:12px 20px; font-size:18px; border:none; border-radius:12px;
-                 background:linear-gradient(45deg,#2196f3,#21cbf3); color:white; cursor:pointer;
-                 transition: all 0.3s;">
-    Çöz
-  </button>
-  
-  <p id="result" style="font-size:22px; font-weight:bold; margin-top:20px; opacity:0; transform:translateY(-20px);
-                        transition: all 0.7s;"></p>
-
-</main>
-
-
+<body>
+    <h1>Rextro Müzik Sitesi 🎵</h1>
+    <div class="song-list">
+        <div class="song">
+            <span>Şarkı 1</span>
+            <audio controls>
+                <source src="sarki1.mp3" type="audio/mpeg">
+                Tarayıcınız audio elementini desteklemiyor.
+            </audio>
+        </div>
+        <div class="song">
+            <span>Şarkı 2</span>
+            <audio controls>
+                <source src="sarki2.mp3" type="audio/mpeg">
+                Tarayıcınız audio elementini desteklemiyor.
+            </audio>
+        </div>
+        <div class="song">
+            <span>Şarkı 3</span>
+            <audio controls>
+                <source src="sarki3.mp3" type="audio/mpeg">
+                Tarayıcınız audio elementini desteklemiyor.
+            </audio>
+        </div>
+    </div>
+</body>
+</html>
 
 
 
