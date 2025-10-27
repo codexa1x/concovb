@@ -1,244 +1,192 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rextro Chat</title>
+<title>6th Grade English Quiz</title>
 <style>
-* { box-sizing:border-box; margin:0; padding:0; }
-body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #36393f;
-    color: #fff;
-    display:flex;
-    height:100vh;
-    overflow:hidden;
-}
+  * {
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    color: white;
+  }
+  h1 {
+    margin-top: 20px;
+    font-size: 2.5em;
+    animation: glow 2s infinite alternate;
+  }
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
+    to { text-shadow: 0 0 30px #fff, 0 0 40px #2575fc; }
+  }
 
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    background-color: #2f3136;
-    display:flex;
-    flex-direction:column;
-    padding:10px;
-}
+  .groups {
+    display: flex;
+    gap: 30px;
+    margin: 20px;
+  }
+  .group {
+    background: rgba(255,255,255,0.2);
+    border-radius: 15px;
+    padding: 10px 20px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    transition: transform 0.3s;
+  }
+  .group:hover {
+    transform: scale(1.1);
+  }
+  .score {
+    font-size: 1.5em;
+    color: #ffeb3b;
+  }
 
-.sidebar h2 {
-    text-align:center;
-    margin-bottom:15px;
-    font-size:18px;
-}
-
-.friends {
-    flex:1;
-    overflow-y:auto;
-}
-
-.friend {
-    padding:10px;
-    border-radius:5px;
-    cursor:pointer;
-    transition:0.2s;
-}
-
-.friend:hover {
-    background-color: #40444b;
-}
-
-/* Chat area */
-.chat-area {
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    background-color:#36393f;
-}
-
-.chat-header {
-    padding:15px;
-    background-color:#2f3136;
-    border-bottom:1px solid #202225;
-    font-weight:bold;
-}
-
-.messages {
-    flex:1;
-    padding:10px;
-    overflow-y:auto;
-}
-
-.message {
-    background-color:#40444b;
-    padding:8px 12px;
-    border-radius:8px;
-    margin-bottom:10px;
-    max-width:70%;
-    animation: float 0.3s ease;
-}
-
-.message.self {
-    background-color:#7289da;
-    color:white;
-    margin-left:auto;
-}
-
-.input-box {
-    display:flex;
-    padding:10px;
-    border-top:1px solid #202225;
-}
-
-.input-box input {
-    flex:1;
-    padding:10px;
-    border:none;
-    border-radius:5px;
-    outline:none;
-    background-color:#40444b;
-    color:white;
-}
-
-.input-box button {
-    margin-left:5px;
-    padding:10px 20px;
-    border:none;
-    border-radius:5px;
-    background-color:#7289da;
-    color:white;
-    cursor:pointer;
-    transition:0.2s;
-}
-
-.input-box button:hover {
-    background-color:#5b6eae;
-}
-
-/* Animations */
-@keyframes float {
-    0% {transform:translateY(5px);}
-    50% {transform:translateY(0);}
-    100% {transform:translateY(5px);}
-}
-
-/* Login overlay */
-#loginOverlay {
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    background-color: rgba(54,57,63,0.95);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    z-index:10;
-}
-
-#loginOverlay input {
-    padding:10px;
-    border-radius:5px;
-    border:none;
-    margin-bottom:10px;
-    outline:none;
-}
-
-#loginOverlay button {
-    padding:10px 20px;
-    border:none;
-    border-radius:5px;
-    background-color:#7289da;
-    color:white;
-    cursor:pointer;
-}
-
-#loginOverlay button:hover {
-    background-color:#5b6eae;
-}
+  .quiz {
+    background: rgba(255,255,255,0.15);
+    border-radius: 25px;
+    padding: 30px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    margin-top: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    animation: slideIn 1s ease;
+  }
+  @keyframes slideIn {
+    from { transform: translateY(100vh); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  button {
+    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    padding: 12px 25px;
+    margin: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #fff;
+  }
+  .timer {
+    font-size: 1.5em;
+    margin-top: 10px;
+    color: #ffeb3b;
+  }
+  .message {
+    font-size: 1.8em;
+    margin-top: 15px;
+    animation: pop 0.8s ease;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
 </style>
 </head>
 <body>
 
-<div id="loginOverlay">
-    <h2>Kullanıcı Adını Gir</h2>
-    <input type="text" id="usernameInput" placeholder="İsminizi yazın" />
-    <button onclick="login()">Giriş Yap</button>
+<h1>🎯 6th Grade English Quiz 🎯</h1>
+
+<div class="groups">
+  <div class="group" id="g1">Group 1<br><span class="score" id="s1">0</span></div>
+  <div class="group" id="g2">Group 2<br><span class="score" id="s2">0</span></div>
+  <div class="group" id="g3">Group 3<br><span class="score" id="s3">0</span></div>
 </div>
 
-<div class="sidebar">
-    <h2>Arkadaşlar</h2>
-    <div class="friends" id="friendsList"></div>
-</div>
+<div class="timer" id="timer">⏱️ 45</div>
 
-<div class="chat-area">
-    <div class="chat-header" id="chatHeader">Sohbet Seç</div>
-    <div class="messages" id="messages"></div>
-    <div class="input-box">
-        <input type="text" id="messageInput" placeholder="Mesaj yaz..." disabled />
-        <button id="sendBtn" onclick="sendMessage()" disabled>Gönder</button>
-    </div>
+<div class="quiz" id="quiz">
+  <h2 id="question">Loading question...</h2>
+  <div id="answers"></div>
+  <div class="message" id="msg"></div>
 </div>
 
 <script>
-let username = "";
-let currentFriend = null;
-let users = [];
+const questions = [
+  {q: "How do you say 'Merhaba' in English?", a: ["Hello", "Bye", "Thanks", "Goodbye"], correct: 0},
+  {q: "Which one means 'Arkadaş'?", a: ["Book", "Friend", "Teacher", "School"], correct: 1},
+  {q: "What is the opposite of 'Big'?", a: ["Large", "Tall", "Small", "Huge"], correct: 2},
+  {q: "Which one means 'Oyun'?", a: ["Game", "Food", "Bag", "Pen"], correct: 0},
+  {q: "What time is 'It’s seven o’clock'?", a: ["6:00", "7:00", "8:00", "9:00"], correct: 1},
+  {q: "Which sentence is correct?", a: ["She go to school", "She goes to school", "She going school", "She to go school"], correct: 1},
+  {q: "What does 'Hobby' mean?", a: ["Oyun", "Meslek", "Hobi", "Ev"], correct: 2},
+  {q: "What is 'City'?", a: ["Köy", "Şehir", "Ülke", "Kasaba"], correct: 1}
+];
 
-function login() {
-    const input = document.getElementById("usernameInput");
-    if(input.value.trim() === "") return;
-    username = input.value.trim();
-    if(!users.includes(username)) users.push(username);
-    document.getElementById("loginOverlay").style.display="none";
+let current = 0;
+let score1 = 0, score2 = 0, score3 = 0;
+let timer = 45;
+let interval;
 
-    // Otomatik arkadaş listesine ekle (diğer kullanıcılar eklenebilir)
-    renderFriends();
+function startTimer() {
+  interval = setInterval(() => {
+    timer--;
+    document.getElementById("timer").textContent = "⏱️ " + timer;
+    if (timer <= 0) endGame("⏰ Time’s up!");
+  }, 1000);
 }
 
-function renderFriends() {
-    const friendsList = document.getElementById("friendsList");
-    friendsList.innerHTML = "";
-    users.forEach(user => {
-        if(user === username) return; // kendisi görünmesin
-        const div = document.createElement("div");
-        div.className="friend";
-        div.textContent=user;
-        div.onclick = ()=> selectFriend(user);
-        friendsList.appendChild(div);
-    });
+function showQuestion() {
+  const q = questions[current];
+  document.getElementById("question").textContent = q.q;
+  const ansDiv = document.getElementById("answers");
+  ansDiv.innerHTML = "";
+  q.a.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(i);
+    ansDiv.appendChild(btn);
+  });
 }
 
-function selectFriend(friendName) {
-    currentFriend = friendName;
-    document.getElementById("chatHeader").textContent = "Sohbet: "+friendName;
-    document.getElementById("messages").innerHTML="";
-    document.getElementById("messageInput").disabled=false;
-    document.getElementById("sendBtn").disabled=false;
+function checkAnswer(i) {
+  const msg = document.getElementById("msg");
+  if (i === questions[current].correct) {
+    msg.textContent = "✅ Correct! +150 points";
+    msg.style.color = "#00ff7f";
+    score1 += 150;
+    document.getElementById("s1").textContent = score1;
+    current++;
+    if (current < questions.length) {
+      setTimeout(() => { msg.textContent = ""; showQuestion(); }, 1000);
+    } else {
+      endGame("🎉 All questions done! Group 1 total: " + score1);
+    }
+  } else {
+    msg.textContent = "❌ Wrong! Game Over!";
+    msg.style.color = "#ff4444";
+    setTimeout(() => endGame("❌ Wrong answer!"), 1000);
+  }
 }
 
-function sendMessage() {
-    const input = document.getElementById("messageInput");
-    if(input.value.trim()==="" || !currentFriend) return;
-
-    const msg = document.createElement("div");
-    msg.className="message self";
-    msg.textContent = username + ": "+input.value;
-    document.getElementById("messages").appendChild(msg);
-    input.value="";
-    document.getElementById("messages").scrollTop=document.getElementById("messages").scrollHeight;
+function endGame(text) {
+  clearInterval(interval);
+  document.getElementById("quiz").innerHTML = `<h2>${text}</h2>`;
 }
 
-// Örnek: başka kullanıcı eklemek (frontend demo için)
-function addDemoUser(name) {
-    if(!users.includes(name)) users.push(name);
-    renderFriends();
-}
-
-// Demo kullanıcı ekleyelim
-addDemoUser("Ahmet");
-addDemoUser("Ayşe");
-addDemoUser("Mehmet");
+window.onload = () => {
+  showQuestion();
+  startTimer();
+};
 </script>
 </body>
 </html>
+
 
 
 
