@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sexy Animated Login / Register</title>
+  <title>  Login / Register</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -137,7 +137,7 @@
 </head>
 <body>
   <div class="glass">
-    <h1 class="title">💋 Magic Login 💫</h1>
+    <h1 class="title"> Login Pages </h1>
 
     <form id="loginForm">
       <input type="text" id="loginUser" placeholder="Username" required />
@@ -210,7 +210,7 @@
       loginForm.classList.add("hidden");
       registerForm.classList.add("hidden");
       welcome.classList.remove("hidden");
-      welcome.innerHTML = `Welcome back, <b>${user}</b> 🌈<br><br><button class="btn" onclick="logout()">Logout</button>`;
+      welcome.innerHTML = `Welcome back, <b>${user}</b> <br><br><button class="btn" onclick="logout()">Logout</button>`;
     }
     function logout() {
       localStorage.removeItem("currentUser");
@@ -234,6 +234,7 @@
   </script>
 </body>
 </html>
+
 
 
 
