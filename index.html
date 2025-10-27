@@ -1,437 +1,239 @@
-Tabii! Size animasyonlu ve şekilli giriş/kayıt HTML kodu hazırlıyorum. 🎨
-Action: file_editor create /app/chat-login.html --file-text "<!DOCTYPE html>
-<html lang=\"tr\">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset=\"UTF-8\">
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-    <title>Sohbet Sitesi - Giriş & Kayıt</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sexy Animated Login / Register</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Poppins", sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff00cc, #3333ff, #00ffff);
+      background-size: 400% 400%;
+      animation: bgMove 8s ease infinite;
+      overflow: hidden;
+    }
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
+    .glass {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 1.5rem;
+      box-shadow: 0 0 40px rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      width: 380px;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 1.5s ease;
+    }
+    @keyframes fadeIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
 
-        /* Animasyonlu Arka Plan Şekilleri */
-        .background-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-        }
+    .title {
+      color: #fff;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #ff00cc, 0 0 20px #00ffff;
+      margin-bottom: 1.2rem;
+      animation: glowPulse 2s infinite alternate;
+    }
+    @keyframes glowPulse {
+      0% { text-shadow: 0 0 10px #ff00cc, 0 0 20px #00ffff; }
+      100% { text-shadow: 0 0 25px #fff, 0 0 40px #ff00ff; }
+    }
 
-        .shape {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
-        }
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 1rem;
+      outline: none;
+      color: #fff;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(6px);
+      transition: 0.3s;
+    }
+    input::placeholder { color: #eee; }
+    input:focus {
+      box-shadow: 0 0 15px #00ffff;
+      background: rgba(255, 255, 255, 0.25);
+    }
 
-        .shape:nth-child(1) {
-            width: 200px;
-            height: 200px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
+    .btn {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffff);
+      background-size: 200% 200%;
+      animation: gradientMove 4s linear infinite;
+      transition: transform 0.2s;
+    }
+    .btn:hover { transform: scale(1.05); }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
 
-        .shape:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            top: 70%;
-            left: 80%;
-            animation-delay: 2s;
-        }
+    .switch {
+      margin-top: 1rem;
+      color: #ddd;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: underline;
+      transition: 0.3s;
+    }
+    .switch:hover { color: #fff; }
 
-        .shape:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            top: 40%;
-            left: 5%;
-            animation-delay: 4s;
-        }
+    .hidden { display: none; }
 
-        .shape:nth-child(4) {
-            width: 180px;
-            height: 180px;
-            top: 20%;
-            left: 85%;
-            animation-delay: 6s;
-        }
+    .welcome {
+      color: #fff;
+      font-size: 1.2rem;
+      text-shadow: 0 0 10px #00ffff;
+      animation: fadeIn 1s ease;
+    }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.7;
-            }
-            50% {
-                transform: translateY(-50px) rotate(180deg);
-                opacity: 0.3;
-            }
-        }
-
-        /* Container */
-        .container {
-            position: relative;
-            z-index: 1;
-            width: 400px;
-            perspective: 1000px;
-        }
-
-        .form-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-        }
-
-        .form-container.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .form-content {
-            backface-visibility: hidden;
-        }
-
-        .form-content.back {
-            transform: rotateY(180deg);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 40px;
-        }
-
-        h2 {
-            text-align: center;
-            color: #667eea;
-            margin-bottom: 30px;
-            font-size: 28px;
-            animation: slideDown 0.5s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .input-group label {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            color: #999;
-            pointer-events: none;
-            transition: all 0.3s;
-        }
-
-        .input-group input:focus + label,
-        .input-group input:not(:placeholder-shown) + label {
-            top: -10px;
-            left: 10px;
-            font-size: 12px;
-            background: white;
-            padding: 0 5px;
-            color: #667eea;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .toggle-text {
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
-        }
-
-        .toggle-link {
-            color: #667eea;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .toggle-link:hover {
-            color: #764ba2;
-            text-decoration: underline;
-        }
-
-        /* Logo/Icon */
-        .logo {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .logo-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            color: white;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
-        /* Başarı Mesajı */
-        .success-message {
-            background: #4caf50;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-            animation: slideDown 0.5s ease;
-        }
-
-        .error-message {
-            background: #f44336;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-            animation: slideDown 0.5s ease;
-        }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            .container {
-                width: 90%;
-                padding: 0 20px;
-            }
-            
-            .form-container {
-                padding: 30px 20px;
-            }
-        }
-    </style>
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      animation: float 8s infinite ease-in-out;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+  </style>
 </head>
 <body>
-    <div class=\"background-shapes\">
-        <div class=\"shape\"></div>
-        <div class=\"shape\"></div>
-        <div class=\"shape\"></div>
-        <div class=\"shape\"></div>
-    </div>
+  <div class="glass">
+    <h1 class="title">💋 Magic Login 💫</h1>
 
-    <div class=\"container\">
-        <div class=\"form-container\" id=\"formContainer\">
-            <!-- Giriş Formu -->
-            <div class=\"form-content front\">
-                <div class=\"logo\">
-                    <div class=\"logo-icon\">💬</div>
-                </div>
-                <h2>Hoş Geldiniz!</h2>
-                
-                <form id=\"loginForm\">
-                    <div class=\"input-group\">
-                        <input type=\"email\" id=\"loginEmail\" placeholder=\" \" required>
-                        <label for=\"loginEmail\">E-posta</label>
-                    </div>
-                    
-                    <div class=\"input-group\">
-                        <input type=\"password\" id=\"loginPassword\" placeholder=\" \" required>
-                        <label for=\"loginPassword\">Şifre</label>
-                    </div>
-                    
-                    <button type=\"submit\" class=\"btn\">Giriş Yap</button>
-                </form>
-                
-                <div class=\"success-message\" id=\"loginSuccess\">
-                    ✓ Giriş başarılı! Yönlendiriliyorsunuz...
-                </div>
-                
-                <div class=\"toggle-text\">
-                    Hesabınız yok mu? 
-                    <a class=\"toggle-link\" onclick=\"toggleForm()\">Kayıt Ol</a>
-                </div>
-            </div>
+    <form id="loginForm">
+      <input type="text" id="loginUser" placeholder="Username" required />
+      <input type="password" id="loginPass" placeholder="Password" required />
+      <button class="btn" type="submit">Login</button>
+      <div class="switch" id="showRegister">Create account →</div>
+    </form>
 
-            <!-- Kayıt Formu -->
-            <div class=\"form-content back\">
-                <div class=\"logo\">
-                    <div class=\"logo-icon\">📝</div>
-                </div>
-                <h2>Kayıt Olun!</h2>
-                
-                <form id=\"registerForm\">
-                    <div class=\"input-group\">
-                        <input type=\"text\" id=\"registerName\" placeholder=\" \" required>
-                        <label for=\"registerName\">Ad Soyad</label>
-                    </div>
-                    
-                    <div class=\"input-group\">
-                        <input type=\"email\" id=\"registerEmail\" placeholder=\" \" required>
-                        <label for=\"registerEmail\">E-posta</label>
-                    </div>
-                    
-                    <div class=\"input-group\">
-                        <input type=\"password\" id=\"registerPassword\" placeholder=\" \" required>
-                        <label for=\"registerPassword\">Şifre</label>
-                    </div>
-                    
-                    <button type=\"submit\" class=\"btn\">Kayıt Ol</button>
-                </form>
-                
-                <div class=\"success-message\" id=\"registerSuccess\">
-                    ✓ Kayıt başarılı! Giriş yapabilirsiniz.
-                </div>
-                
-                <div class=\"toggle-text\">
-                    Zaten hesabınız var mı? 
-                    <a class=\"toggle-link\" onclick=\"toggleForm()\">Giriş Yap</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <form id="registerForm" class="hidden">
+      <input type="text" id="regUser" placeholder="Create username" required />
+      <input type="password" id="regPass" placeholder="Create password" required />
+      <input type="password" id="regConfirm" placeholder="Confirm password" required />
+      <button class="btn" type="submit">Register</button>
+      <div class="switch" id="showLogin">← Back to login</div>
+    </form>
 
-    <script>
-        // Form değiştirme animasyonu
-        function toggleForm() {
-            const container = document.getElementById('formContainer');
-            container.classList.toggle('flipped');
-        }
+    <div id="welcome" class="hidden welcome"></div>
 
-        // Giriş formu işleme
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Burada backend API'ye istek atılacak
-            console.log('Giriş:', { email, password });
-            
-            // Başarı mesajı göster
-            const successMsg = document.getElementById('loginSuccess');
-            successMsg.style.display = 'block';
-            
-            // 2 saniye sonra sohbet sayfasına yönlendir
-            setTimeout(() => {
-                // window.location.href = '/chat.html';
-                alert('Sohbet sayfasına yönlendiriliyorsunuz...');
-            }, 2000);
-        });
+    <div class="particles" id="particles"></div>
+  </div>
 
-        // Kayıt formu işleme
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            
-            // Burada backend API'ye istek atılacak
-            console.log('Kayıt:', { name, email, password });
-            
-            // Başarı mesajı göster
-            const successMsg = document.getElementById('registerSuccess');
-            successMsg.style.display = 'block';
-            
-            // 2 saniye sonra giriş formuna geç
-            setTimeout(() => {
-                toggleForm();
-                successMsg.style.display = 'none';
-                document.getElementById('registerForm').reset();
-            }, 2000);
-        });
-    </script>
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const showRegister = document.getElementById("showRegister");
+    const showLogin = document.getElementById("showLogin");
+    const welcome = document.getElementById("welcome");
+
+    showRegister.onclick = () => {
+      loginForm.classList.add("hidden");
+      registerForm.classList.remove("hidden");
+    };
+    showLogin.onclick = () => {
+      registerForm.classList.add("hidden");
+      loginForm.classList.remove("hidden");
+    };
+
+    // Register
+    registerForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const user = regUser.value.trim();
+      const pass = regPass.value;
+      const confirm = regConfirm.value;
+      if (pass !== confirm) return alert("Passwords do not match!");
+      if (localStorage.getItem(user)) return alert("Username already exists!");
+      localStorage.setItem(user, pass);
+      alert("Registered successfully!");
+      showLogin.click();
+    });
+
+    // Login
+    loginForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const user = loginUser.value.trim();
+      const pass = loginPass.value;
+      const saved = localStorage.getItem(user);
+      if (!saved) return alert("User not found!");
+      if (saved !== pass) return alert("Wrong password!");
+      localStorage.setItem("currentUser", user);
+      showWelcome(user);
+    });
+
+    window.addEventListener("load", () => {
+      const user = localStorage.getItem("currentUser");
+      if (user) showWelcome(user);
+      generateParticles();
+    });
+
+    function showWelcome(user) {
+      loginForm.classList.add("hidden");
+      registerForm.classList.add("hidden");
+      welcome.classList.remove("hidden");
+      welcome.innerHTML = `Welcome back, <b>${user}</b> 🌈<br><br><button class="btn" onclick="logout()">Logout</button>`;
+    }
+    function logout() {
+      localStorage.removeItem("currentUser");
+      welcome.classList.add("hidden");
+      loginForm.classList.remove("hidden");
+    }
+
+    // Fun floating particles ✨
+    function generateParticles() {
+      const container = document.getElementById("particles");
+      for (let i = 0; i < 25; i++) {
+        const p = document.createElement("div");
+        p.classList.add("particle");
+        const size = Math.random() * 8 + 4;
+        p.style.width = p.style.height = `${size}px`;
+        p.style.left = `${Math.random() * 100}%`;
+        p.style.animationDelay = `${Math.random() * 8}s`;
+        container.appendChild(p);
+      }
+    }
+  </script>
 </body>
 </html>
-"
-
-
 
 
 
