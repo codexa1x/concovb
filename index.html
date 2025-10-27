@@ -1,162 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>  Login / Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Register</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "Poppins", sans-serif;
-      height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #ff00cc, #3333ff, #00ffff);
-      background-size: 400% 400%;
-      animation: bgMove 8s ease infinite;
-      overflow: hidden;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(120deg, #4f46e5, #9333ea);
+      animation: bgShift 8s ease-in-out infinite alternate;
     }
-    @keyframes bgMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes bgShift {
+      0% { background: linear-gradient(120deg, #4f46e5, #9333ea); }
+      100% { background: linear-gradient(120deg, #06b6d4, #3b82f6); }
     }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 1.5rem;
-      box-shadow: 0 0 40px rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
-      width: 380px;
+    .card {
+      background: rgba(255,255,255,0.12);
       padding: 2rem;
+      border-radius: 1.2rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      width: 340px;
       text-align: center;
-      position: relative;
-      overflow: hidden;
-      animation: fadeIn 1.5s ease;
+      color: #fff;
+      animation: fadeIn 1s ease;
     }
     @keyframes fadeIn {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .title {
-      color: #fff;
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-shadow: 0 0 10px #ff00cc, 0 0 20px #00ffff;
-      margin-bottom: 1.2rem;
-      animation: glowPulse 2s infinite alternate;
-    }
-    @keyframes glowPulse {
-      0% { text-shadow: 0 0 10px #ff00cc, 0 0 20px #00ffff; }
-      100% { text-shadow: 0 0 25px #fff, 0 0 40px #ff00ff; }
-    }
+    h2 { margin-bottom: 1.2rem; letter-spacing: 1px; }
 
     input {
       width: 100%;
-      padding: 0.8rem;
-      margin: 0.5rem 0;
+      padding: 0.7rem;
+      margin: 0.4rem 0;
       border: none;
-      border-radius: 1rem;
-      outline: none;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.15);
       color: #fff;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(6px);
+      outline: none;
+      font-size: 0.95rem;
       transition: 0.3s;
     }
-    input::placeholder { color: #eee; }
     input:focus {
-      box-shadow: 0 0 15px #00ffff;
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255,255,255,0.25);
+      box-shadow: 0 0 10px #93c5fd;
     }
 
-    .btn {
+    button {
       width: 100%;
-      margin-top: 1rem;
       padding: 0.8rem;
+      margin-top: 0.8rem;
       border: none;
-      border-radius: 2rem;
-      cursor: pointer;
-      color: #fff;
+      border-radius: 8px;
       font-size: 1rem;
-      font-weight: 600;
-      background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffff);
-      background-size: 200% 200%;
-      animation: gradientMove 4s linear infinite;
-      transition: transform 0.2s;
+      color: #fff;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6);
+      cursor: pointer;
+      transition: 0.3s;
     }
-    .btn:hover { transform: scale(1.05); }
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
+    button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #818cf8, #a78bfa);
     }
 
     .switch {
-      margin-top: 1rem;
-      color: #ddd;
+      margin-top: 0.8rem;
       font-size: 0.9rem;
       cursor: pointer;
-      text-decoration: underline;
-      transition: 0.3s;
+      color: #cbd5e1;
     }
     .switch:hover { color: #fff; }
 
     .hidden { display: none; }
 
-    .welcome {
+    /* animated message */
+    .msg {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      background: rgba(34,197,94,0.9);
       color: #fff;
-      font-size: 1.2rem;
-      text-shadow: 0 0 10px #00ffff;
-      animation: fadeIn 1s ease;
+      font-weight: 500;
+      font-size: 0.95rem;
+      opacity: 0;
+      animation: slideDown 2s ease forwards;
     }
-
-    .particles {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0; left: 0;
-      overflow: hidden;
-      z-index: -1;
-    }
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.4);
-      animation: float 8s infinite ease-in-out;
-    }
-    @keyframes float {
-      0% { transform: translateY(100vh) scale(0); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    @keyframes slideDown {
+      0% { opacity: 0; transform: translate(-50%, -30px); }
+      20% { opacity: 1; transform: translate(-50%, 0); }
+      80% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -30px); }
     }
   </style>
 </head>
 <body>
-  <div class="glass">
-    <h1 class="title"> Login Pages </h1>
+  <div class="card">
+    <h2 id="title">Login</h2>
 
     <form id="loginForm">
-      <input type="text" id="loginUser" placeholder="Username" required />
-      <input type="password" id="loginPass" placeholder="Password" required />
-      <button class="btn" type="submit">Login</button>
-      <div class="switch" id="showRegister">Create account →</div>
+      <input type="text" id="loginUser" placeholder="Username" required>
+      <input type="password" id="loginPass" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <div class="switch" id="showRegister">Create account</div>
     </form>
 
     <form id="registerForm" class="hidden">
-      <input type="text" id="regUser" placeholder="Create username" required />
-      <input type="password" id="regPass" placeholder="Create password" required />
-      <input type="password" id="regConfirm" placeholder="Confirm password" required />
-      <button class="btn" type="submit">Register</button>
-      <div class="switch" id="showLogin">← Back to login</div>
+      <input type="text" id="regUser" placeholder="Create username" required>
+      <input type="password" id="regPass" placeholder="Create password" required>
+      <input type="password" id="regConfirm" placeholder="Confirm password" required>
+      <button type="submit">Register</button>
+      <div class="switch" id="showLogin">Back to Login</div>
     </form>
-
-    <div id="welcome" class="hidden welcome"></div>
-
-    <div class="particles" id="particles"></div>
   </div>
 
   <script>
@@ -164,16 +130,27 @@
     const registerForm = document.getElementById("registerForm");
     const showRegister = document.getElementById("showRegister");
     const showLogin = document.getElementById("showLogin");
-    const welcome = document.getElementById("welcome");
+    const title = document.getElementById("title");
 
     showRegister.onclick = () => {
       loginForm.classList.add("hidden");
       registerForm.classList.remove("hidden");
+      title.textContent = "Register";
     };
     showLogin.onclick = () => {
       registerForm.classList.add("hidden");
       loginForm.classList.remove("hidden");
+      title.textContent = "Login";
     };
+
+    function showMessage(text, color="#22c55e") {
+      const msg = document.createElement("div");
+      msg.className = "msg";
+      msg.style.background = color;
+      msg.textContent = text;
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 2000);
+    }
 
     // Register
     registerForm.addEventListener("submit", e => {
@@ -181,11 +158,11 @@
       const user = regUser.value.trim();
       const pass = regPass.value;
       const confirm = regConfirm.value;
-      if (pass !== confirm) return alert("Passwords do not match!");
-      if (localStorage.getItem(user)) return alert("Username already exists!");
+      if (pass !== confirm) return showMessage("Passwords do not match!", "#ef4444");
+      if (localStorage.getItem(user)) return showMessage("Username already exists!", "#ef4444");
       localStorage.setItem(user, pass);
-      alert("Registered successfully!");
-      showLogin.click();
+      showMessage("Register successful!");
+      setTimeout(() => (window.location.href = "proje.html"), 1800);
     });
 
     // Login
@@ -194,43 +171,12 @@
       const user = loginUser.value.trim();
       const pass = loginPass.value;
       const saved = localStorage.getItem(user);
-      if (!saved) return alert("User not found!");
-      if (saved !== pass) return alert("Wrong password!");
+      if (!saved) return showMessage("User not found!", "#ef4444");
+      if (saved !== pass) return showMessage("Wrong password!", "#ef4444");
       localStorage.setItem("currentUser", user);
-      showWelcome(user);
+      showMessage("Login successful!");
+      setTimeout(() => (window.location.href = "proje.html"), 1800);
     });
-
-    window.addEventListener("load", () => {
-      const user = localStorage.getItem("currentUser");
-      if (user) showWelcome(user);
-      generateParticles();
-    });
-
-    function showWelcome(user) {
-      loginForm.classList.add("hidden");
-      registerForm.classList.add("hidden");
-      welcome.classList.remove("hidden");
-      welcome.innerHTML = `Welcome back, <b>${user}</b> <br><br><button class="btn" onclick="logout()">Logout</button>`;
-    }
-    function logout() {
-      localStorage.removeItem("currentUser");
-      welcome.classList.add("hidden");
-      loginForm.classList.remove("hidden");
-    }
-
-    // Fun floating particles ✨
-    function generateParticles() {
-      const container = document.getElementById("particles");
-      for (let i = 0; i < 25; i++) {
-        const p = document.createElement("div");
-        p.classList.add("particle");
-        const size = Math.random() * 8 + 4;
-        p.style.width = p.style.height = `${size}px`;
-        p.style.left = `${Math.random() * 100}%`;
-        p.style.animationDelay = `${Math.random() * 8}s`;
-        container.appendChild(p);
-      }
-    }
   </script>
 </body>
 </html>
