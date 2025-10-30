@@ -17,8 +17,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    color: #ffeb3b;
     overflow: hidden;
-    color: white;
   }
   h1 {
     margin-top: 20px;
@@ -29,7 +29,6 @@
     from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
     to { text-shadow: 0 0 30px #fff, 0 0 40px #2575fc; }
   }
-
   .groups {
     display: flex;
     gap: 30px;
@@ -41,16 +40,20 @@
     padding: 10px 20px;
     text-align: center;
     box-shadow: 0 0 10px rgba(255,255,255,0.3);
-    transition: transform 0.3s;
+    transition: transform 0.3s, background 0.5s;
   }
-  .group:hover {
-    transform: scale(1.1);
+  .group.active {
+    background: rgba(255,255,255,0.4);
+    transform: scale(1.15);
   }
   .score {
     font-size: 1.5em;
     color: #ffeb3b;
+    transition: all 0.5s ease;
   }
-
+  .score.change {
+    animation: pop 0.8s ease;
+  }
   .quiz {
     background: rgba(255,255,255,0.15);
     border-radius: 25px;
@@ -108,7 +111,7 @@
   <div class="group" id="g3">Group 3<br><span class="score" id="s3">0</span></div>
 </div>
 
-<div class="timer" id="timer">⏱️ 45</div>
+<div class="timer" id="timer">⏱️ 30</div>
 
 <div class="quiz" id="quiz">
   <h2 id="question">Loading question...</h2>
@@ -129,19 +132,35 @@ const questions = [
 ];
 
 let current = 0;
-let score1 = 0, score2 = 0, score3 = 0;
-let timer = 45;
+let timer = 30;
 let interval;
+let currentGroup = 1;
+let scores = [0, 0, 0];
+
+function highlightGroup() {
+  document.querySelectorAll('.group').forEach(g => g.classList.remove('active'));
+  document.getElementById("g" + currentGroup).classList.add("active");
+}
 
 function startTimer() {
+  clearInterval(interval);
+  timer = 30;
+  document.getElementById("timer").textContent = "⏱️ " + timer;
   interval = setInterval(() => {
     timer--;
     document.getElementById("timer").textContent = "⏱️ " + timer;
-    if (timer <= 0) endGame("⏰ Time’s up!");
+    if (timer <= 0) {
+      clearInterval(interval);
+      wrongAnswerTimeout();
+    }
   }, 1000);
 }
 
 function showQuestion() {
+  if (current >= questions.length) {
+    return endGame("🎉 All questions done!");
+  }
+  highlightGroup();
   const q = questions[current];
   document.getElementById("question").textContent = q.q;
   const ansDiv = document.getElementById("answers");
@@ -152,40 +171,72 @@ function showQuestion() {
     btn.onclick = () => checkAnswer(i);
     ansDiv.appendChild(btn);
   });
+  document.getElementById("msg").textContent = "";
+  startTimer();
+}
+
+function updateScoreDisplay() {
+  for (let i = 1; i <= 3; i++) {
+    const scoreEl = document.getElementById("s" + i);
+    scoreEl.textContent = scores[i-1];
+    scoreEl.classList.add("change");
+    setTimeout(() => scoreEl.classList.remove("change"), 800);
+  }
+}
+
+function nextGroup() {
+  currentGroup++;
+  if (currentGroup > 3) currentGroup = 1;
 }
 
 function checkAnswer(i) {
+  clearInterval(interval);
   const msg = document.getElementById("msg");
-  if (i === questions[current].correct) {
-    msg.textContent = "✅ Correct! +150 points";
+  const q = questions[current];
+  if (i === q.correct) {
+    msg.textContent = "✅ Correct! +150 points for Group " + currentGroup;
     msg.style.color = "#00ff7f";
-    score1 += 150;
-    document.getElementById("s1").textContent = score1;
-    current++;
-    if (current < questions.length) {
-      setTimeout(() => { msg.textContent = ""; showQuestion(); }, 1000);
-    } else {
-      endGame("🎉 All questions done! Group 1 total: " + score1);
-    }
+    scores[currentGroup - 1] += 150;
   } else {
-    msg.textContent = "❌ Wrong! Game Over!";
+    msg.textContent = "❌ Wrong! -150 points for Group " + currentGroup;
     msg.style.color = "#ff4444";
-    setTimeout(() => endGame("❌ Wrong answer!"), 1000);
+    scores[currentGroup - 1] -= 150;
   }
+  updateScoreDisplay();
+  current++;
+  nextGroup();
+  setTimeout(() => showQuestion(), 1500);
+}
+
+function wrongAnswerTimeout() {
+  const msg = document.getElementById("msg");
+  msg.textContent = "⏰ Time’s up! -150 points for Group " + currentGroup;
+  msg.style.color = "#ff4444";
+  scores[currentGroup - 1] -= 150;
+  updateScoreDisplay();
+  current++;
+  nextGroup();
+  setTimeout(() => showQuestion(), 1500);
 }
 
 function endGame(text) {
   clearInterval(interval);
-  document.getElementById("quiz").innerHTML = `<h2>${text}</h2>`;
+  let winner = Math.max(...scores);
+  let winnerGroup = scores.indexOf(winner) + 1;
+  document.getElementById("quiz").innerHTML = `
+    <h2>${text}</h2>
+    <h3>🏆 Winner: Group ${winnerGroup} with ${winner} points! 🏆</h3>
+  `;
 }
 
 window.onload = () => {
   showQuestion();
-  startTimer();
 };
 </script>
+
 </body>
 </html>
+
 
 
 
