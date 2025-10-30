@@ -82,6 +82,14 @@
     transform: scale(1.1);
     box-shadow: 0 0 20px #fff;
   }
+  #startBtn {
+    animation: pulse 1.5s infinite alternate;
+    font-size: 1.3em;
+  }
+  @keyframes pulse {
+    from { transform: scale(1); box-shadow: 0 0 10px #fff; }
+    to { transform: scale(1.2); box-shadow: 0 0 25px #ffeb3b; }
+  }
   .timer {
     font-size: 1.5em;
     margin-top: 10px;
@@ -109,10 +117,11 @@
   <div class="group" id="g3">Group 3<br><span class="score" id="s3">0</span></div>
 </div>
 
-<div class="timer" id="timer">⏱️ 30</div>
+<div class="timer" id="timer">⏱️ 45</div>
 
 <div class="quiz" id="quiz">
-  <h2 id="question">Loading question...</h2>
+  <button id="startBtn">🎬 Soruya Başla</button>
+  <h2 id="question" style="display:none;">Loading question...</h2>
   <div id="answers"></div>
   <div class="message" id="msg"></div>
 </div>
@@ -126,26 +135,29 @@
 const questions = [
   {q: "Choose the correct sentence:", a: ["I goes to school every day.", "I go to school every day.", "I going to school every day.", "I gone to school every day."], correct: 1},
   {q: "Find the correct sentence:", a: ["She don’t like apples.", "She doesn’t likes apples.", "She doesn’t like apples.", "She not like apples."], correct: 2},
-  {q: "Choose the right sentence:", a: ["They was playing football yesterday.", "They were play football yesterday.", "They were playing football yesterday.", "They plays football yesterday."], correct: 2},
   {q: "I often do my homework after ______.", a: ["sleeping", "sleep", "slept", "sleeps"], correct: 0},
-  {q: "If it ______ tomorrow, we will stay at home.", a: ["rain", "rains", "raining", "will rain"], correct: 1},
   {q: "My mother ______ dinner when I got home.", a: ["cooked", "was cooking", "is cooking", "cooks"], correct: 1},
-  {q: "I have never ______ to London.", a: ["be", "been", "being", "was"], correct: 1},
-  {q: "She is ______ than her sister.", a: ["beautiful", "more beautiful", "most beautiful", "beautifuller"], correct: 1},
+  {q: "If it ______ tomorrow, we will stay at home.", a: ["rain", "rains", "raining", "will rain"], correct: 1},
   {q: "We ______ English for five years.", a: ["study", "studied", "have studied", "are studying"], correct: 2},
-  {q: "If I ______ enough money, I would buy a car.", a: ["have", "had", "has", "having"], correct: 1},
-  {q: "He asked me where I ______ from.", a: ["come", "comes", "came", "coming"], correct: 2},
   {q: "By the time we arrived, the film ______.", a: ["starts", "had started", "start", "started"], correct: 1},
   {q: "She said she ______ busy that day.", a: ["is", "was", "were", "be"], correct: 1},
-  {q: "I wish I ______ taller.", a: ["am", "was", "were", "be"], correct: 2},
   {q: "When I was a child, I ______ play outside a lot.", a: ["use to", "used to", "uses to", "using to"], correct: 1}
 ];
 
 let current = 0;
-let timer = 30;
+let timer = 45;
 let interval;
 let currentGroup = 1;
 let scores = [0, 0, 0];
+
+const startBtn = document.getElementById("startBtn");
+const questionEl = document.getElementById("question");
+
+startBtn.addEventListener("click", () => {
+  startBtn.style.display = "none";
+  questionEl.style.display = "block";
+  showQuestion();
+});
 
 function highlightGroup() {
   document.querySelectorAll('.group').forEach(g => g.classList.remove('active'));
@@ -154,7 +166,7 @@ function highlightGroup() {
 
 function startTimer() {
   clearInterval(interval);
-  timer = 30;
+  timer = 45;
   document.getElementById("timer").textContent = "⏱️ " + timer;
   interval = setInterval(() => {
     timer--;
@@ -235,7 +247,7 @@ function checkAnswer(i) {
   updateScoreDisplay();
   current++;
   nextGroup();
-  setTimeout(() => showQuestion(), 1800);
+  setTimeout(() => { msg.textContent = ""; showStartButton(); }, 2000);
 }
 
 function wrongAnswerTimeout() {
@@ -247,7 +259,13 @@ function wrongAnswerTimeout() {
   playSound("wrong");
   current++;
   nextGroup();
-  setTimeout(() => showQuestion(), 1800);
+  setTimeout(() => { msg.textContent = ""; showStartButton(); }, 2000);
+}
+
+function showStartButton() {
+  document.getElementById("answers").innerHTML = "";
+  document.getElementById("question").textContent = "";
+  startBtn.style.display = "inline-block";
 }
 
 function endGame(text) {
@@ -261,15 +279,9 @@ function endGame(text) {
   `;
 }
 
-window.onload = () => {
-  showQuestion();
-};
 </script>
-
 </body>
 </html>
-
-
 
 
 
