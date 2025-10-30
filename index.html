@@ -23,7 +23,6 @@
     100% { background-position: 100% 50%; }
   }
 
-  /* Tema butonu */
   .theme-toggle {
     position: absolute;
     top: 20px;
@@ -35,7 +34,6 @@
   }
   .theme-toggle:hover { transform: rotate(20deg) scale(1.2); }
 
-  /* Tema paleti */
   .theme-palette {
     position: absolute;
     top: 60px;
@@ -87,10 +85,6 @@
     text-shadow: 0 0 8px rgba(255,255,255,0.4);
   }
 
-  form {
-    transition: all 0.6s ease;
-  }
-
   input {
     width: 100%;
     padding: 0.7rem;
@@ -136,10 +130,7 @@
     transition: 0.6s;
   }
 
-  button:hover::before {
-    left: 100%;
-  }
-
+  button:hover::before { left: 100%; }
   button:hover {
     transform: scale(1.05);
     background: linear-gradient(90deg, #818cf8, #a78bfa);
@@ -152,7 +143,6 @@
     color: #cbd5e1;
     transition: color 0.3s, transform 0.3s;
   }
-
   .switch:hover {
     color: #fff;
     transform: scale(1.1);
@@ -164,26 +154,38 @@
     pointer-events: none;
   }
 
+  /* Mesajlar */
   .msg {
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
     padding: 0.7rem 1.5rem;
-    border-radius: 6px;
-    background: rgba(34,197,94,0.9);
+    border-radius: 8px;
     color: #fff;
-    font-weight: 500;
-    font-size: 0.95rem;
+    font-weight: 600;
+    font-size: 1rem;
     opacity: 0;
-    animation: slideDown 2s ease forwards;
+    animation: slideDown 2.5s ease forwards;
+    text-shadow: 0 0 8px rgba(255,255,255,0.3);
   }
 
   @keyframes slideDown {
-    0% { opacity: 0; transform: translate(-50%, -30px); }
+    0% { opacity: 0; transform: translate(-50%, -40px); }
     20% { opacity: 1; transform: translate(-50%, 0); }
-    80% { opacity: 1; }
-    100% { opacity: 0; transform: translate(-50%, -30px); }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -40px); }
+  }
+
+  /* "This Account Already Exists!" özel efekti */
+  .shake {
+    animation: shake 0.6s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translate(-50%, 0); }
+    20%, 60% { transform: translate(-50%, -5px); }
+    40%, 80% { transform: translate(-50%, 5px); }
   }
 </style>
 </head>
@@ -225,12 +227,10 @@
     const themeToggle = document.querySelector(".theme-toggle");
     const palette = document.getElementById("palette");
 
-    // Tema menüsünü aç/kapat
     themeToggle.onclick = () => {
       palette.style.display = palette.style.display === "flex" ? "none" : "flex";
     };
 
-    // Tema rengi değiştir
     document.querySelectorAll(".theme-color").forEach(c => {
       c.addEventListener("click", () => {
         const colors = c.getAttribute("data-colors").split(",");
@@ -250,13 +250,14 @@
       title.textContent = "Login";
     };
 
-    function showMessage(text, color="#22c55e") {
+    function showMessage(text, color="#22c55e", shake=false) {
       const msg = document.createElement("div");
       msg.className = "msg";
+      if (shake) msg.classList.add("shake");
       msg.style.background = color;
       msg.textContent = text;
       document.body.appendChild(msg);
-      setTimeout(() => msg.remove(), 2000);
+      setTimeout(() => msg.remove(), 2500);
     }
 
     registerForm.addEventListener("submit", e => {
@@ -264,10 +265,12 @@
       const user = regUser.value.trim();
       const pass = regPass.value;
       const confirm = regConfirm.value;
-      if (pass !== confirm) return showMessage("Passwords do not match!", "#ef4444");
-      if (localStorage.getItem(user)) return showMessage("Username already exists!", "#ef4444");
+
+      if (pass !== confirm) return showMessage("Passwords do not match!", "#ef4444", true);
+      if (localStorage.getItem(user)) return showMessage("⚠️ This Account Already Exists!", "#ef4444", true);
+
       localStorage.setItem(user, pass);
-      showMessage("Register successful!");
+      showMessage("✅ Register successful!");
       setTimeout(() => (window.location.href = "proje.html"), 1800);
     });
 
@@ -276,16 +279,15 @@
       const user = loginUser.value.trim();
       const pass = loginPass.value;
       const saved = localStorage.getItem(user);
-      if (!saved) return showMessage("User not found!", "#ef4444");
-      if (saved !== pass) return showMessage("Wrong password!", "#ef4444");
+      if (!saved) return showMessage("User not found!", "#ef4444", true);
+      if (saved !== pass) return showMessage("Wrong password!", "#ef4444", true);
       localStorage.setItem("currentUser", user);
-      showMessage("Login successful!");
+      showMessage("✅ Login successful!");
       setTimeout(() => (window.location.href = "proje.html"), 1800);
     });
   </script>
 </body>
 </html>
-
 
 
 
