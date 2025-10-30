@@ -278,11 +278,26 @@ function endGame(text) {
     <h3>🏆 Winner: Group ${winnerGroup} with ${winner} points! 🏆</h3>
   `;
 }
+ 
 
 </script>
 </body>
 </html>
+// Oturum açık kullanıcıyı direkt proje.html'e yönlendir
+const currentUser = localStorage.getItem("currentUser");
+if (currentUser) {
+  window.location.href = "proje.html";
 
+
+if (currentQuestionIndex >= questions.length) {
+   // Soru bitti ama burada "başla" butonunu gösteriyor
+}
+</script>
+</body>
+</html>
+if (currentQuestionIndex >= questions.length) {
+  showScore(); // ✅ direk skoru göster
+}
 
 
 
