@@ -3,12 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6th Grade English Quiz</title>
+<title>6th Grade English Quiz - Advanced</title>
 <style>
-  * {
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-  }
+  * { box-sizing: border-box; font-family: "Poppins", sans-serif; }
   body {
     margin: 0;
     height: 100vh;
@@ -19,6 +16,7 @@
     justify-content: flex-start;
     color: #ffeb3b;
     overflow: hidden;
+    transition: background 1s ease;
   }
   h1 {
     margin-top: 20px;
@@ -40,7 +38,7 @@
     padding: 10px 20px;
     text-align: center;
     box-shadow: 0 0 10px rgba(255,255,255,0.3);
-    transition: transform 0.3s, background 0.5s;
+    transition: all 0.5s ease;
   }
   .group.active {
     background: rgba(255,255,255,0.4);
@@ -103,7 +101,7 @@
 </head>
 <body>
 
-<h1>🎯 6th Grade English Quiz 🎯</h1>
+<h1>🎯 6th Grade English Quiz - Advanced 🎯</h1>
 
 <div class="groups">
   <div class="group" id="g1">Group 1<br><span class="score" id="s1">0</span></div>
@@ -119,16 +117,28 @@
   <div class="message" id="msg"></div>
 </div>
 
+<!-- Ses efektleri -->
+<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_960f24d6c4.mp3?filename=correct-2-46134.mp3"></audio>
+<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8a8f7a7a85.mp3?filename=wrong-answer-126515.mp3"></audio>
+<audio id="endSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2bdf00c247.mp3?filename=success-1-6297.mp3"></audio>
+
 <script>
 const questions = [
-  {q: "How do you say 'Merhaba' in English?", a: ["Hello", "Bye", "Thanks", "Goodbye"], correct: 0},
-  {q: "Which one means 'Arkadaş'?", a: ["Book", "Friend", "Teacher", "School"], correct: 1},
-  {q: "What is the opposite of 'Big'?", a: ["Large", "Tall", "Small", "Huge"], correct: 2},
-  {q: "Which one means 'Oyun'?", a: ["Game", "Food", "Bag", "Pen"], correct: 0},
-  {q: "What time is 'It’s seven o’clock'?", a: ["6:00", "7:00", "8:00", "9:00"], correct: 1},
-  {q: "Which sentence is correct?", a: ["She go to school", "She goes to school", "She going school", "She to go school"], correct: 1},
-  {q: "What does 'Hobby' mean?", a: ["Oyun", "Meslek", "Hobi", "Ev"], correct: 2},
-  {q: "What is 'City'?", a: ["Köy", "Şehir", "Ülke", "Kasaba"], correct: 1}
+  {q: "Choose the correct sentence:", a: ["I goes to school every day.", "I go to school every day.", "I going to school every day.", "I gone to school every day."], correct: 1},
+  {q: "Find the correct sentence:", a: ["She don’t like apples.", "She doesn’t likes apples.", "She doesn’t like apples.", "She not like apples."], correct: 2},
+  {q: "Choose the right sentence:", a: ["They was playing football yesterday.", "They were play football yesterday.", "They were playing football yesterday.", "They plays football yesterday."], correct: 2},
+  {q: "I often do my homework after ______.", a: ["sleeping", "sleep", "slept", "sleeps"], correct: 0},
+  {q: "If it ______ tomorrow, we will stay at home.", a: ["rain", "rains", "raining", "will rain"], correct: 1},
+  {q: "My mother ______ dinner when I got home.", a: ["cooked", "was cooking", "is cooking", "cooks"], correct: 1},
+  {q: "I have never ______ to London.", a: ["be", "been", "being", "was"], correct: 1},
+  {q: "She is ______ than her sister.", a: ["beautiful", "more beautiful", "most beautiful", "beautifuller"], correct: 1},
+  {q: "We ______ English for five years.", a: ["study", "studied", "have studied", "are studying"], correct: 2},
+  {q: "If I ______ enough money, I would buy a car.", a: ["have", "had", "has", "having"], correct: 1},
+  {q: "He asked me where I ______ from.", a: ["come", "comes", "came", "coming"], correct: 2},
+  {q: "By the time we arrived, the film ______.", a: ["starts", "had started", "start", "started"], correct: 1},
+  {q: "She said she ______ busy that day.", a: ["is", "was", "were", "be"], correct: 1},
+  {q: "I wish I ______ taller.", a: ["am", "was", "were", "be"], correct: 2},
+  {q: "When I was a child, I ______ play outside a lot.", a: ["use to", "used to", "uses to", "using to"], correct: 1}
 ];
 
 let current = 0;
@@ -156,10 +166,22 @@ function startTimer() {
   }, 1000);
 }
 
+function randomBackground() {
+  const colors = [
+    "linear-gradient(135deg, #ff6ec4, #7873f5)",
+    "linear-gradient(135deg, #ff9a9e, #fad0c4)",
+    "linear-gradient(135deg, #6a11cb, #2575fc)",
+    "linear-gradient(135deg, #f7971e, #ffd200)",
+    "linear-gradient(135deg, #43cea2, #185a9d)"
+  ];
+  document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
+}
+
 function showQuestion() {
   if (current >= questions.length) {
     return endGame("🎉 All questions done!");
   }
+  randomBackground();
   highlightGroup();
   const q = questions[current];
   document.getElementById("question").textContent = q.q;
@@ -189,6 +211,12 @@ function nextGroup() {
   if (currentGroup > 3) currentGroup = 1;
 }
 
+function playSound(type) {
+  if (type === "correct") document.getElementById("correctSound").play();
+  if (type === "wrong") document.getElementById("wrongSound").play();
+  if (type === "end") document.getElementById("endSound").play();
+}
+
 function checkAnswer(i) {
   clearInterval(interval);
   const msg = document.getElementById("msg");
@@ -197,15 +225,17 @@ function checkAnswer(i) {
     msg.textContent = "✅ Correct! +150 points for Group " + currentGroup;
     msg.style.color = "#00ff7f";
     scores[currentGroup - 1] += 150;
+    playSound("correct");
   } else {
     msg.textContent = "❌ Wrong! -150 points for Group " + currentGroup;
     msg.style.color = "#ff4444";
     scores[currentGroup - 1] -= 150;
+    playSound("wrong");
   }
   updateScoreDisplay();
   current++;
   nextGroup();
-  setTimeout(() => showQuestion(), 1500);
+  setTimeout(() => showQuestion(), 1800);
 }
 
 function wrongAnswerTimeout() {
@@ -214,13 +244,15 @@ function wrongAnswerTimeout() {
   msg.style.color = "#ff4444";
   scores[currentGroup - 1] -= 150;
   updateScoreDisplay();
+  playSound("wrong");
   current++;
   nextGroup();
-  setTimeout(() => showQuestion(), 1500);
+  setTimeout(() => showQuestion(), 1800);
 }
 
 function endGame(text) {
   clearInterval(interval);
+  playSound("end");
   let winner = Math.max(...scores);
   let winnerGroup = scores.indexOf(winner) + 1;
   document.getElementById("quiz").innerHTML = `
@@ -236,6 +268,7 @@ window.onload = () => {
 
 </body>
 </html>
+
 
 
 
