@@ -154,7 +154,6 @@
     pointer-events: none;
   }
 
-  /* Mesajlar */
   .msg {
     position: fixed;
     top: 20px;
@@ -177,7 +176,6 @@
     100% { opacity: 0; transform: translate(-50%, -40px); }
   }
 
-  /* "This Account Already Exists!" özel efekti */
   .shake {
     animation: shake 0.6s ease;
   }
@@ -227,6 +225,7 @@
     const themeToggle = document.querySelector(".theme-toggle");
     const palette = document.getElementById("palette");
 
+    // Tema menüsü
     themeToggle.onclick = () => {
       palette.style.display = palette.style.display === "flex" ? "none" : "flex";
     };
@@ -235,19 +234,37 @@
       c.addEventListener("click", () => {
         const colors = c.getAttribute("data-colors").split(",");
         document.body.style.background = `linear-gradient(120deg, ${colors[0]}, ${colors[1]})`;
+        localStorage.setItem("themeColors", JSON.stringify(colors));
         palette.style.display = "none";
       });
     });
+
+    // Son seçilen tema yükle
+    const savedTheme = localStorage.getItem("themeColors");
+    if (savedTheme) {
+      const [c1, c2] = JSON.parse(savedTheme);
+      document.body.style.background = `linear-gradient(120deg, ${c1}, ${c2})`;
+    }
+
+    // Form durumu kaydet / yükle
+    const savedForm = localStorage.getItem("currentForm") || "login";
+    if (savedForm === "register") {
+      loginForm.classList.add("hidden");
+      registerForm.classList.remove("hidden");
+      title.textContent = "Register";
+    }
 
     showRegister.onclick = () => {
       loginForm.classList.add("hidden");
       registerForm.classList.remove("hidden");
       title.textContent = "Register";
+      localStorage.setItem("currentForm", "register");
     };
     showLogin.onclick = () => {
       registerForm.classList.add("hidden");
       loginForm.classList.remove("hidden");
       title.textContent = "Login";
+      localStorage.setItem("currentForm", "login");
     };
 
     function showMessage(text, color="#22c55e", shake=false) {
@@ -288,6 +305,7 @@
   </script>
 </body>
 </html>
+
 
 
 
