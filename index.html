@@ -33,6 +33,34 @@
       transition: 0.6s ease-in-out;
     }
 
+    /* 🔔 Mesaj kutusu */
+    .message {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #667eea;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.6s ease;
+    }
+
+    .message.show {
+      top: 15px;
+      opacity: 1;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(102,126,234,0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(102,126,234,0); }
+      100% { box-shadow: 0 0 0 0 rgba(102,126,234,0); }
+    }
+
     .top-section {
       text-align: center;
       margin-bottom: 1rem;
@@ -123,6 +151,8 @@
 </head>
 <body>
   <div class="container" id="container">
+    <div class="message" id="messageBox"></div>
+
     <div class="top-section" id="topSection">
       <h2>Hoş geldin!</h2>
       <p>Hesabına giriş yap ya da hemen kayıt ol.</p>
@@ -151,12 +181,24 @@
   </div>
 
   <script>
+    const messageBox = document.getElementById("messageBox");
     const topSection = document.getElementById("topSection");
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
     const showRegister = document.getElementById("showRegister");
     const showLogin = document.getElementById("showLogin");
 
+    // 🔔 Mesaj gösterme fonksiyonu
+    function showMessage(text, color = "#667eea") {
+      messageBox.textContent = text;
+      messageBox.style.background = color;
+      messageBox.classList.add("show");
+      setTimeout(() => {
+        messageBox.classList.remove("show");
+      }, 2500);
+    }
+
+    // Form geçişleri
     showRegister.addEventListener("click", () => {
       loginForm.style.display = "none";
       registerForm.style.display = "flex";
@@ -188,13 +230,13 @@
       const existing = users.find((u) => u.email === email);
 
       if (existing) {
-        alert("Bu e-posta zaten kayıtlı!");
+        showMessage("Bu e-posta zaten kayıtlı!", "#e53e3e");
         return;
       }
 
       users.push({ name, email, password });
       localStorage.setItem("users", JSON.stringify(users));
-      alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
+      showMessage("Kayıt başarılı! Şimdi giriş yap.", "#38a169");
       showLogin.click();
     });
 
@@ -209,15 +251,18 @@
 
       if (user) {
         localStorage.setItem("activeUser", JSON.stringify(user));
-        alert(`Hoş geldin, ${user.name}!`);
-        window.location.href = "proje.html";
+        showMessage(`Hoş geldin, ${user.name}!`, "#38a169");
+        setTimeout(() => {
+          window.location.href = "proje.html";
+        }, 1500);
       } else {
-        alert("E-posta veya şifre hatalı!");
+        showMessage("E-posta veya şifre hatalı!", "#e53e3e");
       }
     });
   </script>
 </body>
 </html>
+
 
 
 
