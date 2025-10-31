@@ -81,7 +81,7 @@
 </head>
 <body>
 
-<h1>🎯 6th Grade - Unit 3: In the Classroom</h1>
+<h1>🏆 6th Grade / Unit 3: In the Classroom</h1>
 
 <div class="groups">
   <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
@@ -141,7 +141,7 @@ function startTimer(){
 
 function startQuestion(){
   if(current >= questions.length){
-    document.getElementById("quiz").innerHTML = `<h2>🎉 Quiz Bitti! 🎉<br>Group 1: ${scores[0]} | Group 2: ${scores[1]} | Group 3: ${scores[2]}</h2>`;
+    document.getElementById("quiz").innerHTML = `<h2>🎉 Finish Quiz 🎉<br>Group 1: ${scores[0]} | Group 2: ${scores[1]} | Group 3: ${scores[2]}</h2>`;
     localStorage.clear();
     return;
   }
@@ -162,7 +162,7 @@ function checkAnswer(i){
   const msg = document.getElementById("msg");
   if(i===q.correct){
     document.getElementById("correctSound").play();
-    msg.textContent = "✅ Correct! +150 points";
+    msg.textContent = "✅ Doğru! 150 Puan Kazandın.";
     msg.style.color = "#00ff7f";
     scores[groupTurn] += 150;
   } else {
@@ -175,7 +175,7 @@ function checkAnswer(i){
 function wrongAnswer(timeOut){
   document.getElementById("wrongSound").play();
   const msg = document.getElementById("msg");
-  msg.textContent = timeOut ? "⏰ Süre Bitti! -150" : "❌ Wrong! -150";
+  msg.textContent = timeOut ? "⌚ Süre Bitti -150" : "❌ Yanlış! -150 Puan Kaybettin.";
   msg.style.color = "#ff4444";
   scores[groupTurn] -= 150;
   next();
@@ -190,7 +190,7 @@ function next(){
   document.getElementById("s2").textContent = scores[1];
   document.getElementById("s3").textContent = scores[2];
   setTimeout(()=>{
-    document.getElementById("quiz").innerHTML = `<button id='startBtn' onclick='startQuestion()'>🎬 Soruya Başla</button>`;
+    document.getElementById("quiz").innerHTML = `<button id='startBtn' onclick='startQuestion()'>🚀 Soruya Başla</button>`;
   },1500);
 }
 
@@ -202,6 +202,7 @@ window.onload = ()=>{
 </script>
 </body>
 </html>
+
 
 
 
