@@ -3,283 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6th Grade English Quiz - Advanced</title>
+<title>🎯 6th Grade Unit 3 English Quiz</title>
 <style>
   * { box-sizing: border-box; font-family: "Poppins", sans-serif; }
   body {
-    margin: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    color: #ffeb3b;
-    overflow: hidden;
-    transition: background 1s ease;
+    margin: 0; height: 100vh;
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #fff; overflow: hidden;
+    animation: gradientShift 10s ease infinite;
+    background-size: 200% 200%;
   }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
   h1 {
-    margin-top: 20px;
-    font-size: 2.5em;
+    font-size: 2.3em;
+    text-shadow: 0 0 20px #fff, 0 0 40px #ffeb3b;
     animation: glow 2s infinite alternate;
   }
   @keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
-    to { text-shadow: 0 0 30px #fff, 0 0 40px #2575fc; }
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #4e54c8; }
+    to { text-shadow: 0 0 25px #fff, 0 0 45px #8f94fb; }
   }
+
   .groups {
-    display: flex;
-    gap: 30px;
-    margin: 20px;
+    display: flex; gap: 25px; margin-bottom: 20px;
   }
   .group {
-    background: rgba(255,255,255,0.2);
-    border-radius: 15px;
-    padding: 10px 20px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(255,255,255,0.3);
-    transition: all 0.5s ease;
-  }
-  .group.active {
-    background: rgba(255,255,255,0.4);
-    transform: scale(1.15);
-  }
-  .score {
-    font-size: 1.5em;
-    color: #ffeb3b;
-    transition: all 0.5s ease;
-  }
-  .score.change {
-    animation: pop 0.8s ease;
-  }
-  .quiz {
     background: rgba(255,255,255,0.15);
+    padding: 10px 20px; border-radius: 15px;
+    box-shadow: 0 0 10px rgba(255,255,255,0.3);
+  }
+  .score { font-size: 1.3em; color: #ffeb3b; }
+
+  .quiz {
+    background: rgba(255,255,255,0.2);
     border-radius: 25px;
     padding: 30px;
-    width: 80%;
+    width: 90%;
     max-width: 600px;
     text-align: center;
-    margin-top: 20px;
     box-shadow: 0 0 30px rgba(0,0,0,0.3);
-    animation: slideIn 1s ease;
+    animation: fadeIn 1s ease;
   }
-  @keyframes slideIn {
-    from { transform: translateY(100vh); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
+  @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
   button {
     background: linear-gradient(45deg, #ff6ec4, #7873f5);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    padding: 12px 25px;
-    margin: 8px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: all 0.3s;
+    border: none; border-radius: 12px;
+    color: white; padding: 12px 25px;
+    margin: 8px; font-size: 1.1em;
+    cursor: pointer; transition: all 0.3s;
   }
   button:hover {
     transform: scale(1.1);
     box-shadow: 0 0 20px #fff;
   }
+
+  .timer { font-size: 1.4em; margin-top: 10px; color: #ffeb3b; }
+  .message { font-size: 1.5em; margin-top: 15px; transition: 0.3s; }
+
   #startBtn {
-    animation: pulse 1.5s infinite alternate;
-    font-size: 1.3em;
+    animation: pulse 1.5s infinite;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
   }
   @keyframes pulse {
-    from { transform: scale(1); box-shadow: 0 0 10px #fff; }
-    to { transform: scale(1.2); box-shadow: 0 0 25px #ffeb3b; }
-  }
-  .timer {
-    font-size: 1.5em;
-    margin-top: 10px;
-    color: #ffeb3b;
-  }
-  .message {
-    font-size: 1.8em;
-    margin-top: 15px;
-    animation: pop 0.8s ease;
-  }
-  @keyframes pop {
-    0% { transform: scale(0); }
-    80% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    0% { transform: scale(1); box-shadow: 0 0 15px #00c6ff; }
+    50% { transform: scale(1.1); box-shadow: 0 0 25px #fff; }
+    100% { transform: scale(1); box-shadow: 0 0 15px #00c6ff; }
   }
 </style>
 </head>
 <body>
 
-<h1>🎯 6th Grade English Quiz - Advanced 🎯</h1>
+<h1>🎯 6th Grade - Unit 3: In the Classroom</h1>
 
 <div class="groups">
-  <div class="group" id="g1">Group 1<br><span class="score" id="s1">0</span></div>
-  <div class="group" id="g2">Group 2<br><span class="score" id="s2">0</span></div>
-  <div class="group" id="g3">Group 3<br><span class="score" id="s3">0</span></div>
+  <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
+  <div class="group">Group 2<br><span class="score" id="s2">0</span></div>
+  <div class="group">Group 3<br><span class="score" id="s3">0</span></div>
 </div>
 
-<div class="timer" id="timer">⏱️ 45</div>
+<div class="timer" id="timer">⏱️ 65</div>
 
 <div class="quiz" id="quiz">
-  <button id="startBtn">🎬 Soruya Başla</button>
-  <h2 id="question" style="display:none;">Loading question...</h2>
-  <div id="answers"></div>
-  <div class="message" id="msg"></div>
+  <button id="startBtn" onclick="startQuestion()">🎬 Soruya Başla</button>
 </div>
 
-<!-- Ses efektleri -->
-<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_960f24d6c4.mp3?filename=correct-2-46134.mp3"></audio>
-<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8a8f7a7a85.mp3?filename=wrong-answer-126515.mp3"></audio>
-<audio id="endSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2bdf00c247.mp3?filename=success-1-6297.mp3"></audio>
+<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_49e4b8a5d1.mp3" preload="auto"></audio>
+<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_43f97b8a7b.mp3" preload="auto"></audio>
 
 <script>
 const questions = [
-  {q: "Choose the correct sentence:", a: ["I goes to school every day.", "I go to school every day.", "I going to school every day.", "I gone to school every day."], correct: 1},
-  {q: "Find the correct sentence:", a: ["She don’t like apples.", "She doesn’t likes apples.", "She doesn’t like apples.", "She not like apples."], correct: 2},
-  {q: "I often do my homework after ______.", a: ["sleeping", "sleep", "slept", "sleeps"], correct: 0},
-  {q: "My mother ______ dinner when I got home.", a: ["cooked", "was cooking", "is cooking", "cooks"], correct: 1},
-  {q: "If it ______ tomorrow, we will stay at home.", a: ["rain", "rains", "raining", "will rain"], correct: 1},
-  {q: "We ______ English for five years.", a: ["study", "studied", "have studied", "are studying"], correct: 2},
-  {q: "By the time we arrived, the film ______.", a: ["starts", "had started", "start", "started"], correct: 1},
-  {q: "She said she ______ busy that day.", a: ["is", "was", "were", "be"], correct: 1},
-  {q: "When I was a child, I ______ play outside a lot.", a: ["use to", "used to", "uses to", "using to"], correct: 1}
+  {q: "I usually ______ my homework in the evening.", a: ["does", "do", "doing", "did"], correct: 1},
+  {q: "She always ______ to school by bus.", a: ["go", "goes", "going", "gone"], correct: 1},
+  {q: "They ______ breakfast at 7 o’clock.", a: ["have", "has", "having", "had"], correct: 0},
+  {q: "My father ______ TV after dinner.", a: ["watch", "watches", "watched", "watching"], correct: 1},
+  {q: "We ______ our teeth every morning.", a: ["brush", "brushes", "brushing", "brushed"], correct: 0},
+  {q: "I often ______ music before sleeping.", a: ["listen", "listens", "listened", "listening"], correct: 0},
+  {q: "Our teacher ______ English very well.", a: ["speak", "speaks", "speaking", "spoke"], correct: 1},
+  {q: "My mother ______ the dishes every night.", a: ["wash", "washes", "washing", "washed"], correct: 1},
+  {q: "He ______ football after school.", a: ["play", "plays", "played", "playing"], correct: 1},
+  {q: "I ______ to bed at ten o’clock.", a: ["go", "goes", "gone", "going"], correct: 0}
 ];
 
-let current = 0;
-let timer = 45;
+let current = parseInt(localStorage.getItem("currentQ")) || 0;
+let scores = [parseInt(localStorage.getItem("s1"))||0, parseInt(localStorage.getItem("s2"))||0, parseInt(localStorage.getItem("s3"))||0];
+let groupTurn = current % 3;
+let timer = 65;
 let interval;
-let currentGroup = 1;
-let scores = [0, 0, 0];
 
-const startBtn = document.getElementById("startBtn");
-const questionEl = document.getElementById("question");
-
-startBtn.addEventListener("click", () => {
-  startBtn.style.display = "none";
-  questionEl.style.display = "block";
-  showQuestion();
-});
-
-function highlightGroup() {
-  document.querySelectorAll('.group').forEach(g => g.classList.remove('active'));
-  document.getElementById("g" + currentGroup).classList.add("active");
+function saveProgress(){
+  localStorage.setItem("currentQ", current);
+  localStorage.setItem("s1", scores[0]);
+  localStorage.setItem("s2", scores[1]);
+  localStorage.setItem("s3", scores[2]);
 }
 
-function startTimer() {
+function startTimer(){
   clearInterval(interval);
-  timer = 45;
-  document.getElementById("timer").textContent = "⏱️ " + timer;
-  interval = setInterval(() => {
+  timer = 65;
+  document.getElementById("timer").textContent = "⏱️ 65";
+  interval = setInterval(()=>{
     timer--;
-    document.getElementById("timer").textContent = "⏱️ " + timer;
-    if (timer <= 0) {
+    document.getElementById("timer").textContent = "⏱️ "+timer;
+    if(timer<=0){
       clearInterval(interval);
-      wrongAnswerTimeout();
+      wrongAnswer(true);
     }
-  }, 1000);
+  },1000);
 }
 
-function randomBackground() {
-  const colors = [
-    "linear-gradient(135deg, #ff6ec4, #7873f5)",
-    "linear-gradient(135deg, #ff9a9e, #fad0c4)",
-    "linear-gradient(135deg, #6a11cb, #2575fc)",
-    "linear-gradient(135deg, #f7971e, #ffd200)",
-    "linear-gradient(135deg, #43cea2, #185a9d)"
-  ];
-  document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
-}
-
-function showQuestion() {
-  if (current >= questions.length) {
-    return endGame("🎉 All questions done!");
+function startQuestion(){
+  if(current >= questions.length){
+    document.getElementById("quiz").innerHTML = `<h2>🎉 Quiz Bitti! 🎉<br>Group 1: ${scores[0]} | Group 2: ${scores[1]} | Group 3: ${scores[2]}</h2>`;
+    localStorage.clear();
+    return;
   }
-  randomBackground();
-  highlightGroup();
   const q = questions[current];
-  document.getElementById("question").textContent = q.q;
-  const ansDiv = document.getElementById("answers");
-  ansDiv.innerHTML = "";
-  q.a.forEach((opt, i) => {
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = `<h2>${q.q}</h2><div id='answers'></div><div class='message' id='msg'></div>`;
+  q.a.forEach((opt,i)=>{
     const btn = document.createElement("button");
     btn.textContent = opt;
-    btn.onclick = () => checkAnswer(i);
-    ansDiv.appendChild(btn);
+    btn.onclick = ()=>checkAnswer(i);
+    document.getElementById("answers").appendChild(btn);
   });
-  document.getElementById("msg").textContent = "";
   startTimer();
 }
 
-function updateScoreDisplay() {
-  for (let i = 1; i <= 3; i++) {
-    const scoreEl = document.getElementById("s" + i);
-    scoreEl.textContent = scores[i-1];
-    scoreEl.classList.add("change");
-    setTimeout(() => scoreEl.classList.remove("change"), 800);
-  }
-}
-
-function nextGroup() {
-  currentGroup++;
-  if (currentGroup > 3) currentGroup = 1;
-}
-
-function playSound(type) {
-  if (type === "correct") document.getElementById("correctSound").play();
-  if (type === "wrong") document.getElementById("wrongSound").play();
-  if (type === "end") document.getElementById("endSound").play();
-}
-
-function checkAnswer(i) {
-  clearInterval(interval);
-  const msg = document.getElementById("msg");
+function checkAnswer(i){
   const q = questions[current];
-  if (i === q.correct) {
-    msg.textContent = "✅ Correct! +150 points for Group " + currentGroup;
-    msg.style.color = "#00ff7f";
-    scores[currentGroup - 1] += 150;
-    playSound("correct");
-  } else {
-    msg.textContent = "❌ Wrong! -150 points for Group " + currentGroup;
-    msg.style.color = "#ff4444";
-    scores[currentGroup - 1] -= 150;
-    playSound("wrong");
-  }
-  updateScoreDisplay();
-  current++;
-  nextGroup();
-  setTimeout(() => { msg.textContent = ""; showStartButton(); }, 2000);
-}
-
-function wrongAnswerTimeout() {
   const msg = document.getElementById("msg");
-  msg.textContent = "⏰ Time’s up! -150 points for Group " + currentGroup;
+  if(i===q.correct){
+    document.getElementById("correctSound").play();
+    msg.textContent = "✅ Correct! +150 points";
+    msg.style.color = "#00ff7f";
+    scores[groupTurn] += 150;
+  } else {
+    wrongAnswer(false);
+    return;
+  }
+  next();
+}
+
+function wrongAnswer(timeOut){
+  document.getElementById("wrongSound").play();
+  const msg = document.getElementById("msg");
+  msg.textContent = timeOut ? "⏰ Süre Bitti! -150" : "❌ Wrong! -150";
   msg.style.color = "#ff4444";
-  scores[currentGroup - 1] -= 150;
-  updateScoreDisplay();
-  playSound("wrong");
-  current++;
-  nextGroup();
-  setTimeout(() => { msg.textContent = ""; showStartButton(); }, 2000);
+  scores[groupTurn] -= 150;
+  next();
 }
 
-function showStartButton() {
-  document.getElementById("answers").innerHTML = "";
-  document.getElementById("question").textContent = "";
-  startBtn.style.display = "inline-block";
-}
-
-function endGame(text) {
+function next(){
   clearInterval(interval);
-  playSound("end");
-  let winner = Math.max(...scores);
-  let winnerGroup = scores.indexOf(winner) + 1;
-  document.getElementById("quiz").innerHTML = `
-    <h2>${text}</h2>
-    <h3>🏆 Winner: Group ${winnerGroup} with ${winner} points! 🏆</h3>
-  `;
+  groupTurn = (groupTurn + 1) % 3;
+  current++;
+  saveProgress();
+  document.getElementById("s1").textContent = scores[0];
+  document.getElementById("s2").textContent = scores[1];
+  document.getElementById("s3").textContent = scores[2];
+  setTimeout(()=>{
+    document.getElementById("quiz").innerHTML = `<button id='startBtn' onclick='startQuestion()'>🎬 Soruya Başla</button>`;
+  },1500);
 }
- 
 
+window.onload = ()=>{
+  document.getElementById("s1").textContent = scores[0];
+  document.getElementById("s2").textContent = scores[1];
+  document.getElementById("s3").textContent = scores[2];
+};
 </script>
 </body>
 </html>
