@@ -100,17 +100,7 @@
 
 <script>
 const questions = [
-  {q: "I usually ______ my homework in the evening.", a: ["does", "do", "doing", "did"], correct: 1},
-  {q: "She always ______ to school by bus.", a: ["go", "goes", "going", "gone"], correct: 1},
-  {q: "They ______ breakfast at 7 o’clock.", a: ["have", "has", "having", "had"], correct: 0},
-  {q: "My father ______ TV after dinner.", a: ["watch", "watches", "watched", "watching"], correct: 1},
-  {q: "We ______ our teeth every morning.", a: ["brush", "brushes", "brushing", "brushed"], correct: 0},
-  {q: "I often ______ music before sleeping.", a: ["listen", "listens", "listened", "listening"], correct: 0},
-  {q: "Our teacher ______ English very well.", a: ["speak", "speaks", "speaking", "spoke"], correct: 1},
-  {q: "My mother ______ the dishes every night.", a: ["wash", "washes", "washing", "washed"], correct: 1},
-  {q: "He ______ football after school.", a: ["play", "plays", "played", "playing"], correct: 1},
-  {q: "I ______ to bed at ten o’clock.", a: ["go", "goes", "gone", "going"], correct: 0}
- {q:"I usually ______ my homework in the evening.",a:["does","do","doing","did"],correct:1},
+{q:"I usually ______ my homework in the evening.",a:["does","do","doing","did"],correct:1},
 {q:"She always ______ to school by bus.",a:["go","goes","going","gone"],correct:1},
 {q:"They ______ breakfast at 7 o’clock.",a:["have","has","having","had"],correct:0},
 {q:"My father ______ TV after dinner.",a:["watch","watches","watched","watching"],correct:1},
@@ -219,6 +209,7 @@ const questions = [
 {q:"I ______ my shoes before entering the house.",a:["take off","takes off","taking off","took off"],correct:0}
 ];
 
+
 let current = parseInt(localStorage.getItem("currentQ")) || 0;
 let scores = [parseInt(localStorage.getItem("s1"))||0, parseInt(localStorage.getItem("s2"))||0, parseInt(localStorage.getItem("s3"))||0];
 let groupTurn = current % 3;
@@ -309,6 +300,7 @@ window.onload = ()=>{
 </script>
 </body>
 </html>
+
 
 
 
