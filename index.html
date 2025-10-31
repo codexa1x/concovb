@@ -25,45 +25,55 @@
 
     .container {
       position: relative;
-      width: 768px;
-      height: 480px;
+      width: 800px;
+      height: 500px;
       background: #fff;
       border-radius: 20px;
       box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
       overflow: hidden;
       transition: 0.5s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .forms-container {
       position: absolute;
-      width: 200%;
-      height: 100%;
-      display: flex;
-      transition: transform 0.6s ease-in-out;
-    }
-
-    .sign-in-form,
-    .sign-up-form {
       width: 50%;
+      height: 100%;
+      background: #fff;
+      z-index: 2;
+      transition: 0.6s ease-in-out;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 2rem;
+    }
+
+    .container.sign-up-mode .forms-container {
+      left: 50%;
+    }
+
+    form {
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
     h2 {
-      margin-bottom: 1rem;
+      margin-bottom: 10px;
       color: #333;
     }
 
     input {
-      width: 80%;
-      padding: 10px;
-      margin: 8px 0;
+      width: 100%;
+      padding: 12px;
       border: 1px solid #ccc;
       border-radius: 10px;
       outline: none;
+      font-size: 14px;
       transition: 0.3s;
     }
 
@@ -72,16 +82,15 @@
     }
 
     button {
-      width: 50%;
-      padding: 10px;
-      margin-top: 1rem;
+      width: 100%;
+      padding: 12px;
       background: #667eea;
       color: #fff;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      transition: 0.3s;
       font-weight: 600;
+      transition: 0.3s;
     }
 
     button:hover {
@@ -94,14 +103,15 @@
       width: 50%;
       height: 100%;
       top: 0;
+      color: #fff;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       padding: 2rem;
-      color: #fff;
       transition: 0.6s ease-in-out;
+      z-index: 1;
     }
 
     .left-panel {
@@ -114,9 +124,26 @@
       background: linear-gradient(135deg, #764ba2, #667eea);
     }
 
+    .container.sign-up-mode .left-panel {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+
+    .container.sign-up-mode .right-panel {
+      transform: translateX(-100%);
+      opacity: 1;
+    }
+
     .panel button {
+      margin-top: 20px;
       background: transparent;
       border: 2px solid #fff;
+      padding: 10px 25px;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
     }
 
     .panel button:hover {
@@ -124,52 +151,40 @@
       color: #667eea;
     }
 
-    .container.sign-up-mode .forms-container {
-      transform: translateX(-50%);
-    }
-
-    .container.sign-up-mode .left-panel {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-
-    .container.sign-up-mode .right-panel {
-      transform: translateX(-100%);
-    }
-
     @media (max-width: 768px) {
       .container {
+        flex-direction: column;
         width: 90%;
         height: auto;
       }
 
-      .sign-in-form,
-      .sign-up-form {
+      .forms-container,
+      .panel {
         width: 100%;
+        position: relative;
+        transform: none !important;
+        opacity: 1 !important;
       }
 
       .panel {
         display: none;
-      }
-
-      .forms-container {
-        width: 100%;
-        transform: none !important;
       }
     }
   </style>
 </head>
 <body>
   <div class="container" id="container">
-    <div class="forms-container">
-      <form class="sign-in-form" id="loginForm">
+    <div class="forms-container" id="formsContainer">
+      <!-- GİRİŞ FORMU -->
+      <form id="loginForm">
         <h2>Giriş Yap</h2>
         <input type="text" placeholder="Kullanıcı Adı" required />
         <input type="password" placeholder="Şifre" required />
-        <button type="submit">Giriş</button>
+        <button type="submit">Giriş Yap</button>
       </form>
 
-      <form class="sign-up-form" id="registerForm">
+      <!-- KAYIT FORMU -->
+      <form id="registerForm" style="display: none;">
         <h2>Kayıt Ol</h2>
         <input type="text" placeholder="Kullanıcı Adı" required />
         <input type="email" placeholder="E-posta" required />
@@ -178,46 +193,54 @@
       </form>
     </div>
 
+    <!-- PANELLER -->
     <div class="panel left-panel">
       <h2>Yeni misin?</h2>
       <p>Kayıt olarak hemen projeye katıl!</p>
-      <button id="signUpBtn">Kayıt Ol</button>
+      <button id="goRegister">Kayıt Ol</button>
     </div>
 
     <div class="panel right-panel">
       <h2>Zaten üye misin?</h2>
       <p>O halde giriş yap ve devam et!</p>
-      <button id="signInBtn">Giriş Yap</button>
+      <button id="goLogin">Giriş Yap</button>
     </div>
   </div>
 
   <script>
     const container = document.getElementById("container");
-    const signUpBtn = document.getElementById("signUpBtn");
-    const signInBtn = document.getElementById("signInBtn");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const goRegister = document.getElementById("goRegister");
+    const goLogin = document.getElementById("goLogin");
 
-    signUpBtn.addEventListener("click", () => {
+    // Formlar arası geçiş
+    goRegister.addEventListener("click", () => {
       container.classList.add("sign-up-mode");
+      loginForm.style.display = "none";
+      registerForm.style.display = "flex";
     });
 
-    signInBtn.addEventListener("click", () => {
+    goLogin.addEventListener("click", () => {
       container.classList.remove("sign-up-mode");
+      registerForm.style.display = "none";
+      loginForm.style.display = "flex";
     });
 
-    // Giriş veya kayıt sonrası yönlendirme
-    document.getElementById("loginForm").addEventListener("submit", (e) => {
+    // Giriş yönlendirmesi
+    loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
       window.location.href = "proje.html";
     });
 
-    document.getElementById("registerForm").addEventListener("submit", (e) => {
+    // Kayıt yönlendirmesi
+    registerForm.addEventListener("submit", (e) => {
       e.preventDefault();
       window.location.href = "proje.html";
     });
   </script>
 </body>
 </html>
-
 
 
 
