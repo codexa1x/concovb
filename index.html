@@ -20,48 +20,47 @@
       align-items: center;
       min-height: 100vh;
       background: linear-gradient(135deg, #667eea, #764ba2);
-      overflow: hidden;
     }
 
     .container {
       position: relative;
-      width: 850px;
-      height: 520px;
+      width: 420px;
       background: #fff;
-      border-radius: 25px;
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
       overflow: hidden;
+      padding: 2rem;
+      transition: 0.6s ease-in-out;
     }
 
-    .forms-container {
-      position: absolute;
-      width: 200%;
-      height: 100%;
-      display: flex;
-      transition: transform 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+    .top-section {
+      text-align: center;
+      margin-bottom: 1rem;
+      transition: all 0.6s ease;
+    }
+
+    .top-section h2 {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .top-section p {
+      color: #666;
+      font-size: 0.9rem;
     }
 
     form {
-      width: 50%;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      background: #fff;
-      padding: 2rem;
-      transition: all 0.5s ease;
-    }
-
-    h2 {
-      margin-bottom: 1rem;
-      color: #333;
-      font-weight: 600;
+      gap: 0.7rem;
+      transition: all 0.6s ease;
     }
 
     input {
-      width: 80%;
+      width: 100%;
       padding: 12px;
-      margin: 8px 0;
       border: 1px solid #ccc;
       border-radius: 10px;
       outline: none;
@@ -74,9 +73,8 @@
     }
 
     button {
-      width: 60%;
+      width: 100%;
       padding: 12px;
-      margin-top: 1rem;
       background: #667eea;
       color: #fff;
       border: none;
@@ -88,130 +86,99 @@
 
     button:hover {
       background: #5a67d8;
-      transform: scale(1.05);
-      box-shadow: 0 0 10px rgba(90,103,216,0.5);
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(90,103,216,0.4);
     }
 
-    .panels-container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .panel {
-      flex: 1;
-      color: #fff;
+    .toggle {
+      margin-top: 1rem;
       text-align: center;
-      padding: 2rem;
-      z-index: 5;
+      font-size: 0.9rem;
     }
 
-    .panel button {
-      pointer-events: all;
+    .toggle button {
+      width: auto;
       background: transparent;
-      border: 2px solid #fff;
-      padding: 10px 25px;
-      border-radius: 10px;
+      border: none;
+      color: #667eea;
+      cursor: pointer;
       font-weight: 600;
       transition: 0.3s;
     }
 
-    .panel button:hover {
-      background: #fff;
-      color: #667eea;
+    .toggle button:hover {
+      text-decoration: underline;
     }
 
-    .left-panel {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+    /* Animasyon */
+    .slide {
+      animation: slideIn 0.7s ease forwards;
     }
 
-    .right-panel {
-      background: linear-gradient(135deg, #764ba2, #667eea);
-    }
-
-    .container.sign-up-mode .forms-container {
-      transform: translateX(-50%);
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        width: 90%;
-        height: auto;
-      }
-
-      .forms-container {
-        width: 100%;
-        flex-direction: column;
-        transform: none !important;
-      }
-
-      form {
-        width: 100%;
-      }
-
-      .panels-container {
-        display: none;
-      }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
     }
   </style>
 </head>
 <body>
   <div class="container" id="container">
-    <div class="forms-container" id="formsContainer">
-      <!-- GİRİŞ FORMU -->
-      <form id="loginForm">
-        <h2>Giriş Yap</h2>
-        <input id="loginEmail" type="email" placeholder="E-posta" required />
-        <input id="loginPassword" type="password" placeholder="Şifre" required />
-        <button type="submit">Giriş Yap</button>
-      </form>
-
-      <!-- KAYIT FORMU -->
-      <form id="registerForm">
-        <h2>Kayıt Ol</h2>
-        <input id="regName" type="text" placeholder="Ad Soyad" required />
-        <input id="regEmail" type="email" placeholder="E-posta" required />
-        <input id="regPassword" type="password" placeholder="Şifre" required />
-        <button type="submit">Kayıt Ol</button>
-      </form>
+    <div class="top-section" id="topSection">
+      <h2>Hoş geldin!</h2>
+      <p>Hesabına giriş yap ya da hemen kayıt ol.</p>
     </div>
 
-    <div class="panels-container">
-      <div class="panel left-panel">
-        <h2>Yeni misin?</h2>
-        <p>Kayıt olarak hemen projeye katıl!</p>
-        <button id="goRegister">Kayıt Ol</button>
+    <!-- GİRİŞ FORMU -->
+    <form id="loginForm" class="slide">
+      <input id="loginEmail" type="email" placeholder="E-posta" required />
+      <input id="loginPassword" type="password" placeholder="Şifre" required />
+      <button type="submit">Giriş Yap</button>
+      <div class="toggle">
+        <p>Yeni misin? <button type="button" id="showRegister">Kayıt Ol</button></p>
       </div>
+    </form>
 
-      <div class="panel right-panel">
-        <h2>Zaten üye misin?</h2>
-        <p>O halde giriş yap ve devam et!</p>
-        <button id="goLogin">Giriş Yap</button>
+    <!-- KAYIT FORMU -->
+    <form id="registerForm" style="display: none;">
+      <input id="regName" type="text" placeholder="Ad Soyad" required />
+      <input id="regEmail" type="email" placeholder="E-posta" required />
+      <input id="regPassword" type="password" placeholder="Şifre" required />
+      <button type="submit">Kayıt Ol</button>
+      <div class="toggle">
+        <p>Zaten üye misin? <button type="button" id="showLogin">Giriş Yap</button></p>
       </div>
-    </div>
+    </form>
   </div>
 
   <script>
-    const container = document.getElementById("container");
-    const goRegister = document.getElementById("goRegister");
-    const goLogin = document.getElementById("goLogin");
+    const topSection = document.getElementById("topSection");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const showRegister = document.getElementById("showRegister");
+    const showLogin = document.getElementById("showLogin");
 
-    goRegister.addEventListener("click", () => {
-      container.classList.add("sign-up-mode");
+    showRegister.addEventListener("click", () => {
+      loginForm.style.display = "none";
+      registerForm.style.display = "flex";
+      registerForm.classList.add("slide");
+      topSection.innerHTML = `
+        <h2>Yeni misin?</h2>
+        <p>Hemen kayıt ol ve projeye katıl!</p>
+      `;
     });
 
-    goLogin.addEventListener("click", () => {
-      container.classList.remove("sign-up-mode");
+    showLogin.addEventListener("click", () => {
+      registerForm.style.display = "none";
+      loginForm.style.display = "flex";
+      loginForm.classList.add("slide");
+      topSection.innerHTML = `
+        <h2>Tekrar Hoş Geldin!</h2>
+        <p>Giriş yaparak devam et.</p>
+      `;
     });
 
-    // Kullanıcıyı kaydet (localStorage)
-    document.getElementById("registerForm").addEventListener("submit", (e) => {
+    // Kayıt işlemi
+    registerForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const name = document.getElementById("regName").value.trim();
       const email = document.getElementById("regEmail").value.trim();
@@ -227,12 +194,12 @@
 
       users.push({ name, email, password });
       localStorage.setItem("users", JSON.stringify(users));
-      alert("Kayıt başarılı! Artık giriş yapabilirsiniz.");
-      container.classList.remove("sign-up-mode");
+      alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
+      showLogin.click();
     });
 
-    // Giriş kontrolü
-    document.getElementById("loginForm").addEventListener("submit", (e) => {
+    // Giriş işlemi
+    loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const email = document.getElementById("loginEmail").value.trim();
       const password = document.getElementById("loginPassword").value.trim();
@@ -241,7 +208,8 @@
       const user = users.find((u) => u.email === email && u.password === password);
 
       if (user) {
-        alert(`Hoşgeldin ${user.name}!`);
+        localStorage.setItem("activeUser", JSON.stringify(user));
+        alert(`Hoş geldin, ${user.name}!`);
         window.location.href = "proje.html";
       } else {
         alert("E-posta veya şifre hatalı!");
@@ -250,5 +218,6 @@
   </script>
 </body>
 </html>
+
 
 
