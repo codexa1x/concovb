@@ -7,25 +7,20 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
 
     body {
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
       overflow: hidden;
     }
 
     .container {
       position: relative;
-      width: 460px;
+      width: 420px;
       background: #fff;
       border-radius: 20px;
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
@@ -34,21 +29,19 @@
       transition: 0.6s ease-in-out;
     }
 
-    /* 🔔 Mesaj kutusu */
     .message {
       position: absolute;
       top: -60px;
       left: 50%;
       transform: translateX(-50%);
-      background: #667eea;
+      background: #6a11cb;
       color: #fff;
-      padding: 10px 25px;
+      padding: 10px 20px;
       border-radius: 50px;
       font-weight: 500;
       opacity: 0;
       pointer-events: none;
       transition: all 0.6s ease;
-      font-size: 0.95rem;
     }
 
     .message.show {
@@ -58,55 +51,41 @@
     }
 
     @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(102,126,234,0.6); }
-      70% { box-shadow: 0 0 0 10px rgba(102,126,234,0); }
-      100% { box-shadow: 0 0 0 0 rgba(102,126,234,0); }
+      0% { box-shadow: 0 0 0 0 rgba(106,17,203,0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(106,17,203,0); }
+      100% { box-shadow: 0 0 0 0 rgba(106,17,203,0); }
     }
 
-    .top-section {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      transition: all 0.6s ease;
-    }
-
-    .top-section h2 {
-      color: #333;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .top-section p {
-      color: #666;
-      font-size: 0.9rem;
-    }
+    .top-section { text-align: center; margin-bottom: 1rem; transition: all 0.6s ease; }
+    .top-section h2 { color: #333; font-weight: 600; margin-bottom: 0.5rem; }
+    .top-section p { color: #666; font-size: 0.9rem; }
 
     form {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.9rem;
+      gap: 0.7rem;
       transition: all 0.6s ease;
     }
 
     input {
       width: 100%;
-      padding: 13px;
+      padding: 12px;
       border: 1px solid #ccc;
       border-radius: 10px;
       outline: none;
       transition: 0.3s;
-      font-size: 0.95rem;
     }
 
     input:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 5px rgba(102,126,234,0.4);
+      border-color: #6a11cb;
+      box-shadow: 0 0 5px rgba(106,17,203,0.4);
     }
 
     button {
       width: 100%;
       padding: 12px;
-      background: #667eea;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
       color: #fff;
       border: none;
       border-radius: 10px;
@@ -116,9 +95,8 @@
     }
 
     button:hover {
-      background: #5a67d8;
       transform: scale(1.03);
-      box-shadow: 0 0 10px rgba(90,103,216,0.4);
+      box-shadow: 0 0 15px rgba(106,17,203,0.4);
     }
 
     .toggle {
@@ -131,19 +109,14 @@
       width: auto;
       background: transparent;
       border: none;
-      color: #667eea;
+      color: #6a11cb;
       cursor: pointer;
       font-weight: 600;
-      transition: 0.3s;
     }
 
-    .toggle button:hover {
-      text-decoration: underline;
-    }
+    .toggle button:hover { text-decoration: underline; }
 
-    .slide {
-      animation: slideIn 0.7s ease forwards;
-    }
+    .slide { animation: slideIn 0.7s ease forwards; }
 
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(40px); }
@@ -155,41 +128,36 @@
       position: fixed;
       bottom: 25px;
       right: 25px;
-      background: #667eea;
-      color: #fff;
-      border-radius: 50%;
       width: 65px;
       height: 65px;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
+      color: #fff;
+      font-size: 30px;
       cursor: pointer;
-      font-size: 32px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      transition: all 0.3s;
-      z-index: 10;
+      box-shadow: 0 0 20px rgba(106,17,203,0.5);
+      transition: 0.3s;
     }
 
-    .chat-icon:hover {
-      transform: scale(1.1);
-      background: #5a67d8;
-    }
+    .chat-icon:hover { transform: scale(1.1); }
 
-    /* 🧠 Sohbet penceresi */
+    /* 💬 Sohbet kutusu */
     .chat-box {
       position: fixed;
       bottom: 100px;
-      right: 25px;
-      width: 340px;
-      height: 420px;
-      background: #fff;
+      right: 30px;
+      width: 320px;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
       border-radius: 20px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      color: #fff;
       display: none;
       flex-direction: column;
       overflow: hidden;
-      z-index: 9;
-      animation: fadeIn 0.4s ease;
+      animation: fadeIn 0.5s ease;
     }
 
     @keyframes fadeIn {
@@ -198,80 +166,75 @@
     }
 
     .chat-header {
-      background: #667eea;
-      color: #fff;
+      padding: 15px;
+      background: rgba(255,255,255,0.1);
       text-align: center;
-      padding: 12px;
       font-weight: 600;
-      font-size: 1rem;
+      letter-spacing: 1px;
     }
 
-    .chat-messages {
-      padding: 10px;
-      height: 310px;
+    .chat-body {
+      height: 220px;
       overflow-y: auto;
+      padding: 10px;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      flex-direction: column-reverse;
       scroll-behavior: smooth;
     }
 
     .msg {
-      padding: 8px 12px;
-      border-radius: 12px;
-      max-width: 80%;
-      font-size: 0.9rem;
-      line-height: 1.3rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 15px;
+      padding: 10px;
+      margin: 5px 0;
+      animation: appear 0.3s ease;
+      word-wrap: break-word;
+      max-width: 85%;
     }
 
-    .user-msg {
+    .msg.user {
       align-self: flex-end;
-      background: #667eea;
-      color: #fff;
+      background: rgba(0,0,0,0.3);
     }
 
-    .bot-msg {
-      align-self: flex-start;
-      background: #e2e8f0;
-      color: #333;
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .chat-input {
       display: flex;
-      align-items: center;
-      border-top: 1px solid #ddd;
-      background: #f8f9fa;
-      padding: 5px;
+      flex-direction: column;
+      padding: 10px;
+      background: rgba(255,255,255,0.1);
+      gap: 8px;
     }
 
-    .chat-input input {
-      flex: 1;
-      padding: 10px 12px;
+    .chat-input textarea {
+      resize: none;
       border: none;
+      border-radius: 10px;
+      padding: 10px;
+      height: 50px;
+      font-size: 14px;
       outline: none;
-      background: transparent;
-      font-size: 0.9rem;
       color: #333;
     }
 
-    .chat-input input::placeholder {
-      color: #999;
-    }
-
     .chat-input button {
-      background: #667eea;
-      color: white;
+      background: #fff;
+      color: #6a11cb;
+      font-weight: 600;
       border: none;
-      padding: 8px 14px;
+      padding: 8px;
       border-radius: 8px;
       cursor: pointer;
-      transition: 0.3s;
-      font-size: 0.9rem;
-      font-weight: 600;
+      transition: all 0.3s;
     }
 
     .chat-input button:hover {
-      background: #5a67d8;
+      background: #e0e0ff;
+      transform: scale(1.05);
     }
   </style>
 </head>
@@ -284,6 +247,7 @@
       <p>Hesabına giriş yap ya da hemen kayıt ol.</p>
     </div>
 
+    <!-- GİRİŞ FORMU -->
     <form id="loginForm" class="slide">
       <input id="loginEmail" type="email" placeholder="E-posta" required />
       <input id="loginPassword" type="password" placeholder="Şifre" required />
@@ -293,6 +257,7 @@
       </div>
     </form>
 
+    <!-- KAYIT FORMU -->
     <form id="registerForm" style="display: none;">
       <input id="regName" type="text" placeholder="Ad Soyad" required />
       <input id="regEmail" type="email" placeholder="E-posta" required />
@@ -304,15 +269,15 @@
     </form>
   </div>
 
+  <!-- 💬 Sohbet Simgesi -->
   <div class="chat-icon" id="chatIcon">💬</div>
 
+  <!-- 💬 Sohbet Kutusu -->
   <div class="chat-box" id="chatBox">
     <div class="chat-header">Canlı Destek</div>
-    <div class="chat-messages" id="chatMessages">
-      <div class="bot-msg msg">Merhaba 👋 Ben asistanım! Size nasıl yardımcı olabilirim?</div>
-    </div>
+    <div class="chat-body" id="chatBody"></div>
     <div class="chat-input">
-      <input type="text" id="chatInput" placeholder="Mesaj yaz..." />
+      <textarea id="chatInput" placeholder="Mesajını yaz..."></textarea>
       <button id="sendBtn">Gönder</button>
     </div>
   </div>
@@ -324,103 +289,89 @@
     const registerForm = document.getElementById("registerForm");
     const showRegister = document.getElementById("showRegister");
     const showLogin = document.getElementById("showLogin");
-    const chatIcon = document.getElementById("chatIcon");
-    const chatBox = document.getElementById("chatBox");
-    const chatInput = document.getElementById("chatInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const chatMessages = document.getElementById("chatMessages");
 
-    function showMessage(text, color = "#667eea") {
+    // Mesaj kutusu
+    function showMessage(text, color = "#6a11cb") {
       messageBox.textContent = text;
       messageBox.style.background = color;
       messageBox.classList.add("show");
       setTimeout(() => messageBox.classList.remove("show"), 2500);
     }
 
-    showRegister.addEventListener("click", () => {
+    showRegister.onclick = () => {
       loginForm.style.display = "none";
       registerForm.style.display = "flex";
-      registerForm.classList.add("slide");
       topSection.innerHTML = `<h2>Yeni misin?</h2><p>Hemen kayıt ol ve projeye katıl!</p>`;
-    });
-
-    showLogin.addEventListener("click", () => {
+    };
+    showLogin.onclick = () => {
       registerForm.style.display = "none";
       loginForm.style.display = "flex";
-      loginForm.classList.add("slide");
       topSection.innerHTML = `<h2>Tekrar Hoş Geldin!</h2><p>Giriş yaparak devam et.</p>`;
-    });
+    };
 
-    registerForm.addEventListener("submit", (e) => {
+    // Kayıt
+    registerForm.onsubmit = (e) => {
       e.preventDefault();
       const name = regName.value.trim();
       const email = regEmail.value.trim();
       const password = regPassword.value.trim();
       const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const existing = users.find(u => u.email === email);
-      if (existing) return showMessage("Bu e-posta zaten kayıtlı!", "#e53e3e");
+      if (users.find(u => u.email === email)) return showMessage("Bu e-posta zaten kayıtlı!", "#e53e3e");
       users.push({ name, email, password });
       localStorage.setItem("users", JSON.stringify(users));
       showMessage("Kayıt başarılı! Şimdi giriş yap.", "#38a169");
       showLogin.click();
-    });
+    };
 
-    loginForm.addEventListener("submit", (e) => {
+    // Giriş
+    loginForm.onsubmit = (e) => {
       e.preventDefault();
       const email = loginEmail.value.trim();
       const password = loginPassword.value.trim();
       const users = JSON.parse(localStorage.getItem("users") || "[]");
       const user = users.find(u => u.email === email && u.password === password);
-      if (user) {
-        localStorage.setItem("activeUser", JSON.stringify(user));
-        showMessage(`Hoş geldin, ${user.name}!`, "#38a169");
-        setTimeout(() => window.location.href = "proje.html", 1500);
-      } else {
-        showMessage("E-posta veya şifre hatalı!", "#e53e3e");
-      }
-    });
+      if (!user) return showMessage("E-posta veya şifre hatalı!", "#e53e3e");
+      localStorage.setItem("activeUser", JSON.stringify(user));
+      showMessage(`Hoş geldin, ${user.name}!`, "#38a169");
+      setTimeout(() => window.location.href = "proje.html", 1500);
+    };
 
-    chatIcon.addEventListener("click", () => {
+    // 💬 Sohbet
+    const chatIcon = document.getElementById("chatIcon");
+    const chatBox = document.getElementById("chatBox");
+    const chatBody = document.getElementById("chatBody");
+    const chatInput = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    chatIcon.onclick = () => {
       chatBox.style.display = chatBox.style.display === "flex" ? "none" : "flex";
-    });
+    };
 
-    sendBtn.addEventListener("click", sendMessage);
-    chatInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
+    function addMessage(text, sender = "bot") {
+      const msg = document.createElement("div");
+      msg.className = `msg ${sender}`;
+      msg.textContent = text;
+      chatBody.prepend(msg);
+    }
 
-    function sendMessage() {
+    function botReply(userText) {
+      userText = userText.toLowerCase();
+      if (userText.includes("kayıt")) return "Kayıt olmak için 'Kayıt Ol' butonuna tıklayıp bilgilerini girmen yeterli 💜";
+      if (userText.includes("giriş")) return "Giriş yapmak için e-posta ve şifreni gir, ardından 'Giriş Yap' butonuna bas 💙";
+      if (userText.includes("şifre")) return "Şifreni unuttuysan maalesef şu anda sıfırlama seçeneği yok 😢 ama yeni bir hesap açabilirsin!";
+      return "Sana yardımcı olmak için buradayım 💬 Sorunu biraz daha açıklar mısın?";
+    }
+
+    sendBtn.onclick = () => {
       const text = chatInput.value.trim();
       if (!text) return;
-      appendMessage(text, "user-msg");
+      addMessage(text, "user");
       chatInput.value = "";
-      setTimeout(() => appendMessage(getBotReply(text), "bot-msg"), 600);
-    }
-
-    function appendMessage(text, type) {
-      const msg = document.createElement("div");
-      msg.className = type + " msg";
-      msg.textContent = text;
-      chatMessages.appendChild(msg);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function getBotReply(text) {
-      const t = text.toLowerCase();
-      if (t.includes("kayıt")) return "Kayıt olmak için 'Kayıt Ol' butonuna basın, ad, e-posta ve şifre girip onaylayın. ✅";
-      if (t.includes("giriş")) return "Giriş yapmak için e-posta ve şifrenizi yazıp 'Giriş Yap' tuşuna tıklayın. 🚀";
-      if (t.includes("şifre")) return "Şifrenizi unuttuysanız yeni bir hesap oluşturabilirsiniz. 🔑";
-      if (t.includes("selam") || t.includes("merhaba")) return "Selam! 👋 Size nasıl yardımcı olabilirim?";
-      if (t.includes("teşekkür")) return "Rica ederim 😊 Her zaman buradayım!";
-      if (t.includes("yardım")) return "Elbette! Ne konuda yardıma ihtiyacınız var?";
-      return "Anlayamadım 🤔 Lütfen biraz daha açıklar mısınız?";
-    }
+      setTimeout(() => addMessage(botReply(text)), 600);
+    };
   </script>
 </body>
 </html>
-
-
-
 
 
 
