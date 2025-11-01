@@ -3,255 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6th Grade English Quiz</title>
+<title>6th Grade Quiz - Mega Version</title>
 <style>
-  * { box-sizing: border-box; font-family: "Poppins", sans-serif; }
   body {
-    margin: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: flex-start;
-    color: #fff; overflow: hidden;
-  }
-  h1 { margin-top: 15px; font-size: 2.4em; animation: glow 2s infinite alternate; }
-  @keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
-    to { text-shadow: 0 0 30px #fff, 0 0 40px #2575fc; }
-  }
-  .groups {
-    display: flex; gap: 25px; margin: 15px;
-  }
-  .group {
-    background: rgba(255,255,255,0.15);
-    border-radius: 15px; padding: 10px 20px;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #4b0082, #000080);
+    color: white;
     text-align: center;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    transition: transform 0.3s;
+    margin: 0;
+    overflow: hidden;
   }
-  .group:hover { transform: scale(1.1); }
-  .score { font-size: 1.5em; color: #ffeb3b; }
 
-  .quiz {
-    background: rgba(255,255,255,0.1);
-    border-radius: 25px; padding: 30px;
-    width: 80%; max-width: 600px;
-    text-align: center; margin-top: 15px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.3);
-    animation: fadeIn 1s ease;
+  h1 {
+    font-size: 2.2em;
+    margin-top: 20px;
+    text-shadow: 0 0 15px #9b59b6;
   }
+
+  .container {
+    margin-top: 40px;
+    padding: 20px;
+    animation: fadeIn 1.2s ease-in-out;
+  }
+
   @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.8); }
+    from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
+  }
+
+  .start-btn {
+    font-size: 1.5em;
+    padding: 15px 35px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(90deg, #6a0dad, #3b82f6, #6a0dad);
+    background-size: 300% 300%;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 25px #6a0dad;
+    animation: glowing 3s linear infinite, bounce 2s infinite alternate;
+  }
+
+  @keyframes glowing {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+  }
+
+  .question-box {
+    display: none;
+    margin-top: 30px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  .option {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    padding: 12px;
+    margin: 10px auto;
+    width: 60%;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .option:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+  }
+
+  .scoreboard {
+    margin-top: 20px;
+    font-size: 1.2em;
   }
 
   .timer {
     font-size: 1.5em;
-    margin-top: 8px;
-    color: #ffeb3b;
-    text-shadow: 0 0 10px #000;
+    margin: 15px;
   }
 
-  button {
-    background: linear-gradient(45deg, #ff6ec4, #7873f5);
-    border: none; border-radius: 12px;
-    color: white; padding: 12px 25px;
-    margin: 8px; font-size: 1.1em;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px #fff;
-  }
-
-  .start-btn {
+  .next-btn {
+    display: none;
+    margin-top: 20px;
     font-size: 1.3em;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 10px #fff; }
-    50% { transform: scale(1.1); box-shadow: 0 0 25px #ff6ec4; }
-    100% { transform: scale(1); box-shadow: 0 0 10px #fff; }
-  }
-
-  .message {
-    font-size: 1.8em;
-    margin-top: 15px;
-    animation: pop 0.8s ease;
-  }
-  @keyframes pop {
-    0% { transform: scale(0); opacity: 0; }
-    80% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(1); }
+    padding: 12px 28px;
+    background: linear-gradient(90deg, #8e44ad, #2980b9);
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
   }
 </style>
 </head>
 <body>
-<h1>🎯 6th Grade English Quiz 🎯</h1>
 
-<div class="groups">
-  <div class="group" id="g1">Group 1<br><span class="score" id="s1">0</span></div>
-  <div class="group" id="g2">Group 2<br><span class="score" id="s2">0</span></div>
-  <div class="group" id="g3">Group 3<br><span class="score" id="s3">0</span></div>
+<h1>💫 English Quiz Show 💫</h1>
+
+<div id="groupSetup" class="container">
+  <h2>Enter Group Names</h2>
+  <input id="group1" placeholder="Group 1 Name" />
+  <input id="group2" placeholder="Group 2 Name" />
+  <input id="group3" placeholder="Group 3 Name" />
+  <br><br>
+  <button class="start-btn" id="beginGame">🚀 Start Game</button>
 </div>
 
-<div class="timer" id="timer">⏱️ 65</div>
-
-<div class="quiz" id="quiz">
+<div id="gameArea" class="container" style="display:none;">
+  <div class="scoreboard" id="scoreboard"></div>
+  <div class="timer" id="timer">⏱️ 65</div>
   <button class="start-btn" id="startBtn">✨ Soruya Başla ✨</button>
-  <h2 id="question"></h2>
-  <div id="answers"></div>
-  <div class="message" id="msg"></div>
+  
+  <div class="question-box" id="questionBox">
+    <h2 id="questionText"></h2>
+    <div id="options"></div>
+  </div>
+
+  <button class="next-btn" id="nextBtn">➡️ Next Group</button>
 </div>
 
-<audio id="correctSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
-<audio id="wrongSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
-<audio id="timeSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+<audio id="correctSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_01b7e7f04e.mp3"></audio>
+<audio id="wrongSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_92e5a69d6e.mp3"></audio>
+<audio id="timeSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_9532a8b2aa.mp3"></audio>
 
 <script>
 const questions = [
-
-{q:"I usually get up at seven o’clock.", a:["Ben genellikle saat yedide kalkarım.","Ben her zaman saat sekizde kalkarım.","Ben saat on ikide uyurum.","Ben sabah koşuya giderim."], correct:0},
-{q:"She always brushes her teeth in the morning.", a:["O her sabah dişlerini fırçalar.","O akşam diş fırçalamaz.","O hiç dişlerini fırçalamaz.","O sabah kahvaltı yapmaz."], correct:0},
-{q:"They go to school by bus every day.", a:["Onlar her gün otobüsle okula giderler.","Onlar bisikletle okula giderler.","Onlar okula hiç gitmez.","Onlar yürüyerek giderler."], correct:0},
-{q:"He never eats breakfast.", a:["O asla kahvaltı yapmaz.","O her sabah kahvaltı yapar.","O bazen kahvaltı yapar.","O öğle yemeği yer."], correct:0},
-{q:"Do you do your homework in the evening?", a:["Akşamları ödevini yapar mısın?","Sabahları ders çalışır mısın?","Okulda ödev mi yaparsın?","Hiç ödev yapmaz mısın?"], correct:0},
-{q:"My mother often drinks tea.", a:["Annem genelde çay içer.","Annem hiç çay içmez.","Annem kahve içer.","Annem sabahları koşar."], correct:0},
-{q:"What time do you go to bed?", a:["Saat kaçta yatağa gidersin?","Ne sıklıkla uyursun?","Yatağını toplar mısın?","Sabah mı uyursun?"], correct:0},
-{q:"He sometimes helps his father in the garden.", a:["O bazen babasına bahçede yardım eder.","O her zaman babasına yardım eder.","O babasına hiç yardım etmez.","O kardeşine yardım eder."], correct:0},
-{q:"I often watch TV after dinner.", a:["Ben genelde akşam yemeğinden sonra TV izlerim.","Ben hiç TV izlemem.","Ben sabah TV izlerim.","Ben ders çalışırım."], correct:0},
-{q:"They usually have lunch at school.", a:["Onlar genellikle okulda öğle yemeği yerler.","Onlar evde yemek yer.","Onlar dışarıda yemek yer.","Onlar hiç yemek yemez."], correct:0},
-{q:"She goes shopping every weekend.", a:["O her hafta sonu alışverişe gider.","O hafta içi alışverişe gitmez.","O alışverişi sevmez.","O markete gitmez."], correct:0},
-{q:"He plays football after school.", a:["O okuldan sonra futbol oynar.","O okulda futbol oynamaz.","O sabah futbol oynar.","O basketbol oynar."], correct:0},
-{q:"We always do our homework together.", a:["Biz her zaman ödevimizi birlikte yaparız.","Biz hiç ödev yapmayız.","Biz bazen ayrı yaparız.","Biz ödevimizi öğretmenle yaparız."], correct:0},
-{q:"Does your sister listen to music?", a:["Kız kardeşin müzik dinler mi?","Kız kardeşin şarkı söyler mi?","Kız kardeşin dans eder mi?","Kız kardeşin resim yapar mı?"], correct:0},
-{q:"I never go to school late.", a:["Ben asla okula geç gitmem.","Ben bazen geç kalırım.","Ben her zaman geç kalırım.","Ben okula gitmem."], correct:0},
-{q:"He usually takes a shower in the morning.", a:["O genellikle sabah duş alır.","O akşam duş alır.","O hiç duş almaz.","O havuza gider."], correct:0},
-{q:"They go to the park at weekends.", a:["Onlar hafta sonları parka giderler.","Onlar her gün parka gider.","Onlar sinemaya gider.","Onlar alışveriş yapar."], correct:0},
-{q:"My father drives to work every morning.", a:["Babam her sabah arabayla işe gider.","Babam otobüsle işe gider.","Babam yürüyerek işe gider.","Babam işe gitmez."], correct:0},
-{q:"Do you read books before sleeping?", a:["Uyumadan önce kitap okur musun?","Sabah kitap okur musun?","Hiç kitap okumaz mısın?","Film izler misin?"], correct:0},
-{q:"She sometimes eats fast food.", a:["O bazen fast food yer.","O her gün fast food yer.","O fast food sevmez.","O hiç yemek yemez."], correct:0}
-
-
+  {q:"I usually get up at seven o’clock.", options:["Ben genelde saat yedide kalkarım.","Ben genelde kahvaltı yaparım.","Ben genelde okula giderim.","Ben genelde uyurum."], answer:"Ben genelde saat yedide kalkarım."},
+  {q:"She never eats fast food.", options:["O asla fast food yemez.","O bazen fast food yer.","O her zaman fast food yer.","O sık sık fast food yer."], answer:"O asla fast food yemez."},
+  {q:"They often play basketball after school.", options:["Onlar okuldan sonra sık sık basketbol oynarlar.","Onlar sabah basketbol oynarlar.","Onlar hiç basketbol oynamazlar.","Onlar futbol oynarlar."], answer:"Onlar okuldan sonra sık sık basketbol oynarlar."},
+  {q:"What time do you go to bed?", options:["Saat kaçta yatarsın?","Ne zaman kalkarsın?","Saat kaçta ders çalışırsın?","Ne zaman okula gidersin?"], answer:"Saat kaçta yatarsın?"},
+  {q:"He always brushes his teeth.", options:["O her zaman dişlerini fırçalar.","O bazen dişlerini fırçalar.","O dişlerini fırçalamaz.","O hiç dişlerini fırçalamaz."], answer:"O her zaman dişlerini fırçalar."}
 ];
 
-let shuffled = [];
-let current = 0;
+let shuffledQuestions = [];
+let currentQuestion = 0;
+let timer;
+let timeLeft = 65;
+let currentGroup = 0;
 let scores = [0,0,0];
-let activeGroup = 0;
-let timer = 65;
-let interval;
-let answered = false;
+let groups = [];
 
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+document.getElementById("beginGame").addEventListener("click", () => {
+  groups = [
+    document.getElementById("group1").value || "Group 1",
+    document.getElementById("group2").value || "Group 2",
+    document.getElementById("group3").value || "Group 3"
+  ];
+  document.getElementById("groupSetup").style.display = "none";
+  document.getElementById("gameArea").style.display = "block";
+  shuffleQuestions();
+  updateScoreboard();
+});
 
-function startGame() {
-  shuffled = shuffle([...questions]);
-  current = 0;
-  activeGroup = 0;
-  showNextButton();
-}
-
-function showNextButton() {
-  document.getElementById("question").textContent = "";
-  document.getElementById("answers").innerHTML = "";
-  document.getElementById("msg").textContent = "";
-  const btn = document.getElementById("startBtn");
-  btn.style.display = "inline-block";
-  btn.onclick = () => showQuestion();
-}
-
-function showQuestion() {
-  answered = false;
+document.getElementById("startBtn").addEventListener("click", () => {
   document.getElementById("startBtn").style.display = "none";
-  timer = 65;
+  showQuestion();
   startTimer();
-  const q = shuffled[current];
-  document.getElementById("question").textContent = `(${["Group 1","Group 2","Group 3"][activeGroup]}) ${q.q}`;
-  const ansDiv = document.getElementById("answers");
-  ansDiv.innerHTML = "";
-  q.a.forEach((opt, i) => {
-    const btn = document.createElement("button");
-    btn.textContent = opt;
-    btn.onclick = () => checkAnswer(i);
-    ansDiv.appendChild(btn);
+});
+
+function shuffleQuestions(){
+  shuffledQuestions = questions
+    .map(q => ({...q, options: q.options.sort(() => Math.random() - 0.5)}))
+    .sort(() => Math.random() - 0.5);
+}
+
+function showQuestion(){
+  if(currentQuestion >= shuffledQuestions.length) currentQuestion = 0;
+  const q = shuffledQuestions[currentQuestion];
+  document.getElementById("questionBox").style.display = "block";
+  document.getElementById("questionText").textContent = q.q;
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+  q.options.forEach(opt=>{
+    const btn = document.createElement("div");
+    btn.className="option";
+    btn.textContent=opt;
+    btn.onclick=()=>selectAnswer(opt);
+    optionsDiv.appendChild(btn);
   });
 }
 
-function startTimer() {
-  clearInterval(interval);
-  interval = setInterval(() => {
-    timer--;
-    document.getElementById("timer").textContent = "⏱️ " + timer;
-    if (timer <= 0) {
-      document.getElementById("timeSound").play();
-      endQuestion(false, "⏰ Time’s up! -150 points");
-    }
-  }, 1000);
-}
-
-function checkAnswer(i) {
-  if (answered) return;
-  answered = true;
-  clearInterval(interval);
-  const q = shuffled[current];
-  if (i === q.correct) {
-    document.getElementById("msg").textContent = "✅ Correct! +150 points";
-    document.getElementById("msg").style.color = "#00ff7f";
+function selectAnswer(choice){
+  const q = shuffledQuestions[currentQuestion];
+  clearInterval(timer);
+  const correct = (choice === q.answer);
+  if(correct){
+    scores[currentGroup] += 150;
     document.getElementById("correctSound").play();
-    scores[activeGroup] += 150;
   } else {
-    document.getElementById("msg").textContent = "❌ Wrong! -150 points";
-    document.getElementById("msg").style.color = "#ff4444";
+    scores[currentGroup] -= 150;
     document.getElementById("wrongSound").play();
-    scores[activeGroup] -= 150;
   }
-  updateScores();
-  setTimeout(() => nextGroup(), 1200);
+  updateScoreboard();
+  document.getElementById("nextBtn").style.display = "inline-block";
+  document.querySelectorAll(".option").forEach(o => o.onclick=null);
 }
 
-function endQuestion(correct, msg) {
-  clearInterval(interval);
-  document.getElementById("msg").textContent = msg;
-  document.getElementById("msg").style.color = "#ff4444";
-  scores[activeGroup] -= 150;
-  updateScores();
-  setTimeout(() => nextGroup(), 1500);
+function startTimer(){
+  timeLeft = 65;
+  document.getElementById("timer").textContent = "⏱️ " + timeLeft;
+  timer = setInterval(()=>{
+    timeLeft--;
+    document.getElementById("timer").textContent = "⏱️ " + timeLeft;
+    if(timeLeft<=0){
+      clearInterval(timer);
+      scores[currentGroup] -= 150;
+      document.getElementById("timeSound").play();
+      updateScoreboard();
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+  },1000);
 }
 
-function updateScores() {
-  document.getElementById("s1").textContent = scores[0];
-  document.getElementById("s2").textContent = scores[1];
-  document.getElementById("s3").textContent = scores[2];
+function updateScoreboard(){
+  document.getElementById("scoreboard").innerHTML =
+    `${groups[0]}: ${scores[0]} | ${groups[1]}: ${scores[1]} | ${groups[2]}: ${scores[2]} <br> 🎯 Now Playing: ${groups[currentGroup]}`;
 }
 
-function nextGroup() {
-  current++;
-  activeGroup = (activeGroup + 1) % 3;
-  if (current >= shuffled.length) {
-    endGame();
-  } else {
-    showNextButton();
-  }
-}
-
-function endGame() {
-  clearInterval(interval);
-  const quiz = document.getElementById("quiz");
-  const maxScore = Math.max(...scores);
-  const winner = ["Group 1","Group 2","Group 3"][scores.indexOf(maxScore)];
-  quiz.innerHTML = `<h2>🎉 Game Over! Winner: ${winner} 🏆</h2>
-  <p>Final Scores:<br>
-  Group 1: ${scores[0]}<br>
-  Group 2: ${scores[1]}<br>
-  Group 3: ${scores[2]}</p>`;
-}
-
-window.onload = startGame;
+document.getElementById("nextBtn").addEventListener("click", () => {
+  document.getElementById("nextBtn").style.display = "none";
+  document.getElementById("questionBox").style.display = "none";
+  document.getElementById("startBtn").style.display = "inline-block";
+  currentQuestion++;
+  currentGroup = (currentGroup + 1) % 3;
+});
 </script>
+
 </body>
 </html>
 
