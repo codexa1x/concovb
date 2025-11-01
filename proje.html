@@ -323,6 +323,25 @@ document.getElementById("startBtn").onclick = showQuestion;
 
 </body>
 </html>
+      if (timer <= 0) {
+        // süre doldu mesajını hemen göster, puanı güncelle, sonra 3 saniye bekleyip "Soruya Başla" butonunu getir
+        wrongSound.play();
+        updateScore(-150);
+
+        const quiz = document.getElementById("quiz");
+        quiz.innerHTML = `<p style="font-size:1.2em;color:#ffeb3b;">⏰ Süre doldu! -150 puan</p>`;
+        // 3 saniye sonra bir sonraki tur için "Soruya Başla" butonunu ekle
+        setTimeout(() => {
+          nextQuestion("⏰ Süre doldu! -150 puan");
+        }, 3000);
+
+        clearInterval(interval);
+      }
+</script>
+
+</body>
+</html>
+
 
 
 
