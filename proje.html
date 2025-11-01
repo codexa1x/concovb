@@ -154,11 +154,50 @@
 
 <script>
 const questions = [
-  {q:"I often do my homework after dinner.", options:["Ben genelde akşam yemeğinden sonra ödevimi yaparım.","Ben sabah ödev yaparım.","Ben ödev yapmam.","Ben nadiren ödev yaparım."], answer:"Ben genelde akşam yemeğinden sonra ödevimi yaparım."},
-  {q:"She never goes to school by car.", options:["O asla arabayla okula gitmez.","O her zaman arabayla gider.","O bazen arabayla gider.","O sık sık arabayla gider."], answer:"O asla arabayla okula gitmez."},
-  {q:"They usually have breakfast at seven.", options:["Onlar genellikle yedide kahvaltı yaparlar.","Onlar yedide yatarlar.","Onlar kahvaltı yapmazlar.","Onlar sabah koşuya giderler."], answer:"Onlar genellikle yedide kahvaltı yaparlar."},
-  {q:"Do you watch TV in the evenings?", options:["Akşamları televizyon izler misin?","Sabahları televizyon izler misin?","Okulda televizyon izler misin?","Hafta sonu televizyon izler misin?"], answer:"Akşamları televizyon izler misin?"}
+{q:"I usually get up at seven o’clock.", options:["Ben genellikle yedide kalkarım.","Ben her zaman dokuzda kalkarım.","Ben asla erken kalkmam.","Ben nadiren kalkarım."], answer:"Ben genellikle yedide kalkarım."},
+{q:"She never eats breakfast.", options:["O asla kahvaltı yapmaz.","O her gün kahvaltı yapar.","O bazen kahvaltı yapar.","O sık sık kahvaltı yapar."], answer:"O asla kahvaltı yapmaz."},
+{q:"They are playing football now.", options:["Onlar şu anda futbol oynuyor.","Onlar yarın futbol oynayacak.","Onlar genellikle futbol oynar.","Onlar hiç futbol oynamaz."], answer:"Onlar şu anda futbol oynuyor."},
+{q:"Do you like watching TV?", options:["Televizyon izlemeyi sever misin?","Televizyonu tamir eder misin?","Televizyonu kapatır mısın?","Televizyonu boyar mısın?"], answer:"Televizyon izlemeyi sever misin?"},
+{q:"He is taller than me.", options:["O benden daha uzun.","O benden daha kısa.","O benimle aynı boyda.","O oturuyor."], answer:"O benden daha uzun."},
+{q:"My father goes to work every day.", options:["Babam her gün işe gider.","Babam işe gitmez.","Babam bazen işe gider.","Babam evde çalışır."], answer:"Babam her gün işe gider."},
+{q:"What time do you go to bed?", options:["Saat kaçta yatarsın?","Ne kadar uyursun?","Sabah mı yatarsın?","Ne zaman kalkarsın?"], answer:"Saat kaçta yatarsın?"},
+{q:"I can swim very well.", options:["Ben çok iyi yüzebilirim.","Ben hiç yüzemem.","Ben bazen yüzerim.","Ben yürüyebilirim."], answer:"Ben çok iyi yüzebilirim."},
+{q:"There are some apples on the table.", options:["Masada birkaç elma var.","Masada hiç elma yok.","Elmalar mutfakta.","Masada bir muz var."], answer:"Masada birkaç elma var."},
+{q:"He doesn’t like coffee.", options:["O kahveyi sevmez.","O kahveyi sever.","O süt içer.","O kahve alır."], answer:"O kahveyi sevmez."},
+{q:"Let’s go to the park!", options:["Hadi parka gidelim!","Parka gitme!","Parka gidiyoruz.","Parka gitmeyi sevmem."], answer:"Hadi parka gidelim!"},
+{q:"Can you help me, please?", options:["Bana yardım eder misin, lütfen?","Sen yardım etmez misin?","Ben sana yardım ederim.","Sen bana bağırır mısın?"], answer:"Bana yardım eder misin, lütfen?"},
+{q:"It’s raining outside.", options:["Dışarıda yağmur yağıyor.","Hava çok sıcak.","Kar yağıyor.","Rüzgar esmiyor."], answer:"Dışarıda yağmur yağıyor."},
+{q:"She is reading a book.", options:["O bir kitap okuyor.","O kitap yazıyor.","O kitap satıyor.","O müzik dinliyor."], answer:"O bir kitap okuyor."},
+{q:"How often do you brush your teeth?", options:["Dişlerini ne sıklıkla fırçalarsın?","Dişlerini neyle fırçalarsın?","Dişlerin ağrıyor mu?","Dişlerin beyaz mı?"], answer:"Dişlerini ne sıklıkla fırçalarsın?"},
+{q:"I have got two sisters.", options:["İki kız kardeşim var.","İki erkek kardeşim var.","Kardeşim yok.","Bir kuzenim var."], answer:"İki kız kardeşim var."},
+{q:"Where are you from?", options:["Nerelisin?","Nereye gidiyorsun?","Neredesin?","Kimsin?"], answer:"Nerelisin?"},
+{q:"He sometimes plays chess.", options:["O bazen satranç oynar.","O hiç satranç oynamaz.","O her zaman satranç oynar.","O futbol oynar."], answer:"O bazen satranç oynar."},
+{q:"They are from Spain.", options:["Onlar İspanya’dan.","Onlar Almanya’da.","Onlar Türkiye’den.","Onlar Fransa’da."], answer:"Onlar İspanya’dan."},
+{q:"Is there any milk in the fridge?", options:["Buzdolabında süt var mı?","Buzdolabında peynir var mı?","Masada süt var mı?","Süt dolabın dışında mı?"], answer:"Buzdolabında süt var mı?"},
+{q:"She can play the piano.", options:["O piyano çalabilir.","O dans eder.","O şarkı söyler.","O çizim yapar."], answer:"O piyano çalabilir."},
+{q:"We have English on Mondays.", options:["Pazartesileri İngilizce dersimiz var.","Pazartesi tatil.","Salı günü İngilizce.","Çarşamba günü yok."], answer:"Pazartesileri İngilizce dersimiz var."},
+{q:"I am doing my homework now.", options:["Şu anda ödevimi yapıyorum.","Ödevimi yaptım.","Ödevimi yarın yapacağım.","Ödevimi yapmıyorum."], answer:"Şu anda ödevimi yapıyorum."},
+{q:"He has got short hair.", options:["Onun kısa saçları var.","Onun uzun saçları var.","Onun saçı yok.","O şapka takıyor."], answer:"Onun kısa saçları var."},
+{q:"She is wearing a red dress.", options:["O kırmızı bir elbise giyiyor.","O mavi pantolon giyiyor.","O sarı ayakkabı giyiyor.","O elbise giymiyor."], answer:"O kırmızı bir elbise giyiyor."},
+{q:"We are watching a movie.", options:["Biz film izliyoruz.","Biz kitap okuyoruz.","Biz uyuyoruz.","Biz dans ediyoruz."], answer:"Biz film izliyoruz."},
+{q:"Don’t run in the classroom!", options:["Sınıfta koşma!","Koşmaya devam et!","Sınıfta uyu!","Sınıfta oturma!"], answer:"Sınıfta koşma!"},
+{q:"He always drinks milk before bed.", options:["O her zaman yatmadan önce süt içer.","O asla süt içmez.","O sabah süt içer.","O süt sevmiyor."], answer:"O her zaman yatmadan önce süt içer."},
+{q:"There is a cat under the table.", options:["Masasının altında bir kedi var.","Masada bir kedi var.","Masada bir köpek var.","Bahçede bir kedi var."], answer:"Masasının altında bir kedi var."},
+{q:"What’s your favorite subject?", options:["En sevdiğin ders ne?","Okulda ne yaparsın?","Ders çalışır mısın?","Ne zaman okula gidersin?"], answer:"En sevdiğin ders ne?"},
+{q:"She is afraid of spiders.", options:["O örümceklerden korkar.","O kedileri sever.","O örümcekleri sever.","O böcek toplar."], answer:"O örümceklerden korkar."},
+{q:"How do you go to school?", options:["Okula nasıl gidersin?","Okula kimle gidersin?","Okul ne zaman bitiyor?","Okulda ne yaparsın?"], answer:"Okula nasıl gidersin?"},
+{q:"We sometimes visit our grandparents.", options:["Biz bazen büyükanne ve büyükbabamızı ziyaret ederiz.","Biz her zaman parka gideriz.","Biz hiç gitmeyiz.","Biz evde otururuz."], answer:"Biz bazen büyükanne ve büyükbabamızı ziyaret ederiz."},
+{q:"He is listening to music.", options:["O müzik dinliyor.","O kitap okuyor.","O konuşuyor.","O yemek yapıyor."], answer:"O müzik dinliyor."},
+{q:"I’m interested in science.", options:["Bilime ilgim var.","Sanatı seviyorum.","Müziği sevmem.","Bilimle ilgilenmem."], answer:"Bilime ilgim var."},
+{q:"Do you like playing computer games?", options:["Bilgisayar oyunları oynamayı sever misin?","Bilgisayar oyunları oynar mısın?","Bilgisayarı tamir eder misin?","Bilgisayarı kapatır mısın?"], answer:"Bilgisayar oyunları oynamayı sever misin?"},
+{q:"What are you doing?", options:["Ne yapıyorsun?","Nereye gidiyorsun?","Kimsin?","Ne istiyorsun?"], answer:"Ne yapıyorsun?"},
+{q:"I am from Turkey.", options:["Ben Türkiye’denim.","Ben İngiltere’deyim.","Ben Amerika’dan geldim.","Ben Ankara’ya gidiyorum."], answer:"Ben Türkiye’denim."},
+{q:"She often helps her mother.", options:["O sık sık annesine yardım eder.","O annesine hiç yardım etmez.","O babasına yardım eder.","O kardeşine yardım eder."], answer:"O sık sık annesine yardım eder."},
+{q:"My best friend is kind and helpful.", options:["En iyi arkadaşım nazik ve yardımseverdir.","Arkadaşım kötü biridir.","Arkadaşım sessizdir.","Arkadaşım sinirlidir."], answer:"En iyi arkadaşım nazik ve yardımseverdir."},
+{q:"The cat is sleeping on the sofa.", options:["Kedi kanepede uyuyor.","Kedi dışarıda oynuyor.","Kedi yemek yiyor.","Kedi koşuyor."], answer:"Kedi kanepede uyuyor."},
+
 ];
+
 
 let current = 0;
 let currentGroup = 0;
@@ -256,5 +295,6 @@ document.getElementById("nextBtn").onclick = () => {
 </script>
 </body>
 </html>
+
 
 
