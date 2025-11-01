@@ -158,13 +158,13 @@
       background: #667eea;
       color: #fff;
       border-radius: 50%;
-      width: 70px;
-      height: 70px;
+      width: 65px;
+      height: 65px;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      font-size: 34px;
+      font-size: 32px;
       box-shadow: 0 0 20px rgba(0,0,0,0.3);
       transition: all 0.3s;
       z-index: 10;
@@ -178,10 +178,10 @@
     /* 🧠 Sohbet penceresi */
     .chat-box {
       position: fixed;
-      bottom: 110px;
+      bottom: 100px;
       right: 25px;
       width: 340px;
-      height: 400px;
+      height: 420px;
       background: #fff;
       border-radius: 20px;
       box-shadow: 0 0 30px rgba(0,0,0,0.3);
@@ -208,7 +208,7 @@
 
     .chat-messages {
       padding: 10px;
-      height: 300px;
+      height: 310px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -238,26 +238,36 @@
 
     .chat-input {
       display: flex;
+      align-items: center;
       border-top: 1px solid #ddd;
       background: #f8f9fa;
+      padding: 5px;
     }
 
     .chat-input input {
       flex: 1;
-      padding: 12px;
+      padding: 10px 12px;
       border: none;
       outline: none;
       background: transparent;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .chat-input input::placeholder {
+      color: #999;
     }
 
     .chat-input button {
       background: #667eea;
       color: white;
       border: none;
-      padding: 10px 15px;
+      padding: 8px 14px;
+      border-radius: 8px;
       cursor: pointer;
-      border-radius: 0 0 15px 0;
       transition: 0.3s;
+      font-size: 0.9rem;
+      font-weight: 600;
     }
 
     .chat-input button:hover {
@@ -274,7 +284,6 @@
       <p>Hesabına giriş yap ya da hemen kayıt ol.</p>
     </div>
 
-    <!-- GİRİŞ FORMU -->
     <form id="loginForm" class="slide">
       <input id="loginEmail" type="email" placeholder="E-posta" required />
       <input id="loginPassword" type="password" placeholder="Şifre" required />
@@ -284,7 +293,6 @@
       </div>
     </form>
 
-    <!-- KAYIT FORMU -->
     <form id="registerForm" style="display: none;">
       <input id="regName" type="text" placeholder="Ad Soyad" required />
       <input id="regEmail" type="email" placeholder="E-posta" required />
@@ -296,7 +304,6 @@
     </form>
   </div>
 
-  <!-- 💬 Sohbet ikonu ve penceresi -->
   <div class="chat-icon" id="chatIcon">💬</div>
 
   <div class="chat-box" id="chatBox">
@@ -344,7 +351,6 @@
       topSection.innerHTML = `<h2>Tekrar Hoş Geldin!</h2><p>Giriş yaparak devam et.</p>`;
     });
 
-    // kayıt
     registerForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const name = regName.value.trim();
@@ -359,7 +365,6 @@
       showLogin.click();
     });
 
-    // giriş
     loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const email = loginEmail.value.trim();
@@ -375,7 +380,6 @@
       }
     });
 
-    // 💬 Sohbet
     chatIcon.addEventListener("click", () => {
       chatBox.style.display = chatBox.style.display === "flex" ? "none" : "flex";
     });
@@ -414,6 +418,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
