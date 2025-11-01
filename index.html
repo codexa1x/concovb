@@ -20,6 +20,7 @@
       align-items: center;
       min-height: 100vh;
       background: linear-gradient(135deg, #667eea, #764ba2);
+      overflow: hidden;
     }
 
     .container {
@@ -33,7 +34,6 @@
       transition: 0.6s ease-in-out;
     }
 
-    /* 🔔 Mesaj kutusu */
     .message {
       position: absolute;
       top: -60px;
@@ -138,7 +138,6 @@
       text-decoration: underline;
     }
 
-    /* Animasyon */
     .slide {
       animation: slideIn 0.7s ease forwards;
     }
@@ -146,6 +145,105 @@
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(40px); }
       to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* 💬 Sohbet simgesi */
+    .chat-icon {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #667eea;
+      color: #fff;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 28px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      transition: all 0.3s;
+      z-index: 10;
+    }
+
+    .chat-icon:hover {
+      transform: scale(1.1);
+      background: #5a67d8;
+    }
+
+    /* 🧠 Sohbet penceresi */
+    .chat-box {
+      position: fixed;
+      bottom: 100px;
+      right: 25px;
+      width: 300px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 9;
+    }
+
+    .chat-header {
+      background: #667eea;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      font-weight: 600;
+    }
+
+    .chat-messages {
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .msg {
+      padding: 8px 12px;
+      border-radius: 12px;
+      max-width: 80%;
+    }
+
+    .user-msg {
+      align-self: flex-end;
+      background: #667eea;
+      color: #fff;
+    }
+
+    .bot-msg {
+      align-self: flex-start;
+      background: #e2e8f0;
+      color: #333;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .chat-input button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+
+    .chat-input button:hover {
+      background: #5a67d8;
     }
   </style>
 </head>
@@ -158,7 +256,6 @@
       <p>Hesabına giriş yap ya da hemen kayıt ol.</p>
     </div>
 
-    <!-- GİRİŞ FORMU -->
     <form id="loginForm" class="slide">
       <input id="loginEmail" type="email" placeholder="E-posta" required />
       <input id="loginPassword" type="password" placeholder="Şifre" required />
@@ -168,7 +265,6 @@
       </div>
     </form>
 
-    <!-- KAYIT FORMU -->
     <form id="registerForm" style="display: none;">
       <input id="regName" type="text" placeholder="Ad Soyad" required />
       <input id="regEmail" type="email" placeholder="E-posta" required />
@@ -180,6 +276,20 @@
     </form>
   </div>
 
+  <!-- 💬 Sohbet ikonu ve penceresi -->
+  <div class="chat-icon" id="chatIcon">💬</div>
+
+  <div class="chat-box" id="chatBox">
+    <div class="chat-header">Canlı Destek</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="bot-msg msg">Merhaba 👋 Ben asistanım! Nasıl yardımcı olabilirim?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Mesaj yaz..." />
+      <button id="sendBtn">Gönder</button>
+    </div>
+  </div>
+
   <script>
     const messageBox = document.getElementById("messageBox");
     const topSection = document.getElementById("topSection");
@@ -187,81 +297,102 @@
     const registerForm = document.getElementById("registerForm");
     const showRegister = document.getElementById("showRegister");
     const showLogin = document.getElementById("showLogin");
+    const chatIcon = document.getElementById("chatIcon");
+    const chatBox = document.getElementById("chatBox");
+    const chatInput = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const chatMessages = document.getElementById("chatMessages");
 
-    // 🔔 Mesaj gösterme fonksiyonu
     function showMessage(text, color = "#667eea") {
       messageBox.textContent = text;
       messageBox.style.background = color;
       messageBox.classList.add("show");
-      setTimeout(() => {
-        messageBox.classList.remove("show");
-      }, 2500);
+      setTimeout(() => messageBox.classList.remove("show"), 2500);
     }
 
-    // Form geçişleri
     showRegister.addEventListener("click", () => {
       loginForm.style.display = "none";
       registerForm.style.display = "flex";
       registerForm.classList.add("slide");
-      topSection.innerHTML = `
-        <h2>Yeni misin?</h2>
-        <p>Hemen kayıt ol ve soruları çöz!</p>
-      `;
+      topSection.innerHTML = `<h2>Yeni misin?</h2><p>Hemen kayıt ol ve projeye katıl!</p>`;
     });
 
     showLogin.addEventListener("click", () => {
       registerForm.style.display = "none";
       loginForm.style.display = "flex";
       loginForm.classList.add("slide");
-      topSection.innerHTML = `
-        <h2>Tekrar Hoş Geldin!</h2>
-        <p>Giriş yaparak devam et.</p>
-      `;
+      topSection.innerHTML = `<h2>Tekrar Hoş Geldin!</h2><p>Giriş yaparak devam et.</p>`;
     });
 
-    // Kayıt işlemi
     registerForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const name = document.getElementById("regName").value.trim();
-      const email = document.getElementById("regEmail").value.trim();
-      const password = document.getElementById("regPassword").value.trim();
-
+      const name = regName.value.trim();
+      const email = regEmail.value.trim();
+      const password = regPassword.value.trim();
       const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const existing = users.find((u) => u.email === email);
-
-      if (existing) {
-        showMessage("Bu e-posta zaten kayıtlı!", "#e53e3e");
-        return;
-      }
-
+      const existing = users.find(u => u.email === email);
+      if (existing) return showMessage("Bu e-posta zaten kayıtlı!", "#e53e3e");
       users.push({ name, email, password });
       localStorage.setItem("users", JSON.stringify(users));
       showMessage("Kayıt başarılı! Şimdi giriş yap.", "#38a169");
       showLogin.click();
     });
 
-    // Giriş işlemi
     loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
-
+      const email = loginEmail.value.trim();
+      const password = loginPassword.value.trim();
       const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const user = users.find((u) => u.email === email && u.password === password);
-
+      const user = users.find(u => u.email === email && u.password === password);
       if (user) {
         localStorage.setItem("activeUser", JSON.stringify(user));
         showMessage(`Hoş geldin, ${user.name}!`, "#38a169");
-        setTimeout(() => {
-          window.location.href = "proje.html";
-        }, 1500);
+        setTimeout(() => window.location.href = "proje.html", 1500);
       } else {
         showMessage("E-posta veya şifre hatalı!", "#e53e3e");
       }
     });
+
+    // 💬 Sohbet aç/kapa
+    chatIcon.addEventListener("click", () => {
+      chatBox.style.display = chatBox.style.display === "flex" ? "none" : "flex";
+    });
+
+    // 💬 Sohbet gönderme
+    sendBtn.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      const userMsg = document.createElement("div");
+      userMsg.className = "user-msg msg";
+      userMsg.textContent = text;
+      chatMessages.appendChild(userMsg);
+      chatInput.value = "";
+      setTimeout(() => {
+        const botMsg = document.createElement("div");
+        botMsg.className = "bot-msg msg";
+        botMsg.textContent = getBotReply(text);
+        chatMessages.appendChild(botMsg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }, 700);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function getBotReply(text) {
+      text = text.toLowerCase();
+      if (text.includes("şifre")) return "Şifrenizi unuttuysanız yeni hesap oluşturabilirsiniz 🔑";
+      if (text.includes("kayıt")) return "Kayıt olmak için 'Kayıt Ol' kısmını kullanabilirsiniz.";
+      if (text.includes("merhaba") || text.includes("selam")) return "Merhaba! 😊 Size nasıl yardımcı olabilirim?";
+      return "Bunu tam anlayamadım, lütfen biraz daha açıklar mısınız?";
+    }
   </script>
 </body>
 </html>
+
 
 
 
