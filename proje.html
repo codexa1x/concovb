@@ -3,128 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6th English Quiz</title>
+<title>6th Grade English Quiz</title>
 <style>
-  * { box-sizing: border-box; font-family: "Poppins", sans-serif; }
+  * {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
   body {
     margin: 0;
     height: 100vh;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    background-size: 400% 400%;
+    animation: gradientShift 6s ease infinite;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     overflow: hidden;
     color: #fff;
-    background: linear-gradient(-45deg, #ff7eb3, #7873f5, #70e1f5, #ffd1ff);
-    background-size: 400% 400%;
-    animation: gradientMove 10s ease infinite;
   }
-  @keyframes gradientMove {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
   h1 {
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 2.5em;
-    text-shadow: 0 0 15px #fff, 0 0 25px #f0f;
-    animation: fadeGlow 2s infinite alternate;
+    color: #ffeb3b;
+    animation: glow 2s infinite alternate;
   }
-  @keyframes fadeGlow {
-    from {opacity: 0.8;}
-    to {opacity: 1;}
+
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
+    to { text-shadow: 0 0 30px #fff, 0 0 40px #2575fc; }
   }
 
   .groups {
     display: flex;
-    gap: 25px;
-    margin: 10px;
+    gap: 30px;
+    margin: 20px;
   }
+
   .group {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 15px;
-    padding: 8px 15px;
+    padding: 10px 20px;
     text-align: center;
-    box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s, background 0.3s;
   }
+
+  .group:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.3);
+  }
+
   .score {
     font-size: 1.5em;
-    color: #ffff7b;
+    color: #ffeb3b;
+  }
+
+  .quiz {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 25px;
+    padding: 30px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    margin-top: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .start-btn {
+    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+    border: none;
+    border-radius: 20px;
+    color: white;
+    padding: 15px 35px;
+    margin-top: 30px;
+    font-size: 1.3em;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: pulse 2s infinite;
+  }
+
+  .start-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #fff;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 10px #ff6ec4; }
+    50% { box-shadow: 0 0 30px #7873f5; }
+    100% { box-shadow: 0 0 10px #ff6ec4; }
   }
 
   .timer {
     font-size: 1.5em;
-    color: #ffff99;
-    margin: 5px;
-  }
-
-  .start-btn {
-    background: linear-gradient(45deg, #ff7eb3, #7873f5);
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 14px 40px;
-    font-size: 1.5em;
-    cursor: pointer;
-    position: relative;
-    top: 60px;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px #fff;
-  }
-  .start-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px #fff;
-  }
-
-  .quiz {
-    background: rgba(255,255,255,0.2);
-    border-radius: 25px;
-    padding: 25px;
-    width: 80%;
-    max-width: 650px;
-    text-align: center;
-    margin-top: 30px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.3);
-    animation: slideIn 1s ease;
-  }
-  @keyframes slideIn {
-    from {transform: translateY(80px); opacity: 0;}
-    to {transform: translateY(0); opacity: 1;}
-  }
-
-  button.option {
-    background: rgba(255,255,255,0.3);
-    border: none;
-    border-radius: 15px;
-    padding: 10px 25px;
-    margin: 8px;
-    color: #fff;
-    font-size: 1.1em;
-    cursor: pointer;
-    width: 90%;
-    transition: all 0.3s;
-  }
-  button.option:hover {
-    transform: scale(1.05);
-    background: rgba(255,255,255,0.5);
-  }
-
-  .message {
-    font-size: 1.5em;
-    margin-top: 15px;
-    font-weight: bold;
-    animation: fadeIn 0.5s ease;
-  }
-  @keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
+    margin-top: 10px;
+    color: #ffeb3b;
   }
 </style>
 </head>
 <body>
 
-<h1>🌈 6th English Quiz 🌈</h1>
+<h1>🎯 6th Grade English Quiz 🎯</h1>
 
 <div class="groups">
   <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
@@ -134,174 +126,17 @@
 
 <div class="timer" id="timer">⏱️ 65</div>
 
-<button id="startBtn" class="start-btn">✨ Soruya Başla ✨</button>
-
-<div class="quiz" id="quiz" style="display:none;">
-  <h2 id="question">Question will appear here</h2>
-  <div id="answers"></div>
-  <div class="message" id="msg"></div>
+<div class="quiz" id="quiz">
+  <button class="start-btn" id="startBtn">🚀 Soruya Başla</button>
 </div>
 
 <script>
-const correctSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_d1a54d9a0f.mp3?filename=success-1-6297.mp3");
-const wrongSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_3318e31a48.mp3?filename=error-126627.mp3");
-const timeSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_10567a6ff4.mp3?filename=alarm-clock-short-6402.mp3");
-
-const questions = [
-  {q:"I usually get up at seven o’clock.", a:["I usually get up at seven o’clock.","I never wake up.","I sleep at school.","I don’t like mornings."], correct:"I usually get up at seven o’clock."},
-  {q:"She never eats breakfast.", a:["She never eats breakfast.","She eats every hour.","She cooks lunch.","She loves dinner."], correct:"She never eats breakfast."},
-  {q:"They are playing football now.", a:["They are playing football now.","They watch TV.","They eat dinner.","They are sleeping."], correct:"They are playing football now."},
-  {q:"Do you like watching TV?", a:["Do you like watching TV?","Do you fix your TV?","Do you buy a TV?","Do you dance with TV?"], correct:"Do you like watching TV."},
-  {q:"He is taller than me.", a:["He is taller than me.","He is smaller than me.","He is funny.","He is lazy."], correct:"He is taller than me."},
-  {q:"Where do you live?", a:["I live in Ankara.","I am living school.","I goes house.","I have cat."], correct:"I live in Ankara."},
-  {q:"What time do you go to bed?", a:["At 10 p.m.","After lunch.","At the park.","In the morning."], correct:"At 10 p.m."},
-  {q:"My father usually drives to work.", a:["My father usually drives to work.","My father sleeps to work.","My father eats car.","My father sings in the car."], correct:"My father usually drives to work."},
-  {q:"It’s raining now.", a:["It’s raining now.","It’s hot and dry.","It’s snowing.","It’s sunny."], correct:"It’s raining now."},
-  {q:"I have got two brothers.", a:["I have got two brothers.","I have no family.","I am a brother.","I have ten cats."], correct:"I have got two brothers."},
-  {q:"He is reading a book.", a:["He is reading a book.","He is cooking.","He is running fast.","He is playing football."], correct:"He is reading a book."},
-  {q:"We don’t have English on Sunday.", a:["We don’t have English on Sunday.","We study English on Sunday.","We love Sunday.","We eat English."], correct:"We don’t have English on Sunday."},
-  {q:"Are you listening to me?", a:["Yes, I am.","Yes, I can.","No, you don’t.","I not."], correct:"Yes, I am."},
-  {q:"She sometimes goes swimming.", a:["She sometimes goes swimming.","She never swims.","She flies a kite.","She eats water."], correct:"She sometimes goes swimming."},
-  {q:"He can play the guitar.", a:["He can play the guitar.","He play piano.","He has guitar.","He can sing loud."], correct:"He can play the guitar."},
-  {q:"What do you do after school?", a:["I do my homework.","I cook rice.","I sleep in class.","I watch the sky."], correct:"I do my homework."},
-  {q:"We are from Turkey.", a:["We are from Turkey.","We are on Turkey.","We is Turkey.","We have Turkey."], correct:"We are from Turkey."},
-  {q:"She always brushes her teeth.", a:["She always brushes her teeth.","She never brushes her teeth.","She drinks teeth.","She eats toothpaste."], correct:"She always brushes her teeth."},
-  {q:"I don’t like maths.", a:["I don’t like maths.","I love maths.","I like drawing.","I am a math."], correct:"I don’t like maths."},
-  {q:"What’s your favorite subject?", a:["English.","Green.","Banana.","Monday."], correct:"English."},
-  {q:"How old are you?", a:["I am twelve.","I am student.","I have twelve.","I old twelve."], correct:"I am twelve."},
-  {q:"Can you swim?", a:["Yes, I can.","Yes, I do.","I swimmed.","No, I don’t can."], correct:"Yes, I can."},
-  {q:"She is my best friend.", a:["She is my best friend.","She is my dog.","She is my school.","She is my pencil."], correct:"She is my best friend."},
-  {q:"I am doing my homework now.", a:["I am doing my homework now.","I do my homework every day.","I done homework.","I no homework."], correct:"I am doing my homework now."},
-  {q:"They sometimes visit their grandparents.", a:["They sometimes visit their grandparents.","They never visit their grandparents.","They visit school.","They visit dog."], correct:"They sometimes visit their grandparents."},
-  {q:"I always drink milk at breakfast.", a:["I always drink milk at breakfast.","I eat milk.","I cook milk.","I sleep milk."], correct:"I always drink milk at breakfast."},
-  {q:"He doesn’t like playing chess.", a:["He doesn’t like playing chess.","He loves chess.","He plays chess every day.","He teaches chess."], correct:"He doesn’t like playing chess."},
-  {q:"My mother is cooking dinner.", a:["My mother is cooking dinner.","My mother is eating dinner.","My mother is cleaning room.","My mother is sleeping."], correct:"My mother is cooking dinner."},
-  {q:"They aren’t watching TV.", a:["They aren’t watching TV.","They are watching TV.","They is TV.","They watching TV."], correct:"They aren’t watching TV."},
-  {q:"Is she reading a book?", a:["Yes, she is.","No, she not.","Yes, she does.","She reading yes."], correct:"Yes, she is."},
-  {q:"I am going to school now.", a:["I am going to school now.","I goes to school.","I going school.","I will to school."], correct:"I am going to school now."},
-  {q:"My favorite sport is basketball.", a:["My favorite sport is basketball.","I am basketball.","My sport is table.","I play reading."], correct:"My favorite sport is basketball."},
-  {q:"We usually have lunch at school.", a:["We usually have lunch at school.","We never have lunch.","We have dinner at school.","We eat breakfast."], correct:"We usually have lunch at school."},
-  {q:"Do they play tennis?", a:["Yes, they do.","Yes, they can.","No, they is.","They tennis."], correct:"Yes, they do."},
-  {q:"He often watches cartoons.", a:["He often watches cartoons.","He sometimes drives.","He never eats.","He runs fast."], correct:"He often watches cartoons."},
-  {q:"It’s cold today.", a:["It’s cold today.","It’s hot today.","It’s rainy tomorrow.","It’s wind tomorrow."], correct:"It’s cold today."},
-  {q:"We don’t go to school on Sunday.", a:["We don’t go to school on Sunday.","We go school every day.","We go Monday.","We love Sunday school."], correct:"We don’t go to school on Sunday."},
-  {q:"Does he like pizza?", a:["Yes, he does.","Yes, he can.","No, he don’t.","He pizza yes."], correct:"Yes, he does."},
-  {q:"She is wearing a red dress.", a:["She is wearing a red dress.","She wears dress.","She red is dress.","She dressed red."], correct:"She is wearing a red dress."},
-  {q:"I sometimes play computer games.", a:["I sometimes play computer games.","I never play computer.","I write games.","I games play always."], correct:"I sometimes play computer games."},
-  {q:"We are having breakfast now.", a:["We are having breakfast now.","We eat lunch.","We cook dinner.","We have dinner."], correct:"We are having breakfast now."},
-  {q:"He doesn’t like running.", a:["He doesn’t like running.","He loves run.","He running fast.","He can run always."], correct:"He doesn’t like running."},
-  {q:"What are you doing?", a:["I am studying.","I am run.","I doing school.","I am school."], correct:"I am studying."},
-  {q:"I usually clean my room on Saturdays.", a:["I usually clean my room on Saturdays.","I never clean room.","I cook room.","I play in room."], correct:"I usually clean my room on Saturdays."},
-  {q:"My sister is listening to music.", a:["My sister is listening to music.","My sister is sleeping.","My sister is cooking.","My sister is drawing."], correct:"My sister is listening to music."},
-  {q:"We are watching a movie.", a:["We are watching a movie.","We watch music.","We watch breakfast.","We play a movie."], correct:"We are watching a movie."},
-  {q:"Do you go to school by bus?", a:["Yes, I do.","Yes, I go bus.","No, I car.","Yes, I am."], correct:"Yes, I do."},
-  {q:"I can draw very well.", a:["I can draw very well.","I can cook draw.","I am drawing well.","I has draw."], correct:"I can draw very well."},
-  {q:"Where is your bag?", a:["It’s on the table.","It’s eat.","It’s red pencil.","It’s is under."], correct:"It’s on the table."},
-  {q:"We are happy today.", a:["We are happy today.","We is happy.","We happy every day.","We happy not."], correct:"We are happy today."}
-  
-];
-
-
-
-let current = 0;
-let scores = [0,0,0];
-let groupTurn = 0;
-let timer = 65;
-let interval;
-let usedQuestions = [];
-
-// karıştırıcı fonksiyon
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-const qShuffled = shuffle([...questions]);
-
-function startTimer() {
-  clearInterval(interval);
-  timer = 65;
-  document.getElementById("timer").textContent = "⏱️ 65";
-  interval = setInterval(() => {
-    timer--;
-    document.getElementById("timer").textContent = "⏱️ " + timer;
-    if (timer <= 0) {
-      timeSound.play();
-      changeScore(-150, "⏰ Süre bitti! -150");
-      nextTurn();
-    }
-  }, 1000);
-}
-
-function showQuestion() {
-  const q = qShuffled[current];
-  document.getElementById("quiz").style.display = "block";
-  document.getElementById("question").textContent = q.q;
-  const ansDiv = document.getElementById("answers");
-  ansDiv.innerHTML = "";
-  const shuffledAnswers = shuffle([...q.a]);
-  shuffledAnswers.forEach(opt => {
-    const btn = document.createElement("button");
-    btn.className = "option";
-    btn.textContent = opt;
-    btn.onclick = () => checkAnswer(btn, opt);
-    ansDiv.appendChild(btn);
-  });
-  document.getElementById("msg").textContent = "";
-  startTimer();
-}
-
-function checkAnswer(btn, choice) {
-  const q = qShuffled[current];
-  const msg = document.getElementById("msg");
-  if (choice === q.correct) {
-    correctSound.play();
-    changeScore(+150, "✅ Doğru! +150");
-  } else {
-    wrongSound.play();
-    changeScore(-150, "❌ Yanlış! -150");
-  }
-  clearInterval(interval);
-  Array.from(document.getElementsByClassName("option")).forEach(b=>b.disabled=true);
-  setTimeout(nextTurn, 4000);
-}
-
-function changeScore(val, text) {
-  const msg = document.getElementById("msg");
-  msg.textContent = text;
-  msg.style.color = val>0 ? "#00ff9d" : "#ff5e7e";
-  scores[groupTurn] += val;
-  document.getElementById("s"+(groupTurn+1)).textContent = scores[groupTurn];
-}
-
-function nextTurn() {
-  current++;
-  if (current >= qShuffled.length) return endGame();
-  groupTurn = (groupTurn + 1) % 3;
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("startBtn").style.display = "block";
-}
-
-function endGame() {
-  clearInterval(interval);
-  const maxScore = Math.max(...scores);
-  const winner = scores.indexOf(maxScore) + 1;
-  document.getElementById("quiz").innerHTML = `<h2>🎉 Oyun Bitti! 🎉</h2>
-  <p>1. Grup: ${scores[0]} puan</p>
-  <p>2. Grup: ${scores[1]} puan</p>
-  <p>3. Grup: ${scores[2]} puan</p>
-  <h3>🏆 Kazanan: Grup ${winner}</h3>`;
-  document.getElementById("startBtn").style.display = "none";
-}
-
-document.getElementById("startBtn").onclick = () => {
-  document.getElementById("startBtn").style.display = "none";
-  showQuestion();
-};
+document.getElementById("startBtn").addEventListener("click", () => {
+  document.getElementById("quiz").innerHTML = "<h2>Yükleniyor...</h2>";
+  // buraya 2. parçayı ekleyeceğiz (soru sistemi)
+});
 </script>
+
 </body>
 </html>
 
