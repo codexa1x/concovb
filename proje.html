@@ -3,82 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>✨ 6th Grade English Quiz - Deluxe Edition ✨</title>
+<title>✨ 6th Grade English Quiz ✨</title>
 <style>
   body {
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #430089, #82ffa1);
-    background-size: 400% 400%;
-    animation: gradientFlow 10s ease infinite;
+    background: linear-gradient(135deg, #4b0082, #1e90ff);
+    background-size: 300% 300%;
+    animation: gradientShift 12s ease infinite;
     color: #fff;
     text-align: center;
     margin: 0;
     overflow: hidden;
   }
 
-  @keyframes gradientFlow {
+  @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
 
   h1 {
-    font-size: 2.8em;
     margin-top: 20px;
-    text-shadow: 0 0 20px #00fff2, 0 0 40px #0066ff;
-    letter-spacing: 2px;
-    animation: glowPulse 2s infinite alternate;
+    font-size: 2.6em;
+    text-shadow: 0 0 20px #9b59b6, 0 0 40px #2575fc;
+    animation: glow 3s ease-in-out infinite alternate;
   }
 
-  @keyframes glowPulse {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #00ccff; }
-    to { text-shadow: 0 0 25px #00eaff, 0 0 60px #0044ff; }
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
+    to { text-shadow: 0 0 30px #fff, 0 0 50px #2575fc; }
   }
 
-  input {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    border: none;
-    width: 200px;
-    text-align: center;
-    font-size: 1em;
+  .scoreboard {
+    font-size: 1.3em;
+    margin-top: 15px;
+  }
+
+  .timer {
+    font-size: 1.6em;
+    margin-top: 10px;
+    color: #ffeb3b;
   }
 
   .start-btn {
     font-size: 1.4em;
-    padding: 14px 30px;
+    padding: 14px 40px;
     border: none;
     border-radius: 40px;
-    background: linear-gradient(90deg, #3b82f6, #9333ea, #3b82f6);
-    background-size: 300% 300%;
     color: white;
+    background: linear-gradient(90deg, #6a0dad, #3b82f6);
     cursor: pointer;
-    box-shadow: 0 0 20px #6a0dad;
-    animation: glowBtn 3s linear infinite, floaty 2s infinite alternate;
+    margin-top: 40px;
+    box-shadow: 0 0 25px #6a0dad;
+    transition: all 0.4s ease;
   }
 
-  @keyframes glowBtn {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  @keyframes floaty {
-    from { transform: translateY(0px); }
-    to { transform: translateY(-8px); }
+  .start-btn:hover {
+    transform: scale(1.07);
+    box-shadow: 0 0 30px #00ffff;
   }
 
   .question-box {
     display: none;
     margin-top: 30px;
-    padding: 20px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 25px rgba(255,255,255,0.3);
+    padding: 25px;
     width: 70%;
     margin-left: auto;
     margin-right: auto;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 25px rgba(255,255,255,0.2);
+    animation: fadeIn 0.8s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
   }
 
   .option {
@@ -93,92 +93,60 @@
   }
 
   .option:hover {
-    background: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.35);
     transform: scale(1.05);
   }
 
   .feedback {
     font-size: 1.6em;
-    margin-top: 15px;
+    margin-top: 20px;
     height: 40px;
     transition: all 0.3s ease;
   }
 
   .feedback.correct {
     color: #00ff88;
-    text-shadow: 0 0 20px #00ffcc;
-    animation: bounce 0.5s;
+    text-shadow: 0 0 15px #00ffcc;
   }
 
   .feedback.wrong {
     color: #ff4d4d;
-    text-shadow: 0 0 20px #ff0000;
-    animation: shake 0.4s;
-  }
-
-  @keyframes bounce {
-    0% { transform: scale(0.9); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-  }
-
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
-  }
-
-  .timer {
-    font-size: 1.5em;
-    color: #ffeb3b;
-    margin-top: 15px;
-  }
-
-  .scoreboard {
-    font-size: 1.3em;
-    margin: 15px;
+    text-shadow: 0 0 15px #ff0000;
   }
 
   .next-btn {
     display: none;
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 1.2em;
     padding: 12px 30px;
-    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    border-radius: 12px;
     border: none;
+    background: linear-gradient(90deg, #0072ff, #00c6ff);
     color: white;
-    border-radius: 10px;
     cursor: pointer;
   }
 
+  .next-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #00c6ff;
+  }
 </style>
 </head>
 <body>
 
 <h1>🎯 6th Grade English Quiz 🎯</h1>
+<div class="scoreboard" id="scoreboard"></div>
+<div class="timer" id="timer">⏱️ 65</div>
 
-<div id="setup">
-  <h2>Enter Group Names</h2>
-  <input id="g1" placeholder="Group 1">
-  <input id="g2" placeholder="Group 2">
-  <input id="g3" placeholder="Group 3">
-  <br><br>
-  <button class="start-btn" id="startGame">🚀 Start Game</button>
+<button class="start-btn" id="startQuestion">✨ Soruya Başla ✨</button>
+
+<div class="question-box" id="questionBox">
+  <h2 id="questionText"></h2>
+  <div id="answers"></div>
 </div>
 
-<div id="game" style="display:none;">
-  <div class="scoreboard" id="scoreboard"></div>
-  <div class="timer" id="timer">⏱️ 65</div>
-  <button class="start-btn" id="startQuestion">✨ Soruya Başla ✨</button>
-
-  <div class="question-box" id="questionBox">
-    <h2 id="questionText"></h2>
-    <div id="answers"></div>
-  </div>
-
-  <div class="feedback" id="feedback"></div>
-  <button class="next-btn" id="nextBtn">➡️ Next Group</button>
-</div>
+<div class="feedback" id="feedback"></div>
+<button class="next-btn" id="nextBtn">➡️ Next Group</button>
 
 <audio id="correctSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_01b7e7f04e.mp3"></audio>
 <audio id="wrongSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_92e5a69d6e.mp3"></audio>
@@ -186,9 +154,9 @@
 
 <script>
 const questions = [
-  {q:"I often do my homework after dinner.", options:["Ben genelde akşam yemeğinden sonra ödevimi yaparım.","Ben sabah ödevimi yaparım.","Ben ödev yapmam.","Ben genelde ders çalışmam."], answer:"Ben genelde akşam yemeğinden sonra ödevimi yaparım."},
+  {q:"I often do my homework after dinner.", options:["Ben genelde akşam yemeğinden sonra ödevimi yaparım.","Ben sabah ödev yaparım.","Ben ödev yapmam.","Ben nadiren ödev yaparım."], answer:"Ben genelde akşam yemeğinden sonra ödevimi yaparım."},
   {q:"She never goes to school by car.", options:["O asla arabayla okula gitmez.","O her zaman arabayla gider.","O bazen arabayla gider.","O sık sık arabayla gider."], answer:"O asla arabayla okula gitmez."},
-  {q:"They usually have breakfast at seven.", options:["Onlar genellikle yedide kahvaltı yaparlar.","Onlar yedide yatarlar.","Onlar yedide okula giderler.","Onlar sabah kahvaltı yapmazlar."], answer:"Onlar genellikle yedide kahvaltı yaparlar."},
+  {q:"They usually have breakfast at seven.", options:["Onlar genellikle yedide kahvaltı yaparlar.","Onlar yedide yatarlar.","Onlar kahvaltı yapmazlar.","Onlar sabah koşuya giderler."], answer:"Onlar genellikle yedide kahvaltı yaparlar."},
   {q:"Do you watch TV in the evenings?", options:["Akşamları televizyon izler misin?","Sabahları televizyon izler misin?","Okulda televizyon izler misin?","Hafta sonu televizyon izler misin?"], answer:"Akşamları televizyon izler misin?"}
 ];
 
@@ -197,44 +165,35 @@ let currentGroup = 0;
 let scores = [0,0,0];
 let timer;
 let timeLeft = 65;
-let groups = [];
+const groups = ["Group 1", "Group 2", "Group 3"];
 
-document.getElementById("startGame").onclick = () => {
-  groups = [
-    document.getElementById("g1").value || "Group 1",
-    document.getElementById("g2").value || "Group 2",
-    document.getElementById("g3").value || "Group 3"
-  ];
-  document.getElementById("setup").style.display = "none";
-  document.getElementById("game").style.display = "block";
-  shuffle();
-  updateBoard();
-};
+updateScoreboard();
 
 document.getElementById("startQuestion").onclick = () => {
   document.getElementById("feedback").textContent = "";
   document.getElementById("startQuestion").style.display = "none";
   document.getElementById("questionBox").style.display = "block";
+  shuffleQuestions();
   showQuestion();
   startTimer();
 };
 
-function shuffle() {
+function shuffleQuestions() {
   questions.sort(()=>Math.random()-0.5);
   questions.forEach(q=>q.options.sort(()=>Math.random()-0.5));
 }
 
-function showQuestion() {
+function showQuestion(){
   const q = questions[current];
   document.getElementById("questionText").textContent = q.q;
-  const ans = document.getElementById("answers");
-  ans.innerHTML = "";
-  q.options.forEach(opt => {
+  const ansDiv = document.getElementById("answers");
+  ansDiv.innerHTML = "";
+  q.options.forEach(opt=>{
     const div = document.createElement("div");
-    div.className = "option";
-    div.textContent = opt;
-    div.onclick = () => select(opt);
-    ans.appendChild(div);
+    div.className="option";
+    div.textContent=opt;
+    div.onclick=()=>select(opt);
+    ansDiv.appendChild(div);
   });
 }
 
@@ -242,20 +201,25 @@ function select(choice){
   clearInterval(timer);
   const q = questions[current];
   const feedback = document.getElementById("feedback");
+
   if(choice === q.answer){
-    scores[currentGroup]+=150;
+    scores[currentGroup] += 150;
     feedback.textContent = "✅ Doğru! +150 puan";
     feedback.className = "feedback correct";
     document.getElementById("correctSound").play();
   } else {
-    scores[currentGroup]-=150;
+    scores[currentGroup] -= 150;
     feedback.textContent = "❌ Yanlış! -150 puan";
     feedback.className = "feedback wrong";
     document.getElementById("wrongSound").play();
   }
-  updateBoard();
+
+  updateScoreboard();
   document.querySelectorAll(".option").forEach(o=>o.onclick=null);
   document.getElementById("nextBtn").style.display="inline-block";
+
+  // Feedback 4 saniye sonra kaybolsun
+  setTimeout(() => feedback.textContent = "", 4000);
 }
 
 function startTimer(){
@@ -268,15 +232,16 @@ function startTimer(){
       clearInterval(timer);
       scores[currentGroup]-=150;
       document.getElementById("timeSound").play();
-      document.getElementById("feedback").textContent="⏰ Süre  Doldu! -150 puan";
+      document.getElementById("feedback").textContent="⏰ Süre bitti! -150 puan";
       document.getElementById("feedback").className="feedback wrong";
-      updateBoard();
+      updateScoreboard();
       document.getElementById("nextBtn").style.display="inline-block";
+      setTimeout(() => document.getElementById("feedback").textContent = "", 4000);
     }
   },1000);
 }
 
-function updateBoard(){
+function updateScoreboard(){
   document.getElementById("scoreboard").innerHTML =
   `${groups[0]}: ${scores[0]} | ${groups[1]}: ${scores[1]} | ${groups[2]}: ${scores[2]} <br> 🧠 Sıra: ${groups[currentGroup]}`;
 }
@@ -291,9 +256,4 @@ document.getElementById("nextBtn").onclick = () => {
 </script>
 </body>
 </html>
-
-
-
-
-
 
