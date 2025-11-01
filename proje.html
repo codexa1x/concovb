@@ -16,9 +16,9 @@
     background-size: 200% 200%;
   }
   @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% { background-position: 0% 100%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 100%; }
   }
 
   h1 {
@@ -39,7 +39,7 @@
     padding: 10px 20px; border-radius: 15px;
     box-shadow: 0 0 10px rgba(255,255,255,0.3);
   }
-  .score { font-size: 1.3em; color: #ffeb3b; }
+  .score { font-size: 1.3em; color: #ffdb3b; }
 
   .quiz {
     background: rgba(255,255,255,0.2);
@@ -225,8 +225,8 @@ function saveProgress(){
 
 function startTimer(){
   clearInterval(interval);
-  timer = 65;
-  document.getElementById("timer").textContent = "⏱️ 65";
+  timer = 70;
+  document.getElementById("timer").textContent = "⏱️ 70";
   interval = setInterval(()=>{
     timer--;
     document.getElementById("timer").textContent = "⏱️ "+timer;
@@ -234,12 +234,12 @@ function startTimer(){
       clearInterval(interval);
       wrongAnswer(true);
     }
-  },1000);
+  },1004);
 }
 
 function startQuestion(){
   if(current >= questions.length){
-    document.getElementById("quiz").innerHTML = `<h2>🎉 Finish Quiz 🎉<br>Group 1: ${scores[0]} | Group 2: ${scores[1]} | Group 3: ${scores[2]}</h2>`;
+    document.getElementById("quiz").innerHTML = `<h2> Finish Quiz <br>Group 1: ${scores[0]} | Group 2: ${scores[1]} | Group 3: ${scores[2]}</h2>`;
     localStorage.clear();
     return;
   }
@@ -300,6 +300,7 @@ window.onload = ()=>{
 </script>
 </body>
 </html>
+
 
 
 
