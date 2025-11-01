@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>6th Grade English Quiz - Unit 3</title>
 <style>
-  * { box-sizing: border-box; font-family: "Poppins", sans-serif; }
+  * { box-sizing: border-box; font-family: Arial, sans-serif; transition: all 0.3s ease; }
   body {
     margin: 0;
     height: 100vh;
@@ -17,64 +17,86 @@
     color: #fff;
     overflow: hidden;
   }
+
   h1 {
     margin-top: 20px;
     font-size: 2.5em;
     color: #ffeb3b;
-    text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb, 0 0 30px #2575fc;
-    animation: glow 3s infinite alternate;
+    text-shadow: 0 0 15px #fff, 0 0 30px #6a11cb;
+    animation: titleGlow 3s infinite alternate;
   }
-  @keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
-    to { text-shadow: 0 0 30px #fff, 0 0 50px #2575fc; }
+  @keyframes titleGlow {
+    0% { text-shadow: 0 0 15px #6a11cb; }
+    100% { text-shadow: 0 0 40px #2575fc; }
   }
-  .score { font-size: 1.5em; color: #ffeb3b; margin: 10px; }
-  .timer { font-size: 1.4em; color: #00ffcc; margin-top: 5px; }
+
+  .score { font-size: 1.3em; color: #00ffcc; margin: 8px; }
+  .timer { font-size: 1.4em; color: #ffeb3b; margin-top: 5px; }
+
   .quiz {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.1);
     border-radius: 20px;
     padding: 30px;
-    width: 80%;
-    max-width: 600px;
+    width: 85%;
+    max-width: 650px;
     text-align: center;
-    box-shadow: 0 0 20px rgba(255,255,255,0.3);
     margin-top: 20px;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    box-shadow: 0 0 25px rgba(0,0,0,0.3);
+    animation: fadeIn 1s ease;
   }
-  button {
-    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .start-btn {
+    background: linear-gradient(90deg, #ff6ec4, #7873f5);
     border: none;
+    border-radius: 15px;
+    color: white;
+    font-size: 1.5em;
+    padding: 20px 50px;
+    cursor: pointer;
+    margin-top: 50px;
+    animation: pulse 2s infinite;
+    text-shadow: 0 0 10px #fff;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px #fff; }
+    50% { transform: scale(1.1); box-shadow: 0 0 40px #ff6ec4; }
+    100% { transform: scale(1); box-shadow: 0 0 10px #fff; }
+  }
+
+  button.answer {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid transparent;
     border-radius: 12px;
     color: white;
     padding: 12px 25px;
     margin: 10px;
+    width: 80%;
     font-size: 1.1em;
     cursor: pointer;
-    transition: all 0.3s;
   }
-  button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px #fff;
+
+  button.answer:hover {
+    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+    box-shadow: 0 0 15px #fff;
   }
-  .start-btn {
-    animation: pulse 1.5s infinite;
-  }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 10px #fff; }
-    50% { box-shadow: 0 0 40px #6a11cb; transform: scale(1.05); }
-    100% { box-shadow: 0 0 10px #fff; }
-  }
+
   .message {
-    font-size: 1.5em;
-    margin-top: 10px;
-    height: 30px;
+    font-size: 1.4em;
+    margin-top: 15px;
+    height: 40px;
+    transition: opacity 0.5s ease;
   }
 </style>
 </head>
 <body>
 
-<h1>🎯 6th Grade English Quiz - Unit 3 🎯</h1>
+<h1>🎯 6th Grade English Quiz 🎯</h1>
 <div class="score">Score: <span id="score">0</span></div>
 <div class="timer" id="timer">⏱️ 65</div>
 
@@ -91,28 +113,23 @@
 
 <script>
 const questions = [
-  {q: "I often do my homework after dinner.", a:["Ben genellikle akşam yemeğinden sonra ödevimi yaparım.","Ben sabahları kahvaltı yapmam.","Ben her zaman televizyon izlerim.","Ben hafta sonu okula giderim."], correct:0},
-  {q: "She never goes to bed late.", a:["O asla geç yatmaz.","O her zaman erken kalkar.","O sık sık dışarı çıkar.","O hafta sonları oyun oynar."], correct:0},
-  {q: "Do you usually have breakfast at 7 o’clock?", a:["Sen genellikle saat 7'de kahvaltı yapar mısın?","Sen sinemaya gider misin?","Sen ödevini bitirdin mi?","Sen futbol oynar mısın?"], correct:0},
-  {q: "He sometimes watches TV in the morning.", a:["O bazen sabahları televizyon izler.","O her gün okula gider.","O genellikle müzik dinler.","O nadiren kitap okur."], correct:0},
-  {q: "They always play basketball after school.", a:["Onlar her zaman okuldan sonra basketbol oynarlar.","Onlar asla film izlemez.","Onlar her sabah koşuya çıkar.","Onlar genellikle erken yatar."], correct:0},
-  {q: "My father rarely eats fast food.", a:["Babam nadiren fast food yer.","Babam her gün pizza yer.","Babam hiç kahvaltı yapmaz.","Babam genellikle su içmez."], correct:0},
-  {q: "We usually visit our grandparents on Sundays.", a:["Biz genellikle pazar günleri büyüklerimizi ziyaret ederiz.","Biz haftaiçi ders çalışmayız.","Biz okulda uyuruz.","Biz bazen oyun oynamayız."], correct:0},
-  {q: "Does she often listen to music?", a:["O sık sık müzik dinler mi?","O genellikle kitap mı okur?","O her zaman dans mı eder?","O asla dışarı çıkmaz mı?"], correct:0},
-  {q: "I sometimes clean my room before dinner.", a:["Ben bazen akşam yemeğinden önce odamı temizlerim.","Ben sabahları dışarı çıkarım.","Ben hiç ödev yapmam.","Ben sık sık geç uyanırım."], correct:0},
-  {q: "They never go to school by bus.", a:["Onlar asla otobüsle okula gitmezler.","Onlar her zaman bisiklete binerler.","Onlar bazen geç kalırlar.","Onlar her gün otobüse binerler."], correct:0}
+  {q: "I often do my homework after dinner.", a:["Ben genellikle akşam yemeğinden sonra ödevimi yaparım.","Ben sabah koşuya çıkarım.","Ben bazen oyun oynarım.","Ben her zaman kitap okurum."], correct:0},
+  {q: "She never goes to bed late.", a:["O asla geç yatmaz.","O sık sık dışarı çıkar.","O bazen okula gitmez.","O her gün film izler."], correct:0},
+  {q: "They usually play basketball after school.", a:["Onlar genellikle okuldan sonra basketbol oynarlar.","Onlar asla ders çalışmazlar.","Onlar her sabah erken kalkar.","Onlar nadiren sinemaya gider."], correct:0},
+  {q: "Does he often read books?", a:["O sık sık kitap okur mu?","O hiç yemek yemez mi?","O genellikle müzik dinler mi?","O her zaman dışarıda mı?"], correct:0},
+  {q: "We sometimes clean our house at the weekend.", a:["Biz bazen hafta sonu evimizi temizleriz.","Biz her gün oyun oynarız.","Biz asla okula gitmeyiz.","Biz genellikle erken kalkarız."], correct:0}
 ];
 
-let score = localStorage.getItem("score") ? parseInt(localStorage.getItem("score")) : 0;
-let current = localStorage.getItem("current") ? parseInt(localStorage.getItem("current")) : 0;
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5);}
+shuffle(questions);
+
+let score = parseInt(localStorage.getItem("score")) || 0;
+let current = parseInt(localStorage.getItem("current")) || 0;
 let timer = 65;
 let interval;
 let canAnswer = false;
 
 document.getElementById("score").textContent = score;
-
-function shuffle(arr){return arr.sort(()=>Math.random()-0.5);}
-shuffle(questions);
 
 function startTimer(){
   timer = 65;
@@ -125,7 +142,6 @@ function startTimer(){
 }
 
 function showQuestion(){
-  document.getElementById("quiz").style.opacity = "1";
   document.getElementById("startBtn").style.display = "none";
   const q = questions[current];
   document.getElementById("question").textContent = q.q;
@@ -134,14 +150,15 @@ function showQuestion(){
   q.a.forEach((opt,i)=>{
     const btn = document.createElement("button");
     btn.textContent = opt;
-    btn.onclick = ()=>checkAnswer(i,btn);
+    btn.className = "answer";
+    btn.onclick = ()=>checkAnswer(i);
     ansDiv.appendChild(btn);
   });
   canAnswer = true;
   startTimer();
 }
 
-function checkAnswer(i,btn){
+function checkAnswer(i){
   if(!canAnswer) return;
   canAnswer = false;
   clearInterval(interval);
@@ -150,12 +167,12 @@ function checkAnswer(i,btn){
   if(i === q.correct){
     score += 150;
     document.getElementById("correctSound").play();
-    msg.textContent = "✅ Correct! +150";
+    msg.textContent = "✅ Dogru +150";
     msg.style.color = "#00ff7f";
   } else {
     score -= 150;
     document.getElementById("wrongSound").play();
-    msg.textContent = "❌ Wrong! -150";
+    msg.textContent = "❌ Yanlış -150";
     msg.style.color = "#ff4444";
   }
   document.getElementById("score").textContent = score;
