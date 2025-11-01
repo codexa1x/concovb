@@ -3,126 +3,180 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6th Grade Quiz - Mega Version</title>
+<title>✨ 6th Grade English Quiz - Deluxe Edition ✨</title>
 <style>
   body {
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #4b0082, #000080);
-    color: white;
+    background: linear-gradient(135deg, #430089, #82ffa1);
+    background-size: 400% 400%;
+    animation: gradientFlow 10s ease infinite;
+    color: #fff;
     text-align: center;
     margin: 0;
     overflow: hidden;
   }
 
-  h1 {
-    font-size: 2.2em;
-    margin-top: 20px;
-    text-shadow: 0 0 15px #9b59b6;
-  }
-
-  .container {
-    margin-top: 40px;
-    padding: 20px;
-    animation: fadeIn 1.2s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  .start-btn {
-    font-size: 1.5em;
-    padding: 15px 35px;
-    border: none;
-    border-radius: 50px;
-    background: linear-gradient(90deg, #6a0dad, #3b82f6, #6a0dad);
-    background-size: 300% 300%;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 0 25px #6a0dad;
-    animation: glowing 3s linear infinite, bounce 2s infinite alternate;
-  }
-
-  @keyframes glowing {
+  @keyframes gradientFlow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
 
-  @keyframes bounce {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-10px); }
+  h1 {
+    font-size: 2.8em;
+    margin-top: 20px;
+    text-shadow: 0 0 20px #00fff2, 0 0 40px #0066ff;
+    letter-spacing: 2px;
+    animation: glowPulse 2s infinite alternate;
+  }
+
+  @keyframes glowPulse {
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #00ccff; }
+    to { text-shadow: 0 0 25px #00eaff, 0 0 60px #0044ff; }
+  }
+
+  input {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    border: none;
+    width: 200px;
+    text-align: center;
+    font-size: 1em;
+  }
+
+  .start-btn {
+    font-size: 1.4em;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 40px;
+    background: linear-gradient(90deg, #3b82f6, #9333ea, #3b82f6);
+    background-size: 300% 300%;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 20px #6a0dad;
+    animation: glowBtn 3s linear infinite, floaty 2s infinite alternate;
+  }
+
+  @keyframes glowBtn {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes floaty {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-8px); }
   }
 
   .question-box {
     display: none;
     margin-top: 30px;
-    animation: fadeIn 1s ease-in-out;
+    padding: 20px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 25px rgba(255,255,255,0.3);
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .option {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid transparent;
+    background: rgba(255,255,255,0.2);
     padding: 12px;
     margin: 10px auto;
-    width: 60%;
     border-radius: 10px;
+    width: 60%;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    font-size: 1.1em;
   }
 
   .option:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255,255,255,0.4);
     transform: scale(1.05);
   }
 
-  .scoreboard {
-    margin-top: 20px;
-    font-size: 1.2em;
+  .feedback {
+    font-size: 1.6em;
+    margin-top: 15px;
+    height: 40px;
+    transition: all 0.3s ease;
+  }
+
+  .feedback.correct {
+    color: #00ff88;
+    text-shadow: 0 0 20px #00ffcc;
+    animation: bounce 0.5s;
+  }
+
+  .feedback.wrong {
+    color: #ff4d4d;
+    text-shadow: 0 0 20px #ff0000;
+    animation: shake 0.4s;
+  }
+
+  @keyframes bounce {
+    0% { transform: scale(0.9); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
   }
 
   .timer {
     font-size: 1.5em;
+    color: #ffeb3b;
+    margin-top: 15px;
+  }
+
+  .scoreboard {
+    font-size: 1.3em;
     margin: 15px;
   }
 
   .next-btn {
     display: none;
-    margin-top: 20px;
-    font-size: 1.3em;
-    padding: 12px 28px;
-    background: linear-gradient(90deg, #8e44ad, #2980b9);
+    margin-top: 15px;
+    font-size: 1.2em;
+    padding: 12px 30px;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
     border: none;
     color: white;
     border-radius: 10px;
     cursor: pointer;
   }
+
 </style>
 </head>
 <body>
 
-<h1>💫 English Quiz Show 💫</h1>
+<h1>🎯 6th Grade English Quiz 🎯</h1>
 
-<div id="groupSetup" class="container">
+<div id="setup">
   <h2>Enter Group Names</h2>
-  <input id="group1" placeholder="Group 1 Name" />
-  <input id="group2" placeholder="Group 2 Name" />
-  <input id="group3" placeholder="Group 3 Name" />
+  <input id="g1" placeholder="Group 1">
+  <input id="g2" placeholder="Group 2">
+  <input id="g3" placeholder="Group 3">
   <br><br>
-  <button class="start-btn" id="beginGame">🚀 Start Game</button>
+  <button class="start-btn" id="startGame">🚀 Start Game</button>
 </div>
 
-<div id="gameArea" class="container" style="display:none;">
+<div id="game" style="display:none;">
   <div class="scoreboard" id="scoreboard"></div>
   <div class="timer" id="timer">⏱️ 65</div>
-  <button class="start-btn" id="startBtn">✨ Soruya Başla ✨</button>
-  
+  <button class="start-btn" id="startQuestion">✨ Soruya Başla ✨</button>
+
   <div class="question-box" id="questionBox">
     <h2 id="questionText"></h2>
-    <div id="options"></div>
+    <div id="answers"></div>
   </div>
 
+  <div class="feedback" id="feedback"></div>
   <button class="next-btn" id="nextBtn">➡️ Next Group</button>
 </div>
 
@@ -132,112 +186,111 @@
 
 <script>
 const questions = [
-  {q:"I usually get up at seven o’clock.", options:["Ben genelde saat yedide kalkarım.","Ben genelde kahvaltı yaparım.","Ben genelde okula giderim.","Ben genelde uyurum."], answer:"Ben genelde saat yedide kalkarım."},
-  {q:"She never eats fast food.", options:["O asla fast food yemez.","O bazen fast food yer.","O her zaman fast food yer.","O sık sık fast food yer."], answer:"O asla fast food yemez."},
-  {q:"They often play basketball after school.", options:["Onlar okuldan sonra sık sık basketbol oynarlar.","Onlar sabah basketbol oynarlar.","Onlar hiç basketbol oynamazlar.","Onlar futbol oynarlar."], answer:"Onlar okuldan sonra sık sık basketbol oynarlar."},
-  {q:"What time do you go to bed?", options:["Saat kaçta yatarsın?","Ne zaman kalkarsın?","Saat kaçta ders çalışırsın?","Ne zaman okula gidersin?"], answer:"Saat kaçta yatarsın?"},
-  {q:"He always brushes his teeth.", options:["O her zaman dişlerini fırçalar.","O bazen dişlerini fırçalar.","O dişlerini fırçalamaz.","O hiç dişlerini fırçalamaz."], answer:"O her zaman dişlerini fırçalar."}
+  {q:"I often do my homework after dinner.", options:["Ben genelde akşam yemeğinden sonra ödevimi yaparım.","Ben sabah ödevimi yaparım.","Ben ödev yapmam.","Ben genelde ders çalışmam."], answer:"Ben genelde akşam yemeğinden sonra ödevimi yaparım."},
+  {q:"She never goes to school by car.", options:["O asla arabayla okula gitmez.","O her zaman arabayla gider.","O bazen arabayla gider.","O sık sık arabayla gider."], answer:"O asla arabayla okula gitmez."},
+  {q:"They usually have breakfast at seven.", options:["Onlar genellikle yedide kahvaltı yaparlar.","Onlar yedide yatarlar.","Onlar yedide okula giderler.","Onlar sabah kahvaltı yapmazlar."], answer:"Onlar genellikle yedide kahvaltı yaparlar."},
+  {q:"Do you watch TV in the evenings?", options:["Akşamları televizyon izler misin?","Sabahları televizyon izler misin?","Okulda televizyon izler misin?","Hafta sonu televizyon izler misin?"], answer:"Akşamları televizyon izler misin?"}
 ];
 
-let shuffledQuestions = [];
-let currentQuestion = 0;
-let timer;
-let timeLeft = 65;
+let current = 0;
 let currentGroup = 0;
 let scores = [0,0,0];
+let timer;
+let timeLeft = 65;
 let groups = [];
 
-document.getElementById("beginGame").addEventListener("click", () => {
+document.getElementById("startGame").onclick = () => {
   groups = [
-    document.getElementById("group1").value || "Group 1",
-    document.getElementById("group2").value || "Group 2",
-    document.getElementById("group3").value || "Group 3"
+    document.getElementById("g1").value || "Group 1",
+    document.getElementById("g2").value || "Group 2",
+    document.getElementById("g3").value || "Group 3"
   ];
-  document.getElementById("groupSetup").style.display = "none";
-  document.getElementById("gameArea").style.display = "block";
-  shuffleQuestions();
-  updateScoreboard();
-});
+  document.getElementById("setup").style.display = "none";
+  document.getElementById("game").style.display = "block";
+  shuffle();
+  updateBoard();
+};
 
-document.getElementById("startBtn").addEventListener("click", () => {
-  document.getElementById("startBtn").style.display = "none";
+document.getElementById("startQuestion").onclick = () => {
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("startQuestion").style.display = "none";
+  document.getElementById("questionBox").style.display = "block";
   showQuestion();
   startTimer();
-});
+};
 
-function shuffleQuestions(){
-  shuffledQuestions = questions
-    .map(q => ({...q, options: q.options.sort(() => Math.random() - 0.5)}))
-    .sort(() => Math.random() - 0.5);
+function shuffle() {
+  questions.sort(()=>Math.random()-0.5);
+  questions.forEach(q=>q.options.sort(()=>Math.random()-0.5));
 }
 
-function showQuestion(){
-  if(currentQuestion >= shuffledQuestions.length) currentQuestion = 0;
-  const q = shuffledQuestions[currentQuestion];
-  document.getElementById("questionBox").style.display = "block";
+function showQuestion() {
+  const q = questions[current];
   document.getElementById("questionText").textContent = q.q;
-  const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
-  q.options.forEach(opt=>{
-    const btn = document.createElement("div");
-    btn.className="option";
-    btn.textContent=opt;
-    btn.onclick=()=>selectAnswer(opt);
-    optionsDiv.appendChild(btn);
+  const ans = document.getElementById("answers");
+  ans.innerHTML = "";
+  q.options.forEach(opt => {
+    const div = document.createElement("div");
+    div.className = "option";
+    div.textContent = opt;
+    div.onclick = () => select(opt);
+    ans.appendChild(div);
   });
 }
 
-function selectAnswer(choice){
-  const q = shuffledQuestions[currentQuestion];
+function select(choice){
   clearInterval(timer);
-  const correct = (choice === q.answer);
-  if(correct){
-    scores[currentGroup] += 150;
+  const q = questions[current];
+  const feedback = document.getElementById("feedback");
+  if(choice === q.answer){
+    scores[currentGroup]+=150;
+    feedback.textContent = "✅ Doğru! +150 puan";
+    feedback.className = "feedback correct";
     document.getElementById("correctSound").play();
   } else {
-    scores[currentGroup] -= 150;
+    scores[currentGroup]-=150;
+    feedback.textContent = "❌ Yanlış! -150 puan";
+    feedback.className = "feedback wrong";
     document.getElementById("wrongSound").play();
   }
-  updateScoreboard();
-  document.getElementById("nextBtn").style.display = "inline-block";
-  document.querySelectorAll(".option").forEach(o => o.onclick=null);
+  updateBoard();
+  document.querySelectorAll(".option").forEach(o=>o.onclick=null);
+  document.getElementById("nextBtn").style.display="inline-block";
 }
 
 function startTimer(){
-  timeLeft = 65;
-  document.getElementById("timer").textContent = "⏱️ " + timeLeft;
-  timer = setInterval(()=>{
+  timeLeft=65;
+  document.getElementById("timer").textContent="⏱️ "+timeLeft;
+  timer=setInterval(()=>{
     timeLeft--;
-    document.getElementById("timer").textContent = "⏱️ " + timeLeft;
+    document.getElementById("timer").textContent="⏱️ "+timeLeft;
     if(timeLeft<=0){
       clearInterval(timer);
-      scores[currentGroup] -= 150;
+      scores[currentGroup]-=150;
       document.getElementById("timeSound").play();
-      updateScoreboard();
-      document.getElementById("nextBtn").style.display = "inline-block";
+      document.getElementById("feedback").textContent="⏰ Süre  Doldu! -150 puan";
+      document.getElementById("feedback").className="feedback wrong";
+      updateBoard();
+      document.getElementById("nextBtn").style.display="inline-block";
     }
   },1000);
 }
 
-function updateScoreboard(){
+function updateBoard(){
   document.getElementById("scoreboard").innerHTML =
-    `${groups[0]}: ${scores[0]} | ${groups[1]}: ${scores[1]} | ${groups[2]}: ${scores[2]} <br> 🎯 Now Playing: ${groups[currentGroup]}`;
+  `${groups[0]}: ${scores[0]} | ${groups[1]}: ${scores[1]} | ${groups[2]}: ${scores[2]} <br> 🧠 Sıra: ${groups[currentGroup]}`;
 }
 
-document.getElementById("nextBtn").addEventListener("click", () => {
-  document.getElementById("nextBtn").style.display = "none";
-  document.getElementById("questionBox").style.display = "none";
-  document.getElementById("startBtn").style.display = "inline-block";
-  currentQuestion++;
-  currentGroup = (currentGroup + 1) % 3;
-});
+document.getElementById("nextBtn").onclick = () => {
+  document.getElementById("nextBtn").style.display="none";
+  document.getElementById("questionBox").style.display="none";
+  document.getElementById("startQuestion").style.display="inline-block";
+  current = (current+1) % questions.length;
+  currentGroup = (currentGroup+1) % 3;
+};
 </script>
-
 </body>
 </html>
-
-
-
 
 
 
