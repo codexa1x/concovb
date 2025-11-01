@@ -3,306 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎯 6th Grade Unit 3 English Quiz</title>
+<title>6th Grade English Quiz - Unit 3</title>
 <style>
   * { box-sizing: border-box; font-family: "Poppins", sans-serif; }
   body {
-    margin: 0; height: 100vh;
-    background: linear-gradient(135deg, #4e54c8, #8f94fb);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    color: #fff; overflow: hidden;
-    animation: gradientShift 10s ease infinite;
-    background-size: 200% 200%;
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: #fff;
+    overflow: hidden;
   }
-  @keyframes gradientShift {
-    0% { background-position: 0% 100%; }
-    50% { background-position: 100% 100%; }
-    100% { background-position: 0% 100%; }
-  }
-
   h1 {
-    font-size: 2.3em;
-    text-shadow: 0 0 20px #fff, 0 0 40px #ffeb3b;
-    animation: glow 2s infinite alternate;
+    margin-top: 20px;
+    font-size: 2.5em;
+    color: #ffeb3b;
+    text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb, 0 0 30px #2575fc;
+    animation: glow 3s infinite alternate;
   }
   @keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #4e54c8; }
-    to { text-shadow: 0 0 25px #fff, 0 0 45px #8f94fb; }
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
+    to { text-shadow: 0 0 30px #fff, 0 0 50px #2575fc; }
   }
-
-  .groups {
-    display: flex; gap: 25px; margin-bottom: 20px;
-  }
-  .group {
-    background: rgba(255,255,255,0.15);
-    padding: 10px 20px; border-radius: 15px;
-    box-shadow: 0 0 10px rgba(255,255,255,0.3);
-  }
-  .score { font-size: 1.3em; color: #ffdb3b; }
-
+  .score { font-size: 1.5em; color: #ffeb3b; margin: 10px; }
+  .timer { font-size: 1.4em; color: #00ffcc; margin-top: 5px; }
   .quiz {
-    background: rgba(255,255,255,0.2);
-    border-radius: 25px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
     padding: 30px;
-    width: 90%;
+    width: 80%;
     max-width: 600px;
     text-align: center;
-    box-shadow: 0 0 30px rgba(0,0,0,0.3);
-    animation: fadeIn 1s ease;
+    box-shadow: 0 0 20px rgba(255,255,255,0.3);
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
   }
-  @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
   button {
     background: linear-gradient(45deg, #ff6ec4, #7873f5);
-    border: none; border-radius: 12px;
-    color: white; padding: 12px 25px;
-    margin: 8px; font-size: 1.1em;
-    cursor: pointer; transition: all 0.3s;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    padding: 12px 25px;
+    margin: 10px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s;
   }
   button:hover {
     transform: scale(1.1);
     box-shadow: 0 0 20px #fff;
   }
-
-  .timer { font-size: 1.4em; margin-top: 10px; color: #ffeb3b; }
-  .message { font-size: 1.5em; margin-top: 15px; transition: 0.3s; }
-
-  #startBtn {
+  .start-btn {
     animation: pulse 1.5s infinite;
-    background: linear-gradient(45deg, #00c6ff, #0072ff);
   }
   @keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 15px #00c6ff; }
-    50% { transform: scale(1.1); box-shadow: 0 0 25px #fff; }
-    100% { transform: scale(1); box-shadow: 0 0 15px #00c6ff; }
+    0% { box-shadow: 0 0 10px #fff; }
+    50% { box-shadow: 0 0 40px #6a11cb; transform: scale(1.05); }
+    100% { box-shadow: 0 0 10px #fff; }
+  }
+  .message {
+    font-size: 1.5em;
+    margin-top: 10px;
+    height: 30px;
   }
 </style>
 </head>
 <body>
 
-<h1>🏆 6th Grade / Unit 3: In the Classroom</h1>
-
-<div class="groups">
-  <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
-  <div class="group">Group 2<br><span class="score" id="s2">0</span></div>
-  <div class="group">Group 3<br><span class="score" id="s3">0</span></div>
-</div>
-
+<h1>🎯 6th Grade English Quiz - Unit 3 🎯</h1>
+<div class="score">Score: <span id="score">0</span></div>
 <div class="timer" id="timer">⏱️ 65</div>
 
 <div class="quiz" id="quiz">
-  <button id="startBtn" onclick="startQuestion()">🎬 Soruya Başla</button>
+  <button class="start-btn" id="startBtn">✨ Soruya Başla ✨</button>
+  <h2 id="question"></h2>
+  <div id="answers"></div>
+  <div class="message" id="msg"></div>
 </div>
 
-<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_49e4b8a5d1.mp3" preload="auto"></audio>
-<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_43f97b8a7b.mp3" preload="auto"></audio>
+<audio id="correctSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+<audio id="wrongSound" src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
+<audio id="timeSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
 
 <script>
 const questions = [
-{q:"I usually ______ my homework in the evening.",a:["does","do","doing","did"],correct:1},
-{q:"She always ______ to school by bus.",a:["go","goes","going","gone"],correct:1},
-{q:"They ______ breakfast at 7 o’clock.",a:["have","has","having","had"],correct:0},
-{q:"My father ______ TV after dinner.",a:["watch","watches","watched","watching"],correct:1},
-{q:"We ______ our teeth every morning.",a:["brush","brushes","brushing","brushed"],correct:0},
-{q:"I often ______ music before sleeping.",a:["listen","listens","listened","listening"],correct:0},
-{q:"Our teacher ______ English very well.",a:["speak","speaks","speaking","spoke"],correct:1},
-{q:"My mother ______ the dishes every night.",a:["wash","washes","washing","washed"],correct:1},
-{q:"He ______ football after school.",a:["play","plays","played","playing"],correct:1},
-{q:"I ______ to bed at ten o’clock.",a:["go","goes","gone","going"],correct:0},
-{q:"She ______ her bag on the desk.",a:["puts","put","putting","putted"],correct:0},
-{q:"We ______ English on Mondays.",a:["study","studies","studied","studying"],correct:0},
-{q:"He ______ breakfast at home every day.",a:["eat","eats","eating","ate"],correct:1},
-{q:"They ______ basketball in the schoolyard.",a:["play","plays","played","playing"],correct:0},
-{q:"My sister ______ her homework carefully.",a:["do","does","doing","did"],correct:1},
-{q:"Students ______ the teacher in class.",a:["listen","listens","listened","listening"],correct:0},
-{q:"We ______ in the school library on Fridays.",a:["read","reads","reading","readed"],correct:0},
-{q:"I ______ to my friends at lunchtime.",a:["talk","talks","talking","talked"],correct:0},
-{q:"He ______ his hand to answer a question.",a:["raise","raises","raised","raising"],correct:1},
-{q:"Our teacher ______ us new words.",a:["teach","teaches","teached","teaching"],correct:1},
-{q:"We ______ homework every weekday.",a:["have","has","had","having"],correct:0},
-{q:"I ______ my bag under the table.",a:["keep","keeps","keeping","kept"],correct:0},
-{q:"She ______ water when she is thirsty.",a:["drink","drinks","drinking","drank"],correct:1},
-{q:"We ______ pictures on the wall.",a:["see","sees","seeing","saw"],correct:0},
-{q:"He ______ his lessons every evening.",a:["study","studies","studied","studying"],correct:1},
-{q:"The students ______ their books now.",a:["open","opens","opened","opening"],correct:0},
-{q:"Our teacher ______ a question to us.",a:["ask","asks","asked","asking"],correct:1},
-{q:"I ______ lunch at the school canteen.",a:["have","has","had","having"],correct:0},
-{q:"She ______ her notebook carefully.",a:["close","closes","closed","closing"],correct:1},
-{q:"We ______ English every day.",a:["learn","learns","learning","learned"],correct:0},
-{q:"He ______ in the classroom quietly.",a:["sit","sits","sat","sitting"],correct:1},
-{q:"I ______ to music after finishing my homework.",a:["listen","listens","listened","listening"],correct:0},
-{q:"We ______ hands before eating.",a:["wash","washes","washed","washing"],correct:0},
-{q:"The bell ______ at 9 o’clock.",a:["ring","rings","rung","ringing"],correct:1},
-{q:"Our class ______ twenty students.",a:["have","has","had","having"],correct:1},
-{q:"She ______ her lunch box every morning.",a:["prepare","prepares","prepared","preparing"],correct:1},
-{q:"I ______ new vocabulary from the teacher.",a:["learn","learns","learned","learning"],correct:0},
-{q:"They ______ in the garden at break time.",a:["play","plays","played","playing"],correct:0},
-{q:"We ______ our hands when we want to speak.",a:["raise","raises","raising","raised"],correct:0},
-{q:"He ______ to the library after school.",a:["go","goes","gone","going"],correct:1},
-{q:"My friends ______ to music in the break.",a:["listen","listens","listened","listening"],correct:0},
-{q:"Our teacher ______ us homework every day.",a:["gives","give","giving","gave"],correct:0},
-{q:"I ______ my bag and go home.",a:["take","takes","taking","took"],correct:0},
-{q:"She ______ her room every weekend.",a:["clean","cleans","cleaned","cleaning"],correct:1},
-{q:"We ______ English words on the board.",a:["write","writes","wrote","writing"],correct:0},
-{q:"The students ______ quietly in the exam.",a:["sit","sits","sat","sitting"],correct:0},
-{q:"He ______ to school at 8 a.m.",a:["go","goes","going","gone"],correct:1},
-{q:"I ______ to the teacher’s questions.",a:["listen","listens","listened","listening"],correct:0},
-{q:"She ______ her pencil box on the desk.",a:["puts","put","putting","putted"],correct:0},
-{q:"We ______ the classroom before leaving.",a:["clean","cleans","cleaned","cleaning"],correct:0},
-{q:"He ______ his book and starts reading.",a:["open","opens","opened","opening"],correct:1},
-{q:"I ______ my notebook every day.",a:["use","uses","using","used"],correct:0},
-{q:"They ______ their homework after dinner.",a:["do","does","did","doing"],correct:0},
-{q:"My mother ______ me with my lessons.",a:["help","helps","helped","helping"],correct:1},
-{q:"Our school ______ a big garden.",a:["have","has","had","having"],correct:1},
-{q:"We ______ lunch at twelve o’clock.",a:["have","has","had","having"],correct:0},
-{q:"She ______ her uniform every morning.",a:["wear","wears","wearing","wore"],correct:1},
-{q:"I ______ my hands after painting.",a:["wash","washes","washing","washed"],correct:0},
-{q:"He ______ TV before sleeping.",a:["watch","watches","watching","watched"],correct:1},
-{q:"They ______ their homework carefully.",a:["do","does","did","doing"],correct:0},
-{q:"We ______ to the classroom together.",a:["go","goes","gone","going"],correct:0},
-{q:"The teacher ______ us a story.",a:["tell","tells","telling","told"],correct:1},
-{q:"My friends ______ basketball every day.",a:["play","plays","played","playing"],correct:0},
-{q:"I ______ my pencil when I draw.",a:["use","uses","using","used"],correct:0},
-{q:"He ______ his bag on the chair.",a:["puts","put","putting","putted"],correct:0},
-{q:"We ______ the board before class.",a:["clean","cleans","cleaning","cleaned"],correct:0},
-{q:"She ______ English words on the notebook.",a:["write","writes","wrote","writing"],correct:1},
-{q:"They ______ to the park on weekends.",a:["go","goes","gone","going"],correct:0},
-{q:"Our teacher ______ us in the lesson.",a:["helps","help","helped","helping"],correct:0},
-{q:"He ______ to bed early on weekdays.",a:["go","goes","gone","going"],correct:1},
-{q:"I ______ milk in the morning.",a:["drink","drinks","drank","drinking"],correct:0},
-{q:"She ______ the blackboard with chalk.",a:["write","writes","wrote","writing"],correct:1},
-{q:"We ______ for the exam tomorrow.",a:["study","studies","studying","studied"],correct:0},
-{q:"They ______ to the music teacher.",a:["listen","listens","listened","listening"],correct:0},
-{q:"He ______ his lunch at school.",a:["eat","eats","eating","ate"],correct:1},
-{q:"I ______ my homework after dinner.",a:["do","does","doing","did"],correct:0},
-{q:"We ______ our classroom clean.",a:["keep","keeps","kept","keeping"],correct:0},
-{q:"She ______ new words every day.",a:["learn","learns","learned","learning"],correct:1},
-{q:"They ______ their teacher politely.",a:["greet","greets","greeted","greeting"],correct:0},
-{q:"I ______ to the library after lunch.",a:["go","goes","gone","going"],correct:0},
-{q:"He ______ in the school garden.",a:["run","runs","running","ran"],correct:1},
-{q:"We ______ our notebooks in our bags.",a:["put","puts","putting","putted"],correct:0},
-{q:"My friend ______ his books every night.",a:["read","reads","reading","readed"],correct:1},
-{q:"I ______ up at seven every morning.",a:["get","gets","getting","got"],correct:0},
-{q:"We ______ breakfast with my family.",a:["have","has","having","had"],correct:0},
-{q:"She ______ her pencil case every morning.",a:["check","checks","checked","checking"],correct:1},
-{q:"They ______ lunch in the canteen.",a:["have","has","having","had"],correct:0},
-{q:"Our teacher ______ the lesson at 9 o’clock.",a:["start","starts","starting","started"],correct:1},
-{q:"He ______ his book when the bell rings.",a:["close","closes","closing","closed"],correct:1},
-{q:"We ______ with our friends after school.",a:["talk","talks","talking","talked"],correct:0},
-{q:"I ______ my room before going to bed.",a:["tidy","tidies","tidying","tidied"],correct:0},
-{q:"She ______ her cat every evening.",a:["feed","feeds","feeding","fed"],correct:1},
-{q:"They ______ their hands before lunch.",a:["wash","washes","washing","washed"],correct:0},
-{q:"Our school ______ at nine o’clock.",a:["start","starts","started","starting"],correct:1},
-{q:"He ______ lunch at the canteen.",a:["have","has","having","had"],correct:1},
-{q:"We ______ our projects in the classroom.",a:["show","shows","showing","showed"],correct:0},
-{q:"I ______ my homework before dinner.",a:["finish","finishes","finished","finishing"],correct:0},
-{q:"She ______ breakfast with milk.",a:["have","has","having","had"],correct:1},
-{q:"They ______ to music in their room.",a:["listen","listens","listened","listening"],correct:0},
-{q:"He ______ his bag on the floor.",a:["puts","put","putting","putted"],correct:0},
-{q:"We ______ our English test tomorrow.",a:["have","has","had","having"],correct:0},
-{q:"I ______ new words every lesson.",a:["learn","learns","learned","learning"],correct:0},
-{q:"She ______ her hands when she paints.",a:["wash","washes","washing","washed"],correct:1},
-{q:"They ______ at the table during lunch.",a:["sit","sits","sitting","sat"],correct:0},
-{q:"He ______ early every day.",a:["gets up","get up","got up","getting up"],correct:0},
-{q:"We ______ our lessons carefully.",a:["study","studies","studied","studying"],correct:0},
-{q:"I ______ my shoes before entering the house.",a:["take off","takes off","taking off","took off"],correct:0}
+  {q: "I often do my homework after dinner.", a:["Ben genellikle akşam yemeğinden sonra ödevimi yaparım.","Ben sabahları kahvaltı yapmam.","Ben her zaman televizyon izlerim.","Ben hafta sonu okula giderim."], correct:0},
+  {q: "She never goes to bed late.", a:["O asla geç yatmaz.","O her zaman erken kalkar.","O sık sık dışarı çıkar.","O hafta sonları oyun oynar."], correct:0},
+  {q: "Do you usually have breakfast at 7 o’clock?", a:["Sen genellikle saat 7'de kahvaltı yapar mısın?","Sen sinemaya gider misin?","Sen ödevini bitirdin mi?","Sen futbol oynar mısın?"], correct:0},
+  {q: "He sometimes watches TV in the morning.", a:["O bazen sabahları televizyon izler.","O her gün okula gider.","O genellikle müzik dinler.","O nadiren kitap okur."], correct:0},
+  {q: "They always play basketball after school.", a:["Onlar her zaman okuldan sonra basketbol oynarlar.","Onlar asla film izlemez.","Onlar her sabah koşuya çıkar.","Onlar genellikle erken yatar."], correct:0},
+  {q: "My father rarely eats fast food.", a:["Babam nadiren fast food yer.","Babam her gün pizza yer.","Babam hiç kahvaltı yapmaz.","Babam genellikle su içmez."], correct:0},
+  {q: "We usually visit our grandparents on Sundays.", a:["Biz genellikle pazar günleri büyüklerimizi ziyaret ederiz.","Biz haftaiçi ders çalışmayız.","Biz okulda uyuruz.","Biz bazen oyun oynamayız."], correct:0},
+  {q: "Does she often listen to music?", a:["O sık sık müzik dinler mi?","O genellikle kitap mı okur?","O her zaman dans mı eder?","O asla dışarı çıkmaz mı?"], correct:0},
+  {q: "I sometimes clean my room before dinner.", a:["Ben bazen akşam yemeğinden önce odamı temizlerim.","Ben sabahları dışarı çıkarım.","Ben hiç ödev yapmam.","Ben sık sık geç uyanırım."], correct:0},
+  {q: "They never go to school by bus.", a:["Onlar asla otobüsle okula gitmezler.","Onlar her zaman bisiklete binerler.","Onlar bazen geç kalırlar.","Onlar her gün otobüse binerler."], correct:0}
 ];
 
-
-let current = parseInt(localStorage.getItem("currentQ")) || 0;
-let scores = [parseInt(localStorage.getItem("s1"))||0, parseInt(localStorage.getItem("s2"))||0, parseInt(localStorage.getItem("s3"))||0];
-let groupTurn = current % 3;
+let score = localStorage.getItem("score") ? parseInt(localStorage.getItem("score")) : 0;
+let current = localStorage.getItem("current") ? parseInt(localStorage.getItem("current")) : 0;
 let timer = 65;
 let interval;
+let canAnswer = false;
 
-function saveProgress(){
-  localStorage.setItem("currentQ", current);
-  localStorage.setItem("s1", scores[0]);
-  localStorage.setItem("s2", scores[1]);
-  localStorage.setItem("s3", scores[2]);
-}
+document.getElementById("score").textContent = score;
+
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5);}
+shuffle(questions);
 
 function startTimer(){
-  clearInterval(interval);
-  timer = 70;
-  document.getElementById("timer").textContent = "⏱️ 70";
+  timer = 65;
+  document.getElementById("timer").textContent = "⏱️ " + timer;
   interval = setInterval(()=>{
     timer--;
-    document.getElementById("timer").textContent = "⏱️ "+timer;
-    if(timer<=0){
-      clearInterval(interval);
-      wrongAnswer(true);
-    }
-  },1004);
+    document.getElementById("timer").textContent = "⏱️ " + timer;
+    if(timer<=0){ clearInterval(interval); timeUp(); }
+  },1000);
 }
 
-function startQuestion(){
-  if(current >= questions.length){
-    document.getElementById("quiz").innerHTML = `<h2> Finish Quiz <br>Group 1: ${scores[0]} | Group 2: ${scores[1]} | Group 3: ${scores[2]}</h2>`;
-    localStorage.clear();
-    return;
-  }
+function showQuestion(){
+  document.getElementById("quiz").style.opacity = "1";
+  document.getElementById("startBtn").style.display = "none";
   const q = questions[current];
-  const quiz = document.getElementById("quiz");
-  quiz.innerHTML = `<h2>${q.q}</h2><div id='answers'></div><div class='message' id='msg'></div>`;
+  document.getElementById("question").textContent = q.q;
+  const ansDiv = document.getElementById("answers");
+  ansDiv.innerHTML = "";
   q.a.forEach((opt,i)=>{
     const btn = document.createElement("button");
     btn.textContent = opt;
-    btn.onclick = ()=>checkAnswer(i);
-    document.getElementById("answers").appendChild(btn);
+    btn.onclick = ()=>checkAnswer(i,btn);
+    ansDiv.appendChild(btn);
   });
+  canAnswer = true;
   startTimer();
 }
 
-function checkAnswer(i){
+function checkAnswer(i,btn){
+  if(!canAnswer) return;
+  canAnswer = false;
+  clearInterval(interval);
   const q = questions[current];
   const msg = document.getElementById("msg");
-  if(i===q.correct){
+  if(i === q.correct){
+    score += 150;
     document.getElementById("correctSound").play();
-    msg.textContent = "✅ Doğru! 150 Puan Kazandın.";
+    msg.textContent = "✅ Correct! +150";
     msg.style.color = "#00ff7f";
-    scores[groupTurn] += 150;
   } else {
-    wrongAnswer(false);
+    score -= 150;
+    document.getElementById("wrongSound").play();
+    msg.textContent = "❌ Wrong! -150";
+    msg.style.color = "#ff4444";
+  }
+  document.getElementById("score").textContent = score;
+  localStorage.setItem("score",score);
+  localStorage.setItem("current",current);
+  current++;
+  setTimeout(nextStep,1500);
+}
+
+function timeUp(){
+  score -= 150;
+  document.getElementById("timeSound").play();
+  document.getElementById("msg").textContent = "⏰ Time’s up! -150";
+  document.getElementById("msg").style.color = "#ff4444";
+  document.getElementById("score").textContent = score;
+  localStorage.setItem("score",score);
+  localStorage.setItem("current",current);
+  current++;
+  setTimeout(nextStep,1500);
+}
+
+function nextStep(){
+  if(current >= questions.length){
+    document.getElementById("quiz").innerHTML = `<h2>🎉 Quiz Finished! Total Score: ${score}</h2>`;
+    localStorage.clear();
     return;
   }
-  next();
+  document.getElementById("question").textContent = "";
+  document.getElementById("answers").innerHTML = "";
+  document.getElementById("msg").textContent = "";
+  document.getElementById("startBtn").style.display = "inline-block";
 }
 
-function wrongAnswer(timeOut){
-  document.getElementById("wrongSound").play();
-  const msg = document.getElementById("msg");
-  msg.textContent = timeOut ? "⌚ Süre Bitti -150" : "❌ Yanlış! -150 Puan Kaybettin.";
-  msg.style.color = "#ff4444";
-  scores[groupTurn] -= 150;
-  next();
-}
-
-function next(){
-  clearInterval(interval);
-  groupTurn = (groupTurn + 1) % 3;
-  current++;
-  saveProgress();
-  document.getElementById("s1").textContent = scores[0];
-  document.getElementById("s2").textContent = scores[1];
-  document.getElementById("s3").textContent = scores[2];
-  setTimeout(()=>{
-    document.getElementById("quiz").innerHTML = `<button id='startBtn' onclick='startQuestion()'>🚀 Soruya Başla</button>`;
-  },1500);
-}
-
-window.onload = ()=>{
-  document.getElementById("s1").textContent = scores[0];
-  document.getElementById("s2").textContent = scores[1];
-  document.getElementById("s3").textContent = scores[2];
+document.getElementById("startBtn").onclick = ()=>{
+  document.getElementById("msg").textContent = "";
+  showQuestion();
 };
 </script>
 </body>
 </html>
-
-
-
 
 
 
