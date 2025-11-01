@@ -68,11 +68,26 @@
     transition: all 0.5s ease;
   }
 
+  h2 {
+    animation: fadeSlide 0.8s ease;
+  }
+
+  @keyframes fadeSlide {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
   .message {
     font-size: 1.5em;
     margin-top: 15px;
     min-height: 40px;
     transition: all 0.5s;
+    animation: pop 0.5s ease;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
   }
 
   button {
@@ -118,10 +133,6 @@
   <button id="startBtn">🚀 Soruya Başla</button>
   <div class="message" id="msg"></div>
 </div>
-
-<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_45a84bdb8c.mp3?filename=correct-2-46134.mp3"></audio>
-<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5e6b1d64a0.mp3?filename=wrong-answer-126515.mp3"></audio>
-<audio id="timeSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6d6e99ea48.mp3?filename=alarm-clock-24608.mp3"></audio>
 
 <script>
 const questions = [
@@ -175,13 +186,10 @@ const questions = [
   {q:"I can draw very well.", a:["I can draw very well.","I can cook draw.","I am drawing well.","I has draw."], correct:"I can draw very well."},
   {q:"Where is your bag?", a:["It’s on the table.","It’s eat.","It’s red pencil.","It’s is under."], correct:"It’s on the table."},
   {q:"We are happy today.", a:["We are happy today.","We is happy.","We happy every day.","We happy not."], correct:"We are happy today."}
-  
+
 ];
 
-// sorular ve cevaplar karışık olsun
-for (let q of questions) {
-  q.a = q.a.sort(() => Math.random() - 0.5);
-}
+for (let q of questions) q.a = q.a.sort(() => Math.random() - 0.5);
 questions.sort(() => Math.random() - 0.5);
 
 let current = 0;
@@ -190,9 +198,13 @@ let currentGroup = 0;
 let timer = 65;
 let interval;
 
-const correctSound = document.getElementById("correctSound");
-const wrongSound = document.getElementById("wrongSound");
-const timeSound = document.getElementById("timeSound");
+function playSound(type){
+  const audio = document.createElement("audio");
+  if(type==="correct") audio.src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_45a84bdb8c.mp3?filename=correct-2-46134.mp3";
+  if(type==="wrong") audio.src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5e6b1d64a0.mp3?filename=wrong-answer-126515.mp3";
+  if(type==="time") audio.src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6d6e99ea48.mp3?filename=alarm-clock-24608.mp3";
+  audio.play();
+}
 
 document.getElementById("startBtn").onclick = startQuestion;
 
@@ -211,7 +223,7 @@ function startTimer(){
     document.getElementById("timer").textContent = "⏱️ " + timer;
     if(timer<=0){
       clearInterval(interval);
-      timeSound.play();
+      playSound("time");
       updateScore(-150);
       showResult("⏰ Süre doldu! -150 puan","#ff4444");
     }
@@ -243,11 +255,11 @@ function checkAnswer(opt){
   });
 
   if(opt===q.a[q.correct]){
-    correctSound.play();
+    playSound("correct");
     updateScore(+150);
     showResult("✅ Doğru! +150 puan","#00ff7f");
   }else{
-    wrongSound.play();
+    playSound("wrong");
     updateScore(-150);
     showResult("❌ Yanlış! -150 puan","#ff4444");
   }
@@ -287,6 +299,8 @@ function endGame(){
 </script>
 </body>
 </html>
+
+
 
 
 
