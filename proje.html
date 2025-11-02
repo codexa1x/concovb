@@ -135,32 +135,79 @@
 </div>
 
 <script>
+<script>
 const questions = [
-  {q:"I usually get up at seven o’clock.", a:["I usually get up at seven o’clock.","I never wake up.","I sleep at school.","I don’t like mornings."], correct:"I usually get up at seven o’clock."},
-  {q:"She never eats breakfast.", a:["She never eats breakfast.","She eats every hour.","She cooks lunch.","She loves dinner."], correct:"She never eats breakfast."},
-  {q:"They are playing football now.", a:["They are playing football now.","They watch TV.","They eat dinner.","They are sleeping."], correct:"They are playing football now."},
-  {q:"Do you like watching TV?", a:["Do you like watching TV?","Do you fix your TV?","Do you buy a TV?","Do you dance with TV?"], correct:"Do you like watching TV."},
-  {q:"He is taller than me.", a:["He is taller than me.","He is smaller than me.","He is funny.","He is lazy."], correct:"He is taller than me."},
-  {q:"Where do you live?", a:["I live in Ankara.","I am living school.","I goes house.","I have cat."], correct:"I live in Ankara."},
-  {q:"What time do you go to bed?", a:["At 10 p.m.","After lunch.","At the park.","In the morning."], correct:"At 10 p.m."},
-  {q:"My father usually drives to work.", a:["My father usually drives to work.","My father sleeps to work.","My father eats car.","My father sings in the car."], correct:"My father usually drives to work."},
-  {q:"It’s raining now.", a:["It’s raining now.","It’s hot and dry.","It’s snowing.","It’s sunny."], correct:"It’s raining now."},
-  {q:"I have got two brothers.", a:["I have got two brothers.","I have no family.","I am a brother.","I have ten cats."], correct:"I have got two brothers."},
-  {q:"He is reading a book.", a:["He is reading a book.","He is cooking.","He is running fast.","He is playing football."], correct:"He is reading a book."},
-  {q:"We don’t have English on Sunday.", a:["We don’t have English on Sunday.","We study English on Sunday.","We love Sunday.","We eat English."], correct:"We don’t have English on Sunday."},
-  {q:"Are you listening to me?", a:["Yes, I am.","Yes, I can.","No, you don’t.","I not."], correct:"Yes, I am."},
-  {q:"She sometimes goes swimming.", a:["She sometimes goes swimming.","She never swims.","She flies a kite.","She eats water."], correct:"She sometimes goes swimming."},
-  {q:"He can play the guitar.", a:["He can play the guitar.","He play piano.","He has guitar.","He can sing loud."], correct:"He can play the guitar."},
-  {q:"What do you do after school?", a:["I do my homework.","I cook rice.","I sleep in class.","I watch the sky."], correct:"I do my homework."},
-  {q:"We are from Turkey.", a:["We are from Turkey.","We are on Turkey.","We is Turkey.","We have Turkey."], correct:"We are from Turkey."},
-  {q:"She always brushes her teeth.", a:["She always brushes her teeth.","She never brushes her teeth.","She drinks teeth.","She eats toothpaste."], correct:"She always brushes her teeth."},
-  {q:"I don’t like maths.", a:["I don’t like maths.","I love maths.","I like drawing.","I am a math."], correct:"I don’t like maths."},
-  {q:"What’s your favorite subject?", a:["English.","Green.","Banana.","Monday."], correct:"English."},
-  {q:"How old are you?", a:["I am twelve.","I am student.","I have twelve.","I old twelve."], correct:"I am twelve."},
-  {q:"Can you swim?", a:["Yes, I can.","Yes, I do.","I swimmed.","No, I don’t can."], correct:"Yes, I can."},
- 
+  { q: "I usually get up at seven o’clock.", a: ["Ben genellikle saat yedide kalkarım.", "Ben her sabah kahvaltı yaparım.", "Ben gece 7’de uyurum.", "Ben sabah okula giderim."], correct: 0 },
+  { q: "She likes reading books before bed.", a: ["O yatmadan önce kitap okumayı sever.", "O kitap okumaz.", "O sabah kitap okur.", "O sinemaya gitmeyi sever."], correct: 0 },
+  { q: "They play football after school.", a: ["Onlar okuldan sonra futbol oynarlar.", "Onlar sabah futbol oynar.", "Onlar basketbol sever.", "Onlar hiç futbol oynamaz."], correct: 0 },
+  { q: "My mother cooks delicious meals.", a: ["Annem lezzetli yemekler yapar.", "Annem kitap okur.", "Annem televizyon izler.", "Annem oyun oynar."], correct: 0 },
+  { q: "He watches TV every evening.", a: ["O her akşam televizyon izler.", "O sabah televizyon izler.", "O hiç televizyon izlemez.", "O bazen film izler."], correct: 0 },
+  { q: "We go to school on weekdays.", a: ["Biz hafta içi okula gideriz.", "Biz hafta sonu okula gideriz.", "Biz hiç okula gitmeyiz.", "Biz tatilde gideriz."], correct: 0 },
+  { q: "My father drives to work every day.", a: ["Babam her gün işe arabayla gider.", "Babam işe yürür.", "Babam işe gitmez.", "Babam bazen otobüsle gider."], correct: 0 },
+  { q: "She listens to music in her room.", a: ["O odasında müzik dinler.", "O dışarıda müzik dinler.", "O müzikten hoşlanmaz.", "O kitap okur."], correct: 0 },
+  { q: "I eat breakfast at half past seven.", a: ["Ben saat yedi buçukta kahvaltı yaparım.", "Ben kahvaltı yapmam.", "Ben akşam kahvaltı yaparım.", "Ben sabah geç kalkarım."], correct: 0 },
+  { q: "They study English every day.", a: ["Onlar her gün İngilizce çalışırlar.", "Onlar bazen İngilizce çalışır.", "Onlar matematik çalışır.", "Onlar hiç ders çalışmaz."], correct: 0 },
+  { q: "He reads the newspaper in the morning.", a: ["O sabah gazeteyi okur.", "O gece gazete okur.", "O hiç gazete okumaz.", "O akşam haber izler."], correct: 0 },
+  { q: "We visit our grandparents at the weekend.", a: ["Biz hafta sonu büyükbabamızı ziyaret ederiz.", "Biz hafta içi ziyaret ederiz.", "Biz onları hiç görmeyiz.", "Biz telefonla konuşuruz."], correct: 0 },
+  { q: "My sister cleans her room every Saturday.", a: ["Kız kardeşim her cumartesi odasını temizler.", "O odasını hiç temizlemez.", "O her gün temizler.", "O cuma günleri temizler."], correct: 0 },
+  { q: "He plays computer games after homework.", a: ["O ödevden sonra bilgisayar oyunu oynar.", "O oyun oynamaz.", "O ödev yapmaz.", "O sadece hafta sonu oynar."], correct: 0 },
+  { q: "They go shopping on Sundays.", a: ["Onlar pazar günleri alışverişe giderler.", "Onlar pazartesi gider.", "Onlar alışveriş sevmez.", "Onlar her gün gider."], correct: 0 },
+  { q: "I brush my teeth before sleeping.", a: ["Uyumadan önce dişlerimi fırçalarım.", "Sabah fırçalarım.", "Hiç fırçalamam.", "Hafta sonu fırçalarım."], correct: 0 },
+  { q: "She drinks a glass of milk every night.", a: ["O her gece bir bardak süt içer.", "O süt sevmez.", "O sabah süt içer.", "O sadece kahve içer."], correct: 0 },
+  { q: "We have lunch at school.", a: ["Biz okulda öğle yemeği yeriz.", "Biz evde yeriz.", "Biz sabah yeriz.", "Biz dışarıda yeriz."], correct: 0 },
+  { q: "He wears a uniform to school.", a: ["O okula üniforma giyer.", "O pijamayla gider.", "O eşofman giyer.", "O hiç gitmez."], correct: 0 },
+  { q: "My friends like playing basketball.", a: ["Arkadaşlarım basketbol oynamayı sever.", "Onlar futbol sever.", "Onlar oyun oynamaz.", "Onlar voleybol oynar."], correct: 0 },
+  { q: "She goes to bed at ten o’clock.", a: ["O saat onda yatar.", "O gece geç yatar.", "O sabah yatar.", "O hiç uyumaz."], correct: 0 },
+  { q: "They eat dinner together.", a: ["Onlar akşam yemeğini birlikte yerler.", "Onlar yalnız yerler.", "Onlar sabah yer.", "Onlar dışarıda yer."], correct: 0 },
+  { q: "I like listening to pop music.", a: ["Ben pop müzik dinlemeyi severim.", "Ben rock dinlerim.", "Ben müzik dinlemem.", "Ben sadece klasik müzik dinlerim."], correct: 0 },
+  { q: "He studies math in the evening.", a: ["O akşam matematik çalışır.", "O sabah çalışır.", "O hiç çalışmaz.", "O sadece hafta sonu çalışır."], correct: 0 },
+  { q: "We take the bus to school.", a: ["Biz okula otobüsle gideriz.", "Biz yürüyerek gideriz.", "Biz arabayla gideriz.", "Biz gitmeyiz."], correct: 0 },
+  { q: "My brother feeds the cat every morning.", a: ["Kardeşim her sabah kediyi besler.", "Kardeşim kediden korkar.", "Kardeşim akşam besler.", "Kardeşim hayvan sevmez."], correct: 0 },
+  { q: "She likes painting in her free time.", a: ["O boş zamanlarında resim yapmayı sever.", "O yazı yazar.", "O kitap okur.", "O yürüyüş yapar."], correct: 0 },
+  { q: "He visits his uncle on holidays.", a: ["O tatillerde amcasını ziyaret eder.", "O amcasını arar.", "O arkadaşını ziyaret eder.", "O hiç gitmez."], correct: 0 },
+  { q: "I clean my room every Friday.", a: ["Her cuma odamı temizlerim.", "Ben odama hiç dokunmam.", "Ben her gün temizlerim.", "Ben kardeşimin odasını temizlerim."], correct: 0 },
+  { q: "They go swimming in summer.", a: ["Onlar yazın yüzmeye giderler.", "Onlar kışın gider.", "Onlar yüzmeyi sevmez.", "Onlar futbol oynar."], correct: 0 },
+  { q: "He washes his hands before dinner.", a: ["O akşam yemeğinden önce ellerini yıkar.", "O yemekten sonra yıkar.", "O hiç yıkamaz.", "O sabah yıkar."], correct: 0 },
+  { q: "She wears a jacket when it’s cold.", a: ["Hava soğukken ceket giyer.", "O sıcak havada giyer.", "O hiç giymez.", "O elbise giyer."], correct: 0 },
+  { q: "I help my mom in the kitchen.", a: ["Ben mutfakta anneme yardım ederim.", "Ben yardım etmem.", "Ben sadece babama yardım ederim.", "Ben dışarıda olurum."], correct: 0 },
+  { q: "They play the guitar very well.", a: ["Onlar gitarı çok iyi çalarlar.", "Onlar çalamaz.", "Onlar keman çalar.", "Onlar şarkı söyler."], correct: 0 },
+  { q: "He eats fruit every day.", a: ["O her gün meyve yer.", "O meyve yemez.", "O haftada bir yer.", "O sebze yer."], correct: 0 },
+  { q: "We drink water after sports.", a: ["Spor yaptıktan sonra su içeriz.", "Spor sırasında içeriz.", "Su içmeyiz.", "Spor yapmayız."], correct: 0 },
+  { q: "She opens the window in the morning.", a: ["O sabah pencereyi açar.", "O pencereyi kapatır.", "O akşam açar.", "O hiç açmaz."], correct: 0 },
+  { q: "My dad reads the news online.", a: ["Babam haberleri internetten okur.", "Babam gazete okur.", "Babam okumaz.", "Babam TV izler."], correct: 0 },
+  { q: "They clean the classroom every day.", a: ["Onlar her gün sınıfı temizler.", "Onlar haftada bir temizler.", "Onlar hiç temizlemez.", "Onlar okuldan sonra temizler."], correct: 0 },
+  { q: "He likes swimming in the sea.", a: ["O denizde yüzmeyi sever.", "O havuzda sever.", "O yüzmeyi sevmez.", "O koşmayı sever."], correct: 0 },
+  { q: "We eat lunch together at school.", a: ["Biz okulda birlikte öğle yemeği yeriz.", "Biz evde yeriz.", "Biz ayrı yeriz.", "Biz sabah yeriz."], correct: 0 },
+  { q: "She walks to school every morning.", a: ["O her sabah okula yürüyerek gider.", "O otobüsle gider.", "O hiç gitmez.", "O arabayla gider."], correct: 0 },
+  { q: "I love drinking orange juice.", a: ["Ben portakal suyu içmeyi severim.", "Ben süt içerim.", "Ben su içerim.", "Ben içmem."], correct: 0 },
+  { q: "They watch cartoons on TV.", a: ["Onlar televizyonda çizgi film izler.", "Onlar film izler.", "Onlar haber izler.", "Onlar müzik dinler."], correct: 0 },
+  { q: "He plays the piano in the evening.", a: ["O akşam piyano çalar.", "O sabah çalar.", "O çalmaz.", "O gitar çalar."], correct: 0 },
+  { q: "We feed the birds in the park.", a: ["Biz parktaki kuşları besleriz.", "Biz evde besleriz.", "Biz hiç beslemeyiz.", "Biz kedileri besleriz."], correct: 0 },
+  { q: "She washes her hair on Sundays.", a: ["O pazar günleri saçını yıkar.", "O cumartesi yıkar.", "O hiç yıkamaz.", "O hafta içi yıkar."], correct: 0 },
+  { q: "He runs fast in the mornings.", a: ["O sabahları hızlı koşar.", "O akşam koşar.", "O hiç koşmaz.", "O yavaş koşar."], correct: 0 },
+  { q: "I study English after dinner.", a: ["Akşam yemeğinden sonra İngilizce çalışırım.", "Sabah çalışırım.", "Hiç çalışmam.", "Sadece hafta sonu çalışırım."], correct: 0 },
+  { q: "They travel by train in summer.", a: ["Onlar yazın trenle seyahat eder.", "Onlar uçakla gider.", "Onlar gitmez.", "Onlar otobüsle gider."], correct: 0 },
+  { q: "My mother waters the flowers every morning.", a: ["Annem her sabah çiçekleri sular.", "Annem akşam sular.", "Annem sulamaz.", "Annem bahçeye gitmez."], correct: 0 }
 ];
-  
+
+// Karıştırma fonksiyonu
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+// 🔀 Sorulardaki şıkları karıştır ve doğru indeksi yeniden bul
+questions.forEach(q => {
+  let arr = [...q.a];
+  shuffleArray(arr);
+  q.correct = arr.indexOf(q.a[q.correct]);
+  q.a = arr;
+});
+
+console.log("Sorular yüklendi ve karıştırıldı!", questions);
+</script>
 
 
 
@@ -277,6 +324,7 @@ function endGame(){
 </script>
 </body>
 </html>
+
 
 
 
