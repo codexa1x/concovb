@@ -3,93 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6th Grade English Quiz</title>
+<title>🎯 6th Grade English Quiz 🎯</title>
 <style>
-  * { box-sizing: border-box; font-family: "Verdana", sans-serif; }
+  * {
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
   body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #ff8ff5, #2575fc);
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
     background-size: 400% 400%;
-    animation: gradientFlow 8s ease infinite;
+    animation: bgMove 10s infinite alternate;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #fff;
-    overflow: hidden;
+    justify-content: flex-start;
+    color: white;
   }
-  @keyframes gradientFlow {
+  @keyframes bgMove {
     0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
   }
-
   h1 {
     margin-top: 20px;
-    font-size: 2.4em;
-    text-shadow: 0 0 10px #fff, 0 0 20px #ff73d4;
-    animation: pulse 2s infinite alternate;
+    font-size: 2.5em;
+    animation: glow 2s infinite alternate;
   }
-  @keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.05); }
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
+    to { text-shadow: 0 0 25px #fff, 0 0 50px #2575fc; }
   }
-
   .groups {
     display: flex;
-    gap: 25px;
-    margin: 15px;
+    gap: 30px;
+    margin: 20px;
   }
   .group {
     background: rgba(255,255,255,0.2);
     border-radius: 15px;
     padding: 10px 20px;
     text-align: center;
-    box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    transition: transform 0.3s;
   }
-  .score { font-size: 1.3em; color: #ffeb3b; }
-
-  .timer {
-    font-size: 1.4em;
+  .group:hover { transform: scale(1.1); }
+  .score {
+    font-size: 1.5em;
     color: #ffeb3b;
-    margin-top: 5px;
   }
-
   .quiz {
     background: rgba(255,255,255,0.15);
-    border-radius: 20px;
+    border-radius: 25px;
     padding: 30px;
     width: 80%;
-    max-width: 600px;
+    max-width: 650px;
     text-align: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
     margin-top: 20px;
-    min-height: 250px;
-    transition: all 0.5s ease;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    animation: slideIn 1s ease;
   }
-
-  h2 {
-    animation: fadeSlide 0.8s ease;
+  @keyframes slideIn {
+    from { transform: translateY(50vh); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
-
-  @keyframes fadeSlide {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  .message {
-    font-size: 1.5em;
-    margin-top: 15px;
-    min-height: 40px;
-    transition: all 0.5s;
-    animation: pop 0.5s ease;
-  }
-  @keyframes pop {
-    0% { transform: scale(0); opacity: 0; }
-    60% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(1); }
-  }
-
   button {
     background: linear-gradient(45deg, #ff6ec4, #7873f5);
     border: none;
@@ -99,21 +76,36 @@
     margin: 8px;
     font-size: 1.1em;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
   }
   button:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
     box-shadow: 0 0 15px #fff;
   }
-
-  #startBtn {
-    animation: floatBtn 2s ease-in-out infinite alternate;
+  .timer {
+    font-size: 1.5em;
+    margin-top: 10px;
+    color: #ffeb3b;
+  }
+  .message {
+    font-size: 1.5em;
     margin-top: 15px;
+    transition: opacity 1s ease;
   }
-  @keyframes floatBtn {
-    from { transform: translateY(0); }
-    to { transform: translateY(10px); }
+  .fade-out {
+    opacity: 0;
   }
+  .start-btn {
+    margin-top: 20px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  .correct { background: rgba(0,255,0,0.3); border-radius: 10px; }
+  .wrong { background: rgba(255,0,0,0.3); border-radius: 10px; }
 </style>
 </head>
 <body>
@@ -129,68 +121,17 @@
 <div class="timer" id="timer">⏱️ 65</div>
 
 <div class="quiz" id="quiz">
-  <h2>Hazırsan başlayalım!</h2>
-  <button id="startBtn">🚀 Soruya Başla</button>
+  <h2 id="question">Soruya başlamak için aşağıdaki butona tıkla!</h2>
+  <button class="start-btn" id="startBtn">🎬 Soruya Başla</button>
+  <div id="answers"></div>
   <div class="message" id="msg"></div>
 </div>
 
-<script>
-<script>
-const questions = [
-  { q: "I usually get up at seven o’clock.", a: ["Ben genellikle saat yedide kalkarım.", "Ben her sabah kahvaltı yaparım.", "Ben gece 7’de uyurum.", "Ben sabah okula giderim."], correct: 0 },
-  { q: "She likes reading books before bed.", a: ["O yatmadan önce kitap okumayı sever.", "O kitap okumaz.", "O sabah kitap okur.", "O sinemaya gitmeyi sever."], correct: 0 },
-  { q: "They play football after school.", a: ["Onlar okuldan sonra futbol oynarlar.", "Onlar sabah futbol oynar.", "Onlar basketbol sever.", "Onlar hiç futbol oynamaz."], correct: 0 },
-  { q: "My mother cooks delicious meals.", a: ["Annem lezzetli yemekler yapar.", "Annem kitap okur.", "Annem televizyon izler.", "Annem oyun oynar."], correct: 0 },
-  { q: "He watches TV every evening.", a: ["O her akşam televizyon izler.", "O sabah televizyon izler.", "O hiç televizyon izlemez.", "O bazen film izler."], correct: 0 },
-  { q: "We go to school on weekdays.", a: ["Biz hafta içi okula gideriz.", "Biz hafta sonu okula gideriz.", "Biz hiç okula gitmeyiz.", "Biz tatilde gideriz."], correct: 0 },
-  { q: "My father drives to work every day.", a: ["Babam her gün işe arabayla gider.", "Babam işe yürür.", "Babam işe gitmez.", "Babam bazen otobüsle gider."], correct: 0 },
-  { q: "She listens to music in her room.", a: ["O odasında müzik dinler.", "O dışarıda müzik dinler.", "O müzikten hoşlanmaz.", "O kitap okur."], correct: 0 },
-  { q: "I eat breakfast at half past seven.", a: ["Ben saat yedi buçukta kahvaltı yaparım.", "Ben kahvaltı yapmam.", "Ben akşam kahvaltı yaparım.", "Ben sabah geç kalkarım."], correct: 0 },
-  { q: "They study English every day.", a: ["Onlar her gün İngilizce çalışırlar.", "Onlar bazen İngilizce çalışır.", "Onlar matematik çalışır.", "Onlar hiç ders çalışmaz."], correct: 0 },
-  { q: "He reads the newspaper in the morning.", a: ["O sabah gazeteyi okur.", "O gece gazete okur.", "O hiç gazete okumaz.", "O akşam haber izler."], correct: 0 },
-  { q: "We visit our grandparents at the weekend.", a: ["Biz hafta sonu büyükbabamızı ziyaret ederiz.", "Biz hafta içi ziyaret ederiz.", "Biz onları hiç görmeyiz.", "Biz telefonla konuşuruz."], correct: 0 },
-  { q: "My sister cleans her room every Saturday.", a: ["Kız kardeşim her cumartesi odasını temizler.", "O odasını hiç temizlemez.", "O her gün temizler.", "O cuma günleri temizler."], correct: 0 },
-  { q: "He plays computer games after homework.", a: ["O ödevden sonra bilgisayar oyunu oynar.", "O oyun oynamaz.", "O ödev yapmaz.", "O sadece hafta sonu oynar."], correct: 0 },
-  { q: "They go shopping on Sundays.", a: ["Onlar pazar günleri alışverişe giderler.", "Onlar pazartesi gider.", "Onlar alışveriş sevmez.", "Onlar her gün gider."], correct: 0 },
-  { q: "I brush my teeth before sleeping.", a: ["Uyumadan önce dişlerimi fırçalarım.", "Sabah fırçalarım.", "Hiç fırçalamam.", "Hafta sonu fırçalarım."], correct: 0 },
-  { q: "She drinks a glass of milk every night.", a: ["O her gece bir bardak süt içer.", "O süt sevmez.", "O sabah süt içer.", "O sadece kahve içer."], correct: 0 },
-  { q: "We have lunch at school.", a: ["Biz okulda öğle yemeği yeriz.", "Biz evde yeriz.", "Biz sabah yeriz.", "Biz dışarıda yeriz."], correct: 0 },
-  { q: "He wears a uniform to school.", a: ["O okula üniforma giyer.", "O pijamayla gider.", "O eşofman giyer.", "O hiç gitmez."], correct: 0 },
-  { q: "My friends like playing basketball.", a: ["Arkadaşlarım basketbol oynamayı sever.", "Onlar futbol sever.", "Onlar oyun oynamaz.", "Onlar voleybol oynar."], correct: 0 },
-  { q: "She goes to bed at ten o’clock.", a: ["O saat onda yatar.", "O gece geç yatar.", "O sabah yatar.", "O hiç uyumaz."], correct: 0 },
-  { q: "They eat dinner together.", a: ["Onlar akşam yemeğini birlikte yerler.", "Onlar yalnız yerler.", "Onlar sabah yer.", "Onlar dışarıda yer."], correct: 0 },
-  { q: "I like listening to pop music.", a: ["Ben pop müzik dinlemeyi severim.", "Ben rock dinlerim.", "Ben müzik dinlemem.", "Ben sadece klasik müzik dinlerim."], correct: 0 },
-  { q: "He studies math in the evening.", a: ["O akşam matematik çalışır.", "O sabah çalışır.", "O hiç çalışmaz.", "O sadece hafta sonu çalışır."], correct: 0 },
-  { q: "We take the bus to school.", a: ["Biz okula otobüsle gideriz.", "Biz yürüyerek gideriz.", "Biz arabayla gideriz.", "Biz gitmeyiz."], correct: 0 },
-  { q: "My brother feeds the cat every morning.", a: ["Kardeşim her sabah kediyi besler.", "Kardeşim kediden korkar.", "Kardeşim akşam besler.", "Kardeşim hayvan sevmez."], correct: 0 },
-  { q: "She likes painting in her free time.", a: ["O boş zamanlarında resim yapmayı sever.", "O yazı yazar.", "O kitap okur.", "O yürüyüş yapar."], correct: 0 },
-  { q: "He visits his uncle on holidays.", a: ["O tatillerde amcasını ziyaret eder.", "O amcasını arar.", "O arkadaşını ziyaret eder.", "O hiç gitmez."], correct: 0 },
-  { q: "I clean my room every Friday.", a: ["Her cuma odamı temizlerim.", "Ben odama hiç dokunmam.", "Ben her gün temizlerim.", "Ben kardeşimin odasını temizlerim."], correct: 0 },
-  { q: "They go swimming in summer.", a: ["Onlar yazın yüzmeye giderler.", "Onlar kışın gider.", "Onlar yüzmeyi sevmez.", "Onlar futbol oynar."], correct: 0 },
-  { q: "He washes his hands before dinner.", a: ["O akşam yemeğinden önce ellerini yıkar.", "O yemekten sonra yıkar.", "O hiç yıkamaz.", "O sabah yıkar."], correct: 0 },
-  { q: "She wears a jacket when it’s cold.", a: ["Hava soğukken ceket giyer.", "O sıcak havada giyer.", "O hiç giymez.", "O elbise giyer."], correct: 0 },
-  { q: "I help my mom in the kitchen.", a: ["Ben mutfakta anneme yardım ederim.", "Ben yardım etmem.", "Ben sadece babama yardım ederim.", "Ben dışarıda olurum."], correct: 0 },
-  { q: "They play the guitar very well.", a: ["Onlar gitarı çok iyi çalarlar.", "Onlar çalamaz.", "Onlar keman çalar.", "Onlar şarkı söyler."], correct: 0 },
-  { q: "He eats fruit every day.", a: ["O her gün meyve yer.", "O meyve yemez.", "O haftada bir yer.", "O sebze yer."], correct: 0 },
-  { q: "We drink water after sports.", a: ["Spor yaptıktan sonra su içeriz.", "Spor sırasında içeriz.", "Su içmeyiz.", "Spor yapmayız."], correct: 0 },
-  { q: "She opens the window in the morning.", a: ["O sabah pencereyi açar.", "O pencereyi kapatır.", "O akşam açar.", "O hiç açmaz."], correct: 0 },
-  { q: "My dad reads the news online.", a: ["Babam haberleri internetten okur.", "Babam gazete okur.", "Babam okumaz.", "Babam TV izler."], correct: 0 },
-  { q: "They clean the classroom every day.", a: ["Onlar her gün sınıfı temizler.", "Onlar haftada bir temizler.", "Onlar hiç temizlemez.", "Onlar okuldan sonra temizler."], correct: 0 },
-  { q: "He likes swimming in the sea.", a: ["O denizde yüzmeyi sever.", "O havuzda sever.", "O yüzmeyi sevmez.", "O koşmayı sever."], correct: 0 },
-  { q: "We eat lunch together at school.", a: ["Biz okulda birlikte öğle yemeği yeriz.", "Biz evde yeriz.", "Biz ayrı yeriz.", "Biz sabah yeriz."], correct: 0 },
-  { q: "She walks to school every morning.", a: ["O her sabah okula yürüyerek gider.", "O otobüsle gider.", "O hiç gitmez.", "O arabayla gider."], correct: 0 },
-  { q: "I love drinking orange juice.", a: ["Ben portakal suyu içmeyi severim.", "Ben süt içerim.", "Ben su içerim.", "Ben içmem."], correct: 0 },
-  { q: "They watch cartoons on TV.", a: ["Onlar televizyonda çizgi film izler.", "Onlar film izler.", "Onlar haber izler.", "Onlar müzik dinler."], correct: 0 },
-  { q: "He plays the piano in the evening.", a: ["O akşam piyano çalar.", "O sabah çalar.", "O çalmaz.", "O gitar çalar."], correct: 0 },
-  { q: "We feed the birds in the park.", a: ["Biz parktaki kuşları besleriz.", "Biz evde besleriz.", "Biz hiç beslemeyiz.", "Biz kedileri besleriz."], correct: 0 },
-  { q: "She washes her hair on Sundays.", a: ["O pazar günleri saçını yıkar.", "O cumartesi yıkar.", "O hiç yıkamaz.", "O hafta içi yıkar."], correct: 0 },
-  { q: "He runs fast in the mornings.", a: ["O sabahları hızlı koşar.", "O akşam koşar.", "O hiç koşmaz.", "O yavaş koşar."], correct: 0 },
-  { q: "I study English after dinner.", a: ["Akşam yemeğinden sonra İngilizce çalışırım.", "Sabah çalışırım.", "Hiç çalışmam.", "Sadece hafta sonu çalışırım."], correct: 0 },
-  { q: "They travel by train in summer.", a: ["Onlar yazın trenle seyahat eder.", "Onlar uçakla gider.", "Onlar gitmez.", "Onlar otobüsle gider."], correct: 0 },
-  { q: "My mother waters the flowers every morning.", a: ["Annem her sabah çiçekleri sular.", "Annem akşam sular.", "Annem sulamaz.", "Annem bahçeye gitmez."], correct: 0 }
-];
+<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_09e6948cb7.mp3" preload="auto"></audio>
+<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_41d2c9e8d2.mp3" preload="auto"></audio>
 
-// Karıştırma fonksiyonu
+<script>
+// 🔀 Karıştırma Fonksiyonu
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -198,130 +139,123 @@ function shuffleArray(array) {
   }
 }
 
-// 🔀 Sorulardaki şıkları karıştır ve doğru indeksi yeniden bul
-questions.forEach(q => {
-  let arr = [...q.a];
-  shuffleArray(arr);
-  q.correct = arr.indexOf(q.a[q.correct]);
-  q.a = arr;
+// 🎯 Sorular
+const questions = [
+  {q:"I usually get up at seven o’clock.", a:["Ben genellikle saat yedide kalkarım.","Ben gece uyurum.","Ben sabah kahvaltı yaparım.","Ben okula giderim."], correct:0},
+  {q:"She likes reading books before bed.", a:["O yatmadan önce kitap okumayı sever.","O kitap okumaz.","O sabah kitap okur.","O film izler."], correct:0},
+  {q:"They play football after school.", a:["Onlar okuldan sonra futbol oynarlar.","Onlar sabah oynar.","Onlar basketbol oynar.","Onlar hiç oynamaz."], correct:0},
+  {q:"My mother cooks delicious meals.", a:["Annem lezzetli yemekler yapar.","Annem oyun oynar.","Annem temizlik yapmaz.","Annem çalışmaz."], correct:0},
+  {q:"He watches TV every evening.", a:["O her akşam televizyon izler.","O sabah izler.","O hiç izlemez.","O sadece hafta sonu izler."], correct:0},
+  {q:"We go to school on weekdays.", a:["Biz hafta içi okula gideriz.","Biz hafta sonu gideriz.","Biz hiç gitmeyiz.","Biz tatilde gideriz."], correct:0},
+  {q:"My father drives to work every day.", a:["Babam her gün işe arabayla gider.","Babam yürür.","Babam otobüsle gider.","Babam gitmez."], correct:0},
+  {q:"I eat breakfast at half past seven.", a:["Ben saat yedi buçukta kahvaltı yaparım.","Ben kahvaltı yapmam.","Ben akşam kahvaltı yaparım.","Ben geç kalkarım."], correct:0},
+  {q:"He reads the newspaper in the morning.", a:["O sabah gazeteyi okur.","O akşam okur.","O hiç okumaz.","O haber izler."], correct:0}
+];
+
+// 🎲 Soruları ve şıkları karıştır
+questions.forEach(q=>{
+  shuffleArray(q.a);
+  q.correct = q.a.indexOf("Ben genellikle saat yedide kalkarım.") > -1 ? q.a.indexOf("Ben genellikle saat yedide kalkarım.") : q.correct;
 });
+shuffleArray(questions);
 
-console.log("Sorular yüklendi ve karıştırıldı!", questions);
-</script>
+let current = 0, scores = [0,0,0], groupIndex = 0;
+let timer = 65, interval;
+const timerEl = document.getElementById("timer");
+const msg = document.getElementById("msg");
+const startBtn = document.getElementById("startBtn");
+const correctSound = document.getElementById("correctSound");
+const wrongSound = document.getElementById("wrongSound");
 
-
-
-
-
-
-for (let q of questions) q.a = q.a.sort(() => Math.random() - 0.5);
-questions.sort(() => Math.random() - 0.5);
-
-let current = 0;
-let scores = [0,0,0];
-let currentGroup = 0;
-let timer = 65;
-let interval;
-
-function playSound(type){
-  const audio = document.createElement("audio");
-  if(type==="correct") audio.src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_45a84bdb8c.mp3?filename=correct-2-46134.mp3";
-  if(type==="wrong") audio.src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5e6b1d64a0.mp3?filename=wrong-answer-126515.mp3";
-  if(type==="time") audio.src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6d6e99ea48.mp3?filename=alarm-clock-24608.mp3";
-  audio.play();
-}
-
-document.getElementById("startBtn").onclick = startQuestion;
-
-function startQuestion(){
-  document.getElementById("msg").textContent = "";
-  document.getElementById("startBtn").style.display = "none";
+startBtn.onclick = () => {
+  startBtn.style.display = "none";
   showQuestion();
   startTimer();
-}
+};
 
 function startTimer(){
-  timer = 65;
   clearInterval(interval);
-  interval = setInterval(() => {
+  timer = 65;
+  interval = setInterval(()=>{
     timer--;
-    document.getElementById("timer").textContent = "⏱️ " + timer;
+    timerEl.textContent = "⏱️ " + timer;
     if(timer<=0){
-      clearInterval(interval);
-      playSound("time");
+      wrongSound.play();
       updateScore(-150);
-      showResult("⏰ Süre doldu! -150 puan","#ff4444");
+      msg.textContent = "⏰ Süre doldu! -150 puan";
+      msg.style.color = "#ff5555";
+      clearInterval(interval);
+      setTimeout(nextQuestion,3000);
     }
   },1000);
 }
 
 function showQuestion(){
   const q = questions[current];
-  const quiz = document.getElementById("quiz");
-  quiz.innerHTML = `<h2>${q.q}</h2><div id="answers"></div><div class='message' id='msg'></div>`;
+  document.getElementById("question").textContent = q.q;
   const ansDiv = document.getElementById("answers");
-  q.a.forEach(opt=>{
-    const btn=document.createElement("button");
-    btn.textContent=opt;
-    btn.onclick=()=>checkAnswer(opt);
+  ansDiv.innerHTML = "";
+  q.a.forEach((opt,i)=>{
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.onclick = ()=>checkAnswer(i,btn);
     ansDiv.appendChild(btn);
   });
 }
 
-function checkAnswer(opt){
-  clearInterval(interval);
+function checkAnswer(i,btn){
   const q = questions[current];
-  const msg=document.getElementById("msg");
-  const buttons=document.querySelectorAll("#answers button");
-  buttons.forEach(b=>{
-    if(b.textContent===q.a[q.correct]) b.style.background="#00ff7f";
-    if(b.textContent===opt && b.textContent!==q.a[q.correct]) b.style.background="#ff4444";
-    b.disabled=true;
-  });
+  const allBtns = document.querySelectorAll("#answers button");
+  allBtns.forEach(b=>b.disabled=true);
 
-  if(opt===q.a[q.correct]){
-    playSound("correct");
-    updateScore(+150);
-    showResult("✅ Doğru! +150 puan","#00ff7f");
-  }else{
-    playSound("wrong");
+  if(i===q.correct){
+    btn.classList.add("correct");
+    correctSound.play();
+    msg.textContent = "✅ Doğru! +150 puan";
+    msg.style.color = "#00ff7f";
+    updateScore(150);
+  } else {
+    btn.classList.add("wrong");
+    wrongSound.play();
+    msg.textContent = "❌ Yanlış! -150 puan";
+    msg.style.color = "#ff4444";
     updateScore(-150);
-    showResult("❌ Yanlış! -150 puan","#ff4444");
   }
+
+  clearInterval(interval);
+  setTimeout(()=>{
+    msg.classList.add("fade-out");
+    setTimeout(()=>{
+      msg.textContent="";
+      msg.classList.remove("fade-out");
+      nextQuestion();
+    },1000);
+  },4000);
 }
 
-function showResult(text,color){
-  const msg=document.getElementById("msg");
-  msg.style.color=color;
-  msg.textContent=text;
-  setTimeout(()=>{
-    msg.textContent="";
-    nextQuestion();
-  },3000);
+function updateScore(val){
+  scores[groupIndex]+=val;
+  document.getElementById(`s${groupIndex+1}`).textContent=scores[groupIndex];
 }
 
 function nextQuestion(){
+  groupIndex=(groupIndex+1)%3;
   current++;
-  currentGroup=(currentGroup+1)%3;
-  if(current>=questions.length){
+  if(current<questions.length){
+    document.getElementById("answers").innerHTML="";
+    document.getElementById("question").textContent="Bir sonraki soruya geçmek için bas!";
+    startBtn.style.display="inline-block";
+  } else {
     endGame();
-    return;
   }
-  const quiz=document.getElementById("quiz");
-  quiz.innerHTML=`<h2>Hazırsan sonraki soruya geçelim!</h2><button id="startBtn">🚀 Soruya Başla</button><div class="message" id="msg"></div>`;
-  document.getElementById("startBtn").onclick=startQuestion;
-}
-
-function updateScore(amount){
-  scores[currentGroup]+=amount;
-  document.getElementById("s"+(currentGroup+1)).textContent=scores[currentGroup];
 }
 
 function endGame(){
   clearInterval(interval);
-  document.getElementById("quiz").innerHTML=`<h2>🎉 Oyun Bitti!<br>Group 1: ${scores[0]} | Group 2: ${scores[1]} | Group 3: ${scores[2]}</h2>`;
+  document.getElementById("quiz").innerHTML=`<h2>🎉 Oyun Bitti! 🎉<br>Toplam Puanlar:<br>Group 1: ${scores[0]}<br>Group 2: ${scores[1]}<br>Group 3: ${scores[2]}</h2>`;
 }
 </script>
+
 </body>
 </html>
 
