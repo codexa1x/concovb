@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎯 6th Grade English Quiz 🎯</title>
+<title>6th Grade English Quiz</title>
 <style>
   * {
     box-sizing: border-box;
@@ -12,42 +12,35 @@
   body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    background-size: 400% 400%;
-    animation: bgMove 10s infinite alternate;
+    background: linear-gradient(135deg, #ff7acb, #6a5cff);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    overflow: hidden;
     color: white;
   }
-  @keyframes bgMove {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
-  }
   h1 {
-    margin-top: 20px;
-    font-size: 2.5em;
+    margin-top: 15px;
+    font-size: 2.4em;
     animation: glow 2s infinite alternate;
   }
   @keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #6a11cb; }
-    to { text-shadow: 0 0 25px #fff, 0 0 50px #2575fc; }
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #ff7acb; }
+    to { text-shadow: 0 0 30px #fff, 0 0 40px #6a5cff; }
   }
   .groups {
     display: flex;
-    gap: 30px;
-    margin: 20px;
+    gap: 25px;
+    margin: 15px;
   }
   .group {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.15);
     border-radius: 15px;
     padding: 10px 20px;
     text-align: center;
     box-shadow: 0 0 10px rgba(255,255,255,0.3);
-    transition: transform 0.3s;
   }
-  .group:hover { transform: scale(1.1); }
   .score {
     font-size: 1.5em;
     color: #ffeb3b;
@@ -57,14 +50,14 @@
     border-radius: 25px;
     padding: 30px;
     width: 80%;
-    max-width: 650px;
+    max-width: 600px;
     text-align: center;
     margin-top: 20px;
     box-shadow: 0 0 30px rgba(0,0,0,0.3);
     animation: slideIn 1s ease;
   }
   @keyframes slideIn {
-    from { transform: translateY(50vh); opacity: 0; }
+    from { transform: translateY(100vh); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
   button {
@@ -80,7 +73,7 @@
   }
   button:hover {
     transform: scale(1.08);
-    box-shadow: 0 0 15px #fff;
+    box-shadow: 0 0 20px #fff;
   }
   .timer {
     font-size: 1.5em;
@@ -88,24 +81,19 @@
     color: #ffeb3b;
   }
   .message {
-    font-size: 1.5em;
+    font-size: 1.6em;
     margin-top: 15px;
-    transition: opacity 1s ease;
   }
-  .fade-out {
-    opacity: 0;
-  }
-  .start-btn {
-    margin-top: 20px;
-    animation: pulse 2s infinite;
+  #startBtn {
+    background: linear-gradient(90deg, #ff82c9, #705cff);
+    animation: pulse 1.5s infinite;
+    margin-top: 15px;
   }
   @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% { transform: scale(1); box-shadow: 0 0 10px #fff; }
+    50% { transform: scale(1.05); box-shadow: 0 0 20px #fff; }
+    100% { transform: scale(1); box-shadow: 0 0 10px #fff; }
   }
-  .correct { background: rgba(0,255,0,0.3); border-radius: 10px; }
-  .wrong { background: rgba(255,0,0,0.3); border-radius: 10px; }
 </style>
 </head>
 <body>
@@ -113,87 +101,84 @@
 <h1>🎯 6th Grade English Quiz 🎯</h1>
 
 <div class="groups">
-  <div class="group" id="g1">Group 1<br><span class="score" id="s1">0</span></div>
-  <div class="group" id="g2">Group 2<br><span class="score" id="s2">0</span></div>
-  <div class="group" id="g3">Group 3<br><span class="score" id="s3">0</span></div>
+  <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
+  <div class="group">Group 2<br><span class="score" id="s2">0</span></div>
+  <div class="group">Group 3<br><span class="score" id="s3">0</span></div>
 </div>
 
 <div class="timer" id="timer">⏱️ 65</div>
 
 <div class="quiz" id="quiz">
-  <h2 id="question">Soruya başlamak için aşağıdaki butona tıkla!</h2>
-  <button class="start-btn" id="startBtn">🎬 Soruya Başla</button>
+  <button id="startBtn" onclick="startQuestion()">✨ Soruya Başla ✨</button>
+  <h2 id="question"></h2>
   <div id="answers"></div>
   <div class="message" id="msg"></div>
 </div>
 
-<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_09e6948cb7.mp3" preload="auto"></audio>
-<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_41d2c9e8d2.mp3" preload="auto"></audio>
+<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7b9b1b75f5.mp3?filename=correct-2-46134.mp3"></audio>
+<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7b3df5b7f6.mp3?filename=wrong-47985.mp3"></audio>
 
 <script>
-// 🔀 Karıştırma Fonksiyonu
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
+const questions = [
+  {q:"She ___ like apples.", a:["doesn't","don't","do","isn't"], correct:0},
+  {q:"___ you play football every day?", a:["Do","Does","Is","Are"], correct:0},
+  {q:"He ___ go to school on Sundays.", a:["doesn't","don't","isn't","does"], correct:0},
+  {q:"My mother ___ cook delicious meals.", a:["always","never","rarely","often"], correct:0},
+  {q:"They ___ TV every evening.", a:["watch","watches","watched","watching"], correct:0},
+  {q:"She ___ to music after dinner.", a:["listens","listen","listening","listened"], correct:0},
+  {q:"He ___ do his homework every night.", a:["does","do","did","done"], correct:0},
+  {q:"I ___ breakfast at 7 o’clock.", a:["have","has","had","having"], correct:0},
+  {q:"We ___ go to the park on weekends.", a:["usually","always","never","sometimes"], correct:3},
+  {q:"My brother ___ basketball on Mondays.", a:["plays","play","playing","played"], correct:0},
+  {q:"She ___ in a bank.", a:["works","work","worked","working"], correct:0},
+  {q:"He ___ like fast food.", a:["doesn't","don't","isn't","aren't"], correct:0},
+  {q:"I ___ my teeth every morning.", a:["brush","brushes","brushed","brushing"], correct:0},
+  {q:"She ___ coffee every day.", a:["drinks","drink","drinking","drank"], correct:0},
+  {q:"He ___ to music in the car.", a:["listens","listen","listened","listening"], correct:0},
+  {q:"We ___ have lunch at school.", a:["always","never","sometimes","rarely"], correct:0},
+  {q:"___ she play the piano?", a:["Does","Do","Is","Are"], correct:0},
+  {q:"They ___ go to bed late.", a:["never","always","often","sometimes"], correct:3},
+  {q:"He ___ go to work by car.", a:["usually","never","rarely","sometimes"], correct:0},
+  {q:"My father ___ drive a taxi.", a:["doesn't","don't","isn't","aren't"], correct:0},
+  // ... (benzer şekilde 30 tane daha eklersin, bu yapı aynı)
+];
+
+// 🔀 Karıştırma fonksiyonu
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 }
 
-// 🎯 Sorular
-const questions = [
-  {q:"I usually get up at seven o’clock.", a:["Ben genellikle saat yedide kalkarım.","Ben gece uyurum.","Ben sabah kahvaltı yaparım.","Ben okula giderim."], correct:0},
-  {q:"She likes reading books before bed.", a:["O yatmadan önce kitap okumayı sever.","O kitap okumaz.","O sabah kitap okur.","O film izler."], correct:0},
-  {q:"They play football after school.", a:["Onlar okuldan sonra futbol oynarlar.","Onlar sabah oynar.","Onlar basketbol oynar.","Onlar hiç oynamaz."], correct:0},
-  {q:"My mother cooks delicious meals.", a:["Annem lezzetli yemekler yapar.","Annem oyun oynar.","Annem temizlik yapmaz.","Annem çalışmaz."], correct:0},
-  {q:"He watches TV every evening.", a:["O her akşam televizyon izler.","O sabah izler.","O hiç izlemez.","O sadece hafta sonu izler."], correct:0},
-  {q:"We go to school on weekdays.", a:["Biz hafta içi okula gideriz.","Biz hafta sonu gideriz.","Biz hiç gitmeyiz.","Biz tatilde gideriz."], correct:0},
-  {q:"My father drives to work every day.", a:["Babam her gün işe arabayla gider.","Babam yürür.","Babam otobüsle gider.","Babam gitmez."], correct:0},
-  {q:"I eat breakfast at half past seven.", a:["Ben saat yedi buçukta kahvaltı yaparım.","Ben kahvaltı yapmam.","Ben akşam kahvaltı yaparım.","Ben geç kalkarım."], correct:0},
-  {q:"He reads the newspaper in the morning.", a:["O sabah gazeteyi okur.","O akşam okur.","O hiç okumaz.","O haber izler."], correct:0}
-];
+shuffle(questions);
+questions.forEach(q => shuffle(q.a));
 
-// 🎲 Soruları ve şıkları karıştır
-questions.forEach(q=>{
-  shuffleArray(q.a);
-  q.correct = q.a.indexOf("Ben genellikle saat yedide kalkarım.") > -1 ? q.a.indexOf("Ben genellikle saat yedide kalkarım.") : q.correct;
-});
-shuffleArray(questions);
+let current = 0;
+let scores = [0,0,0];
+let groupIndex = 0;
+let timer = 65;
+let interval;
 
-let current = 0, scores = [0,0,0], groupIndex = 0;
-let timer = 65, interval;
-const timerEl = document.getElementById("timer");
-const msg = document.getElementById("msg");
-const startBtn = document.getElementById("startBtn");
-const correctSound = document.getElementById("correctSound");
-const wrongSound = document.getElementById("wrongSound");
-
-startBtn.onclick = () => {
-  startBtn.style.display = "none";
-  showQuestion();
-  startTimer();
-};
-
-function startTimer(){
-  clearInterval(interval);
-  timer = 65;
-  interval = setInterval(()=>{
+function startTimer() {
+  interval = setInterval(() => {
     timer--;
-    timerEl.textContent = "⏱️ " + timer;
-    if(timer<=0){
-      wrongSound.play();
-      updateScore(-150);
-      msg.textContent = "⏰ Süre doldu! -150 puan";
-      msg.style.color = "#ff5555";
-      clearInterval(interval);
-      setTimeout(nextQuestion,3000);
-    }
-  },1000);
+    document.getElementById("timer").textContent = "⏱️ " + timer;
+    if (timer <= 0) endGame("⏰ Süre doldu!");
+  }, 1000);
 }
 
-function showQuestion(){
+function startQuestion() {
+  document.getElementById("startBtn").style.display = "none";
+  if (current === 0) startTimer();
+  showQuestion();
+}
+
+function showQuestion() {
   const q = questions[current];
-  document.getElementById("question").textContent = q.q;
+  const qText = document.getElementById("question");
   const ansDiv = document.getElementById("answers");
+  qText.textContent = q.q;
   ansDiv.innerHTML = "";
   q.a.forEach((opt,i)=>{
     const btn = document.createElement("button");
@@ -203,62 +188,51 @@ function showQuestion(){
   });
 }
 
-function checkAnswer(i,btn){
-  const q = questions[current];
-  const allBtns = document.querySelectorAll("#answers button");
-  allBtns.forEach(b=>b.disabled=true);
-
-  if(i===q.correct){
-    btn.classList.add("correct");
-    correctSound.play();
+function checkAnswer(i,btn) {
+  const msg = document.getElementById("msg");
+  const correctSound = document.getElementById("correctSound");
+  const wrongSound = document.getElementById("wrongSound");
+  const ansDiv = document.getElementById("answers").children;
+  
+  if (i === questions[current].correct) {
+    btn.style.background = "#00e676";
     msg.textContent = "✅ Doğru! +150 puan";
     msg.style.color = "#00ff7f";
-    updateScore(150);
+    correctSound.play();
+    scores[groupIndex]+=150;
+    document.getElementById("s"+(groupIndex+1)).textContent=scores[groupIndex];
   } else {
-    btn.classList.add("wrong");
-    wrongSound.play();
+    btn.style.background = "#ff1744";
     msg.textContent = "❌ Yanlış! -150 puan";
     msg.style.color = "#ff4444";
-    updateScore(-150);
+    wrongSound.play();
+    scores[groupIndex]-=150;
+    document.getElementById("s"+(groupIndex+1)).textContent=scores[groupIndex];
+    [...ansDiv][questions[current].correct].style.background="#00e676";
   }
 
-  clearInterval(interval);
-  setTimeout(()=>{
-    msg.classList.add("fade-out");
-    setTimeout(()=>{
-      msg.textContent="";
-      msg.classList.remove("fade-out");
-      nextQuestion();
-    },1000);
-  },4000);
-}
-
-function updateScore(val){
-  scores[groupIndex]+=val;
-  document.getElementById(`s${groupIndex+1}`).textContent=scores[groupIndex];
-}
-
-function nextQuestion(){
-  groupIndex=(groupIndex+1)%3;
   current++;
-  if(current<questions.length){
-    document.getElementById("answers").innerHTML="";
-    document.getElementById("question").textContent="Bir sonraki soruya geçmek için bas!";
-    startBtn.style.display="inline-block";
-  } else {
-    endGame();
-  }
+  groupIndex = (groupIndex+1)%3;
+  setTimeout(()=>{
+    msg.textContent="";
+    if (current < questions.length) {
+      document.getElementById("startBtn").style.display = "inline-block";
+      document.getElementById("question").textContent = "";
+      document.getElementById("answers").innerHTML="";
+    } else {
+      endGame("🎉 Tüm sorular bitti!");
+    }
+  },3000);
 }
 
-function endGame(){
+function endGame(txt) {
   clearInterval(interval);
-  document.getElementById("quiz").innerHTML=`<h2>🎉 Oyun Bitti! 🎉<br>Toplam Puanlar:<br>Group 1: ${scores[0]}<br>Group 2: ${scores[1]}<br>Group 3: ${scores[2]}</h2>`;
+  document.getElementById("quiz").innerHTML = `<h2>${txt}</h2>`;
 }
-</script>
 
+</script>
 </body>
 </html>
-
 
 
 
