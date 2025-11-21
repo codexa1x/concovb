@@ -1,250 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Simple Present Quiz (6th Grade)</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Present Quiz (Do/Does) - 6th Grade</title>
 <style>
-  * { box-sizing: border-box; font-family: "Verdana", sans-serif; }
-  body{
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    background: linear-gradient(135deg,#ff9ad6,#7aa1ff);
-    background-size:400% 400%;
-    animation:bgMove 10s ease infinite;
-    color:#fff;
-    padding:18px;
-  }
-  @keyframes bgMove{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-  }
-  h1{margin:10px 0 6px; font-size:1.9rem; text-align:center; text-shadow:0 0 8px rgba(255,255,255,0.6);}
+  *{box-sizing:border-box;font-family:"Verdana",sans-serif;}
+  body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    background: linear-gradient(135deg,#ff9ad6,#7aa1ff);background-size:400% 400%;animation:bgMove 10s ease infinite;color:#fff;padding:18px;}
+  @keyframes bgMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  h1{margin:10px 0 6px;font-size:1.9rem;text-align:center;text-shadow:0 0 8px rgba(255,255,255,0.6);}
   .groups{display:flex;gap:12px;margin:10px 0}
   .group{background:rgba(255,255,255,0.12); padding:10px 14px;border-radius:10px; text-align:center; min-width:110px;}
   .score{font-size:1.2rem;color:#fff9bd}
   .timer{margin:8px 0; font-size:1.1rem; color:#fff9bd;}
-  .card{
-    background:rgba(255,255,255,0.12);
-    width:100%;
-    max-width:760px;
-    border-radius:14px;
-    padding:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    margin-top:12px;
-  }
+  .card{background:rgba(255,255,255,0.12); width:100%; max-width:760px; border-radius:14px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2); margin-top:12px;}
   #question{font-size:1.25rem; margin:6px 0 12px; min-height:48px; animation:fadeIn 0.6s;}
   @keyframes fadeIn{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
   .answers{display:flex;flex-direction:column;gap:10px}
-  .ans-btn{
-    background:linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-    border:1px solid rgba(255,255,255,0.12);
-    color:#fff;
-    padding:12px 14px;
-    border-radius:10px;
-    cursor:pointer;
-    text-align:left;
-    font-size:1rem;
-    transition: transform .14s ease, box-shadow .14s ease;
-  }
+  .ans-btn{background:linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+    border:1px solid rgba(255,255,255,0.12); color:#fff; padding:12px 14px; border-radius:10px; cursor:pointer; text-align:left; font-size:1rem;
+    transition: transform .14s ease, box-shadow .14s ease;}
   .ans-btn:hover{ transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.18); }
-  .btn-start{
-    display:inline-block;
-    margin:8px 0 12px;
-    padding:12px 20px;
-    border-radius:12px;
-    background:linear-gradient(90deg,#ffd1f0,#9ab0ff);
-    color:#111;
-    font-weight:700;
-    cursor:pointer;
-    border:none;
-    transition:transform .18s ease;
-  }
+  .btn-start{display:inline-block; margin:8px 0 12px; padding:12px 20px; border-radius:12px; background:linear-gradient(90deg,#ffd1f0,#9ab0ff);
+    color:#111; font-weight:700; cursor:pointer; border:none; transition:transform .18s ease;}
   .btn-start:hover{ transform:scale(1.03); }
   .msg{margin-top:12px; min-height:34px; font-weight:700; font-size:1.05rem; text-align:center;}
   .green{background:#00c853 !important; color:#002200 !important;}
   .red{background:#ff3d00 !important; color:#220000 !important;}
   footer{margin-top:14px; color:rgba(255,255,255,0.8); font-size:0.85rem}
-  @media (max-width:520px){
-    .groups{flex-direction:column; gap:8px}
-    .group{min-width:unset; width:100%}
-  }
+  @media (max-width:520px){.groups{flex-direction:column; gap:8px}.group{min-width:unset; width:100%}}
 </style>
 </head>
 <body>
-  <h1>Simple Present Quiz (6th Grade)</h1>
+<h1>Simple Present Quiz (Do/Does)</h1>
 
-  <div class="groups">
-    <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
-    <div class="group">Group 2<br><span class="score" id="s2">0</span></div>
-    <div class="group">Group 3<br><span class="score" id="s3">0</span></div>
+<div class="groups">
+  <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
+  <div class="group">Group 2<br><span class="score" id="s2">0</span></div>
+  <div class="group">Group 3<br><span class="score" id="s3">0</span></div>
+</div>
+
+<div class="timer" id="timer">⏱️ 65</div>
+
+<div class="card" id="card">
+  <div style="text-align:center">
+    <button id="startBtn" class="btn-start">🚀 Soruya Başla</button>
   </div>
+  <div id="question" style="display:none"></div>
+  <div class="answers" id="answers"></div>
+  <div class="msg" id="msg"></div>
+</div>
 
-  <div class="timer" id="timer">⏱️ 65</div>
-
-  <div class="card" id="card">
-    <div style="text-align:center">
-      <button id="startBtn" class="btn-start">🚀 Start Question</button>
-    </div>
-
-    <div id="question" style="display:none"></div>
-    <div class="answers" id="answers"></div>
-    <div class="msg" id="msg"></div>
-  </div>
-
-  <audio id="sndCorrect" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_45a84bdb8c.mp3?filename=correct-2-46134.mp3" preload="auto"></audio>
-  <audio id="sndWrong" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5e6b1d64a0.mp3?filename=wrong-answer-126515.mp3" preload="auto"></audio>
-  <audio id="sndTime" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6d6e99ea48.mp3?filename=alarm-clock-24608.mp3" preload="auto"></audio>
+<audio id="sndCorrect" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_45a84bdb8c.mp3?filename=correct-2-46134.mp3" preload="auto"></audio>
+<audio id="sndWrong" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5e6b1d64a0.mp3?filename=wrong-answer-126515.mp3" preload="auto"></audio>
+<audio id="sndTime" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6d6e99ea48.mp3?filename=alarm-clock-24608.mp3" preload="auto"></audio>
 
 <script>
-function shuffle(arr){
-  for(let i=arr.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-  return arr;
-}
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
 
-/* ========= QUESTIONS (50) - English only ========= */
-const rawQuestions = [
-{q:"She reads books every day.", correct:"She reads books every day.", wrong:["She never reads.","She writes only.","She sleeps all day."]},
-{q:"He goes to school at 8 a.m.", correct:"He goes to school at 8 a.m.", wrong:["He goes at 10 p.m.","He skips school.","He walks home only."]},
-{q:"They play football on weekends.", correct:"They play football on weekends.", wrong:["They play chess only.","They sleep.","They do homework only."]},
-{q:"I drink water in the morning.", correct:"I drink water in the morning.", wrong:["I never drink water.","I drink only juice.","I sleep instead."]},
-{q:"She likes apples.", correct:"She likes apples.", wrong:["She hates apples.","She eats only bananas.","She never eats."]},
-{q:"He writes in his notebook.", correct:"He writes in his notebook.", wrong:["He draws only.","He reads only.","He does not write."]},
-{q:"We walk to the park.", correct:"We walk to the park.", wrong:["We drive only.","We stay home.","We run away."]},
-{q:"They watch TV in the evening.", correct:"They watch TV in the evening.", wrong:["They never watch TV.","They sleep early.","They read books only."]},
-{q:"I eat breakfast at 7 a.m.", correct:"I eat breakfast at 7 a.m.", wrong:["I skip breakfast.","I eat at 10 p.m.","I never eat."]},
-{q:"She listens to music.", correct:"She listens to music.", wrong:["She never listens.","She only watches TV.","She plays only."]},
-{q:"He cleans his room.", correct:"He cleans his room.", wrong:["He makes it messy.","He ignores it.","He sleeps there only."]},
-{q:"We study English at school.", correct:"We study English at school.", wrong:["We never study.","We study only Math.","We play games only."]},
-{q:"They ride bicycles.", correct:"They ride bicycles.", wrong:["They never ride.","They walk only.","They drive only."]},
-{q:"I help my friends.", correct:"I help my friends.", wrong:["I ignore them.","I fight with them.","I run away."]},
-{q:"She cooks dinner every day.", correct:"She cooks dinner every day.", wrong:["She never cooks.","She orders food.","She burns it."]},
-{q:"He brushes his teeth.", correct:"He brushes his teeth.", wrong:["He never brushes.","He eats only.","He washes only."]},
-{q:"We clean the classroom.", correct:"We clean the classroom.", wrong:["We make it dirty.","We sleep there.","We skip cleaning."]},
-{q:"They listen to the teacher.", correct:"They listen to the teacher.", wrong:["They talk instead.","They ignore.","They sleep."]},
-{q:"I play the piano.", correct:"I play the piano.", wrong:["I play the guitar only.","I never play.","I sing only."]},
-{q:"She goes shopping on Saturdays.", correct:"She goes shopping on Saturdays.", wrong:["She stays home.","She shops every day.","She sleeps only."]},
-{q:"He helps his brother.", correct:"He helps his brother.", wrong:["He ignores him.","He fights.","He leaves him."]},
-{q:"We write letters to our friends.", correct:"We write letters to our friends.", wrong:["We never write.","We send emails only.","We read only."]},
-{q:"They visit the library.", correct:"They visit the library.", wrong:["They never visit.","They play outside only.","They sleep."]},
-{q:"I wake up at 6 a.m.", correct:"I wake up at 6 a.m.", wrong:["I wake up at noon.","I sleep all day.","I wake up at 8 p.m."]},
-{q:"She cleans her shoes.", correct:"She cleans her shoes.", wrong:["She never cleans.","She throws them away.","She dirties them."]},
-{q:"He waters the plants.", correct:"He waters the plants.", wrong:["He never waters.","He burns them.","He ignores them."]},
-{q:"We feed our pets.", correct:"We feed our pets.", wrong:["We ignore them.","We starve them.","We sleep."]},
-{q:"They practice sports.", correct:"They practice sports.", wrong:["They never practice.","They play games only.","They sleep."]},
-{q:"I read newspapers.", correct:"I read newspapers.", wrong:["I never read.","I read books only.","I watch TV."]},
-{q:"She draws pictures.", correct:"She draws pictures.", wrong:["She never draws.","She writes only.","She watches TV."]},
-{q:"He eats lunch at noon.", correct:"He eats lunch at noon.", wrong:["He eats at midnight.","He skips lunch.","He eats breakfast."]},
-{q:"We play board games.", correct:"We play board games.", wrong:["We never play.","We only watch TV.","We read only."]},
-{q:"They study math.", correct:"They study math.", wrong:["They never study.","They study only English.","They play only."]},
-{q:"I wash my hands before meals.", correct:"I wash my hands before meals.", wrong:["I never wash.","I wash after meals only.","I sleep instead."]},
-{q:"She takes the bus to school.", correct:"She takes the bus to school.", wrong:["She walks only.","She drives only.","She skips school."]},
-{q:"He opens the window.", correct:"He opens the window.", wrong:["He closes it.","He breaks it.","He ignores it."]},
-{q:"We sing songs.", correct:"We sing songs.", wrong:["We never sing.","We dance only.","We sleep."]},
-{q:"They jump on the trampoline.", correct:"They jump on the trampoline.", wrong:["They never jump.","They sit only.","They run only."]},
-{q:"I write in my diary.", correct:"I write in my diary.", wrong:["I never write.","I draw only.","I read only."]},
-{q:"She rides a horse.", correct:"She rides a horse.", wrong:["She never rides.","She rides a bike.","She walks only."]},
-{q:"He plays chess.", correct:"He plays chess.", wrong:["He never plays.","He plays cards only.","He reads only."]},
-{q:"We go swimming in summer.", correct:"We go swimming in summer.", wrong:["We never swim.","We swim only in winter.","We stay home."]},
-{q:"They paint the wall.", correct:"They paint the wall.", wrong:["They never paint.","They clean only.","They break it."]},
-{q:"I listen to the radio.", correct:"I listen to the radio.", wrong:["I never listen.","I watch TV only.","I read only."]},
-{q:"She exercises daily.", correct:"She exercises daily.", wrong:["She never exercises.","She sleeps only.","She watches TV."]},
-{q:"He reads stories to children.", correct:"He reads stories to children.", wrong:["He never reads.","He writes only.","He ignores them."]},
-{q:"We plant trees.", correct:"We plant trees.", wrong:["We never plant.","We cut trees.","We ignore nature."]},
-{q:"They clean the streets.", correct:"They clean the streets.", wrong:["They make it dirty.","They ignore.","They sleep."]},
-{q:"I brush my hair.", correct:"I brush my hair.", wrong:["I never brush.","I comb only.","I wash only."]}
+const rawQuestions=[
+  {q:"_____ she play the piano every day?", correct:"Does she play the piano daily?", wrong:["Does she plays the piano daily?","She play the piano every day.","She plays piano sometimes."]},
+  {q:"He _____ not like vegetables.", correct:"does", wrong:["do","don't","doesn't likes"]},
+  {q:"_____ they go to school on Mondays?", correct:"Do they go to school on Mondays?", wrong:["Do they goes to school?","They go school on Mondays.","They goes school on Mondays."]},
+  {q:"I _____ not eat meat.", correct:"do", wrong:["does","don't eats","do not eats"]},
+  {q:"_____ your brother watch TV?", correct:"Does your brother watch TV?", wrong:["Do your brother watches TV?","Does your brother watches TV?","Your brother watch TV?"]},
+  {q:"We _____ like ice cream.", correct:"do", wrong:["does","don't likes","do not likes"]},
+  {q:"She _____ read books every evening.", correct:"does", wrong:["do","does reads","She read books"]},
+  {q:"_____ you help your friends often?", correct:"Do you help your friends often?", wrong:["Does you help your friends?","You helps friends often?","Do you helps friends?"]},
+  {q:"He always _____ his homework on time.", correct:"does", wrong:["do","doess","does do"]},
+  {q:"They _____ not play football.", correct:"do", wrong:["does","don't plays","does not play"]},
+  {q:"I _____ go to bed at 9 p.m.", correct:"do", wrong:["does","don't goes","does go"]},
+  {q:"_____ she drink milk every morning?", correct:"Does she drink milk every morning?", wrong:["Do she drinks milk?","Does she drinks milk?","She drink milk every morning?"]},
+  {q:"We _____ enjoy swimming.", correct:"do", wrong:["does","don't enjoys","do not enjoys"]},
+  {q:"He always _____ helps his mother.", correct:"does", wrong:["do","does help","He help"]},
+  {q:"_____ they live near the park?", correct:"Do they live near the park?", wrong:["Does they live near the park?","They lives near park?","Do they lives near the park?"]},
+  {q:"I _____ study English every day.", correct:"do", wrong:["does","do studies","don't study"]},
+  {q:"_____ your father cook dinner?", correct:"Does your father cook dinner?", wrong:["Do your father cooks dinner?","Does your father cooks dinner?","Your father cook dinner?"]},
+  {q:"She _____ go to the gym regularly.", correct:"does", wrong:["do","does goes","She go to gym"]},
+  {q:"We _____ not watch horror movies.", correct:"do", wrong:["does","don't watches","does not watch"]},
+  {q:"_____ you like chocolate?", correct:"Do you like chocolate?", wrong:["Does you like chocolate?","You likes chocolate?","Do you likes chocolate?"]},
+  {q:"He _____ clean his room every week.", correct:"does", wrong:["do","does cleans","He clean"]},
+  {q:"I _____ not drink coffee.", correct:"do", wrong:["does","don't drinks","does not drinks"]},
+  {q:"_____ she visit her grandmother on Sundays?", correct:"Does she visit her grandmother on Sundays?", wrong:["Do she visits grandmother?","Does she visits grandmother?","She visit grandmother?"]},
+  {q:"They _____ enjoy reading.", correct:"do", wrong:["does","don't enjoys","do not enjoys"]},
+  {q:"He always _____ arrives on time.", correct:"does", wrong:["do","does arrive","He arrive"]},
+  {q:"_____ you play the guitar?", correct:"Do you play the guitar?", wrong:["Does you plays guitar?","You play guitar?","Do you plays guitar?"]},
+  {q:"She _____ not like cold weather.", correct:"does", wrong:["do","doesn't likes","She don't like cold weather"]},
+  {q:"We _____ help our neighbors.", correct:"do", wrong:["does","don't helps","do not helps"]},
+  {q:"I _____ read a book before sleeping.", correct:"do", wrong:["does","do reads","don't read"]},
+  {q:"_____ he watch football on weekends?", correct:"Does he watch football on weekends?", wrong:["Do he watches football?","He watch football?","Does he watches football?"]},
+  {q:"They _____ not eat junk food.", correct:"do", wrong:["does","don't eats","does not eats"]},
+  {q:"_____ you go to the library often?", correct:"Do you go to the library often?", wrong:["Does you go to library?","You goes to library?","Do you goes library?"]},
+  {q:"She _____ help her classmates.", correct:"does", wrong:["do","does helps","She help"]},
+  {q:"He _____ practice piano daily.", correct:"does", wrong:["do","does practices","He practice daily"]},
+  {q:"I _____ not watch TV in the morning.", correct:"do", wrong:["does","don't watches","does not watches"]},
+  {q:"_____ they like pizza?", correct:"Do they like pizza?", wrong:["Does they like pizza?","They likes pizza?","Do they likes pizza?"]},
+  {q:"She _____ wake up early on weekdays.", correct:"does", wrong:["do","does wakes","She wake early"]},
+  {q:"We _____ enjoy playing board games.", correct:"do", wrong:["does","don't enjoys","do not enjoys"]},
+  {q:"He _____ not forget his homework.", correct:"does", wrong:["do","doesn't forgets","He don't forget"]},
+  {q:"I _____ play basketball after school.", correct:"do", wrong:["does","do plays","don't play"]},
+  {q:"_____ she write emails daily?", correct:"Does she write emails daily?", wrong:["Do she writes emails?","She write emails?","Does she writes emails?"]},
+  {q:"They _____ visit the park every weekend.", correct:"do", wrong:["does","do not visits","don't visit"]},
+  {q:"He _____ not eat sweets often.", correct:"does", wrong:["do","doesn't eats","He don't eat sweets"]},
+  {q:"We _____ like to sing together.", correct:"do", wrong:["does","don't likes","do not likes"]},
+  {q:"I _____ help my friends with homework.", correct:"do", wrong:["does","do helps","don't help"]},
+  {q:"_____ he go to the gym every day?", correct:"Does he go to the gym every day?", wrong:["Do he goes gym?","He go gym?","Does he goes gym?"]},
+  {q:"She _____ enjoy painting.", correct:"does", wrong:["do","does enjoys","She enjoy"]},
+  {q:"They _____ not smoke.", correct:"do", wrong:["does","don't smokes","do not smokes"]},
+  {q:"I _____ drink water often.", correct:"do", wrong:["does","do drinks","don't drinks"]},
+  {q:"_____ you like reading books?", correct:"Do you like reading books?", wrong:["Does you likes reading?","You likes reading?","Do you likes reading?"]}
 ];
 
-/* prepare shuffled questions with randomized options */
+// Prepare shuffled questions with randomized options
 let questions = rawQuestions.map(item=>{
-  const options = [item.correct, ...item.wrong.slice(0,3)];
+  const options=[item.correct,...item.wrong.slice(0,3)];
   shuffle(options);
-  const correctIndex = options.indexOf(item.correct);
-  return {q:item.q, a:options, correct:correctIndex};
+  const correctIndex=options.indexOf(item.correct);
+  return {q:item.q,a:options,correct:correctIndex};
 });
 shuffle(questions);
 
-/* ========= STATE ========= */
-let current=0, scores=[0,0,0], groupIndex=0, timer=65, interval=null, answered=false;
-const startBtn=document.getElementById("startBtn"), qEl=document.getElementById("question"), answersEl=document.getElementById("answers"), msgEl=document.getElementById("msg"), timerEl=document.getElementById("timer"), sndCorrect=document.getElementById("sndCorrect"), sndWrong=document.getElementById("sndWrong"), sndTime=document.getElementById("sndTime");
+let current=0,scores=[0,0,0],groupIndex=0,timer=65,interval=null,answered=false;
+const startBtn=document.getElementById("startBtn");
+const qEl=document.getElementById("question");
+const answersEl=document.getElementById("answers");
+const msgEl=document.getElementById("msg");
+const timerEl=document.getElementById("timer");
+const sndCorrect=document.getElementById("sndCorrect");
+const sndWrong=document.getElementById("sndWrong");
+const sndTime=document.getElementById("sndTime");
 
 function playSound(audioEl){try{const a=audioEl.cloneNode();a.play().catch(()=>{});}catch(e){}}
 
-/* START */
 startBtn.addEventListener("click",()=>{
-  playSound(sndCorrect); playSound(sndWrong);
+  playSound(sndCorrect);playSound(sndWrong);
   startBtn.style.display="none"; msgEl.textContent="";
   if(current===0) startTimer();
   showQuestion();
 });
 
-/* TIMER */
 function startTimer(){
   clearInterval(interval);
   timer=65; timerEl.textContent="⏱️ "+timer;
   interval=setInterval(()=>{
     timer--; timerEl.textContent="⏱️ "+timer;
     if(timer<=0){
-      clearInterval(interval);
-      applyScore(-150); playSound(sndTime);
-      showMessage("⏰ Time's up! -150 points","#ff5555");
-      disableAnswers();
+      clearInterval(interval); applyScore(-150); playSound(sndTime);
+      showMessage("⏰ Süre doldu! -150 puan","#ff5555"); disableAnswers();
       setTimeout(prepareNext,3000);
     }
   },1000);
 }
 
-/* SHOW QUESTION */
 function showQuestion(){
-  answered=false;
-  const item=questions[current];
-  qEl.style.display="block"; qEl.textContent=item.q;
-  answersEl.innerHTML="";
+  answered=false; const item=questions[current];
+  qEl.style.display="block"; qEl.textContent=item.q; answersEl.innerHTML="";
   item.a.forEach((opt,idx)=>{
-    const btn=document.createElement("button");
-    btn.className="ans-btn"; btn.textContent=opt; btn.dataset.idx=idx;
-    btn.addEventListener("click",()=>handleAnswer(idx,btn));
-    answersEl.appendChild(btn);
+    const btn=document.createElement("button"); btn.className="ans-btn"; btn.textContent=opt; btn.dataset.idx=idx;
+    btn.addEventListener("click",()=>handleAnswer(idx,btn)); answersEl.appendChild(btn);
   });
 }
 
-function disableAnswers(){answersEl.querySelectorAll("button").forEach(b=>{b.disabled=true;b.style.cursor="default";});}
+function disableAnswers(){const btns=answersEl.querySelectorAll("button"); btns.forEach(b=>{b.disabled=true;b.style.cursor="default";});}
 
-/* HANDLE ANSWER */
 function handleAnswer(idx,btn){
-  if(answered) return;
-  answered=true; clearInterval(interval);
-  const item=questions[current]; const btns=answersEl.querySelectorAll("button"); 
-  const isCorrect=idx===item.correct;
-  if(isCorrect){btn.classList.add("green"); playSound(sndCorrect); showMessage("✅ Correct! +150 points","#1aff7a"); applyScore(150);}
-  else{btn.classList.add("red"); const correctBtn=[...btns].find(b=>Number(b.dataset.idx)===item.correct); if(correctBtn) correctBtn.classList.add("green"); playSound(sndWrong); showMessage("❌ Wrong! -150 points","#ff6b6b"); applyScore(-150);}
+  if(answered) return; answered=true; clearInterval(interval);
+  const item=questions[current]; const isCorrect=idx===item.correct; const btns=answersEl.querySelectorAll("button");
+  if(isCorrect){btn.classList.add("green"); playSound(sndCorrect); showMessage("✅ Doğru! +150 puan","#1aff7a"); applyScore(+150);}
+  else{btn.classList.add("red"); const correctBtn=[...btns].find(b=>Number(b.dataset.idx)===item.correct); if(correctBtn) correctBtn.classList.add("green"); playSound(sndWrong); showMessage("❌ Yanlış! -150 puan","#ff6b6b"); applyScore(-150);}
   disableAnswers(); setTimeout(prepareNext,3000);
 }
 
 function applyScore(amount){scores[groupIndex]+=amount; const el=document.getElementById("s"+(groupIndex+1)); if(el) el.textContent=scores[groupIndex];}
+
 function showMessage(text,color="#fff"){msgEl.style.color=color; msgEl.textContent=text;}
+
 function prepareNext(){
-  msgEl.textContent=""; qEl.textContent=""; answersEl.innerHTML="";
-  current++; groupIndex=(groupIndex+1)%3;
+  msgEl.textContent=""; qEl.textContent=""; answersEl.innerHTML=""; current++; groupIndex=(groupIndex+1)%3;
   if(current>=questions.length){endGame(); return;}
   timer=65; timerEl.textContent="⏱️ "+timer; startBtn.style.display="inline-block";
 }
+
 function endGame(){
-  clearInterval(interval); qEl.style.display="block"; qEl.textContent="🎉 Game Over!";
-  answersEl.innerHTML=`<div style="text-align:center; margin-top:12px;"><p style="font-weight:700">Scores</p><p>Group 1: ${scores[0]}</p><p>Group 2: ${scores[1]}</p><p>Group 3: ${scores[2]}</p><button class="btn-start" id="restart">🔁 Restart</button></div>`;
+  clearInterval(interval); qEl.style.display="block"; qEl.textContent=" Oyun Bitti!";
+  answersEl.innerHTML=`<div style="text-align:center; margin-top:12px;">
+    <p style="font-weight:700">Puanlar</p>
+    <p>Group 1: ${scores[0]}</p>
+    <p>Group 2: ${scores[1]}</p>
+    <p>Group 3: ${scores[2]}</p>
+    <button class="btn-start" id="restart">🔁 Yeniden Başla</button>
+  </div>`;
   document.getElementById("restart").addEventListener("click",()=>location.reload());
 }
 
 (function initShuffle(){questions.forEach(q=>shuffle(q.a)); shuffle(questions);})();
 </script>
-<footer>Prepared by Quiz Generator — Simple Present (English only). Good luck! ✨</footer>
+<footer>© Decty Tarafından 2025 Tüm Hakları Saklıdır</footer>
 </body>
 </html>
 
