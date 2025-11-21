@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Simple Present — Din / Ahlak Quiz (6th Grade)</title>
+<title>Simple Present Quiz (6th Grade)</title>
 <style>
   * { box-sizing: border-box; font-family: "Verdana", sans-serif; }
   body{
@@ -76,7 +76,7 @@
 </style>
 </head>
 <body>
-  <h1>Simple Present — Din &amp; Ahlak Quiz</h1>
+  <h1>Simple Present Quiz (6th Grade)</h1>
 
   <div class="groups">
     <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
@@ -88,7 +88,7 @@
 
   <div class="card" id="card">
     <div style="text-align:center">
-      <button id="startBtn" class="btn-start">🚀 Soruya Başla</button>
+      <button id="startBtn" class="btn-start">🚀 Start Question</button>
     </div>
 
     <div id="question" style="display:none"></div>
@@ -101,7 +101,6 @@
   <audio id="sndTime" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6d6e99ea48.mp3?filename=alarm-clock-24608.mp3" preload="auto"></audio>
 
 <script>
-/* ========= helper: shuffle ========= */
 function shuffle(arr){
   for(let i=arr.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
@@ -110,248 +109,142 @@ function shuffle(arr){
   return arr;
 }
 
-/* ========= QUESTIONS (50) - Simple Present, religion/morals theme =========
-   format before processing: { q: "English sentence", correct: "correct Turkish", wrong: [..3 wrong Turkish translations] }
-*/
+/* ========= QUESTIONS (50) - English only ========= */
 const rawQuestions = [
-  {q:"He prays every morning.", correct:"O her sabah dua eder.", wrong:["O her sabah koşar.","O sabahları yemek yer.","O sabah ders çalışır."]},
-  {q:"She helps the poor.", correct:"O fakirlere yardım eder.", wrong:["O fakirleri görmez.","O para kazanır.","O fakirlere kızar."]},
-  {q:"We visit the mosque on Fridays.", correct:"Biz Cuma günleri camiyi ziyaret ederiz.", wrong:["Biz pazar günü sinemaya gideriz.","Biz cuma okula gideriz.","Biz cuma alışverişe çıkarız."]},
-  {q:"He always tells the truth.", correct:"O her zaman doğruyu söyler.", wrong:["O yalan söyler.","O kimseye söylemez.","O hikaye yazar."]},
-  {q:"They give food to the needy.", correct:"Onlar muhtaçlara yiyecek verir.", wrong:["Onlar yabancılara meydan okur.","Onlar evde yemek yapmaz.","Onlar kimseye vermez."]},
-  {q:"She forgives her friends when they say sorry.", correct:"Arkadaşları özür dilediğinde o onları affeder.", wrong:["O kimseyi affetmez.","O intikam alır.","O ağlar ve gider."]},
-  {q:"He attends the religious class every week.", correct:"O her hafta din dersine katılır.", wrong:["O haftada bir spor yapar.","O her gün film izler.","O her ay tatile gider."]},
-  {q:"We respect our parents.", correct:"Biz ebeveynlerimize saygı duyarız.", wrong:["Biz ebeveynlerimizi küçümseriz.","Biz yalnız kalırız.","Biz onlara bağırırız."]},
-  {q:"She donates money to the charity.", correct:"O hayır kurumuna para bağışlar.", wrong:["O parayı saklar.","O parayı harcar.","O parayı çalar."]},
-  {q:"He says 'thank you' to people often.", correct:"O insanlara sık sık 'teşekkür ederim' der.", wrong:["O kimseye teşekkür etmez.","O asla konuşmaz.","O bağırarak konuşur."]},
-  {q:"They fast during certain holy days.", correct:"Onlar bazı kutsal günlerde oruç tutarlar.", wrong:["Onlar her gün yemek yemez.","Onlar tatilde yemek yerler.","Onlar asla dua etmez."]},
-  {q:"She reads moral stories to children.", correct:"O çocuklara ahlaki hikâyeler okur.", wrong:["O çocuklara ders vermez.","O onlara şarkı söylemez.","O onlarla oyun oynamaz."]},
-  {q:"He forgives even when it's hard.", correct:"O zor olsa bile affeder.", wrong:["O sadece kendini affeder.","O asla affetmez.","O kimseyi dinlemez."]},
-  {q:"We say a short prayer before meals.", correct:"Biz yemeklerden önce kısa bir dua ederiz.", wrong:["Biz yemekten sonra dua ederiz.","Biz dua etmeyiz.","Biz yemekleri paylaşmayız."]},
-  {q:"She visits the sick in the hospital.", correct:"O hastanede hastaları ziyaret eder.", wrong:["O hastaları görmezden gelir.","O hastane için şarkı söyler.","O hastanede uyur."]},
-  {q:"He keeps his promises.", correct:"O sözünü tutar.", wrong:["O sözünü unutur.","O sözünü bozar.","O söz vermez."]},
-  {q:"They teach children to be honest.", correct:"Onlar çocuklara dürüst olmayı öğretir.", wrong:["Onlar yalan söylemeyi öğretir.","Onlar sadece oyun öğretir.","Onlar kimseyi eğitmez."]},
-  {q:"She thanks God for small blessings.", correct:"O küçük nimetler için Tanrı'ya şükreder.", wrong:["O hiçbir şeye şükretmez.","O sadece büyük şeyler için şükreder.","O Tanrı'yı unutmuştur."]},
-  {q:"He helps his neighbor with groceries.", correct:"O komşusuna market alışverişinde yardım eder.", wrong:["O komşusunu eleştirir.","O komşusuna ödeme yapar.","O komşusunun işine karışmaz."]},
-  {q:"We celebrate religious holidays with family.", correct:"Biz dini bayramları aileyle kutlarız.", wrong:["Biz bayramları yalnız kutlarız.","Biz bayramları unuturuz.","Biz bayramlarda iş yaparız."]},
-  {q:"She shows kindness to strangers.", correct:"O yabancılara karşı nazik davranır.", wrong:["O yabancılardan kaçınır.","O onlara kızar.","O onlara bağırır."]},
-  {q:"He volunteers at the community center.", correct:"O toplum merkezinde gönüllü çalışır.", wrong:["O merkezden para alır.","O merkezde çalışmaz.","O merkezle ilgilenmez."]},
-  {q:"They keep their promises to God.", correct:"Onlar Tanrı'ya verdikleri sözleri tutarlar.", wrong:["Onlar söz vermezler.","Onlar sözlerini bozarlar.","Onlar inançsızdır."]},
-  {q:"She teaches children to share.", correct:"O çocuklara paylaşmayı öğretir.", wrong:["O çocuklara bencilliği öğretir.","O yalnızca yarıştırtır.","O oyun oynamayı öğretir."]},
-  {q:"He speaks gently to everyone.", correct:"O herkese nazikçe konuşur.", wrong:["O bağırarak konuşur.","O kimseyle konuşmaz.","O alay eder."]},
-  {q:"We forgive others for their mistakes.", correct:"Biz başkalarını hataları için affederiz.", wrong:["Biz kimseyi affetmeyiz.","Biz intikam alırız.","Biz onları görmezden geliriz."]},
-  {q:"She helps children do their homework.", correct:"O çocukların ödevlerini yapmalarına yardım eder.", wrong:["O çocuklarla kavga eder.","O çocukları cezalandırır.","O çocukların ödevlerini yok eder."]},
-  {q:"He shows respect to teachers.", correct:"O öğretmenlere saygı gösterir.", wrong:["O öğretmenleri eleştirir.","O öğretmenleri görmezden gelir.","O öğretmenlere karşı kaba davranır."]},
-  {q:"They keep the place of worship clean.", correct:"Onlar ibadet yerini temiz tutarlar.", wrong:["Onlar orayı kirletirler.","Onlar oraya gitmezler.","Onlar orada yemek yerler."]},
-  {q:"She always helps at home without being asked.", correct:"O hep evde sorulmadan yardım eder.", wrong:["O sadece sorulunca yardım eder.","O hiç yardım etmez.","O hep dışarıda olur."]},
-  {q:"He practices patience with children.", correct:"O çocuklarla sabırlı davranır.", wrong:["O çocuklara kızar.","O sabırsızdır.","O çocuklardan kaçınır."]},
-  {q:"We honor the elderly in our community.", correct:"Biz toplumumuzdaki yaşlılara saygı gösteririz.", wrong:["Biz yaşlıları küçümseriz.","Biz onları unuturuz.","Biz onları görmezden geliriz."]},
-  {q:"She returns lost items when she finds them.", correct:"O bulduğu kayıp eşyaları sahibine verir.", wrong:["O eşyayı saklar.","O eşyayı satar.","O eşyayı zarar verir."]},
-  {q:"He apologizes when he is wrong.", correct:"O haksız olduğunda özür diler.", wrong:["O asla özür dilemez.","O suçlamayı sürdürür.","O karşılık verir."]},
-  {q:"They attend the community meal together.", correct:"Onlar toplum yemeğine birlikte katılırlar.", wrong:["Onlar yalnız yerler.","Onlar yemeğe katılmazlar.","Onlar evde yemek yerler."]},
-  {q:"She keeps promises to her friends.", correct:"O arkadaşlarına verdiği sözleri tutar.", wrong:["O söz vermez.","O sözlerini bozar.","O arkadaşlarına yalan söyler."]},
-  {q:"He shares his food with others.", correct:"O yiyeceğini başkalarıyla paylaşır.", wrong:["O yiyeceğini saklar.","O yiyeceği satar.","O yiyeceğini atar."]},
-  {q:"We encourage good behavior at school.", correct:"Biz okulda iyi davranışı teşvik ederiz.", wrong:["Biz kötü davranışı teşvik ederiz.","Biz davranışı umursamayız.","Biz cezalandırırız."]},
-  {q:"She volunteers to teach needy children.", correct:"O muhtaç çocuklara öğretmek için gönüllü olur.", wrong:["O sadece para toplar.","O çocuklarla konuşmaz.","O onlardan uzak durur."]},
-  {q:"He prays quietly at home.", correct:"O evde sessizce dua eder.", wrong:["O yüksek sesle şarkı söyler.","O dua etmez.","O evde bağırır."]},
-  {q:"They forgive and forget to move on.", correct:"Onlar affeder ve ilerlemek için unutur.", wrong:["Onlar kin tutar.","Onlar intikam alır.","Onlar asla unutmaz."]},
-  {q:"She teaches respect for all religions.", correct:"O tüm dinlere saygıyı öğretir.", wrong:["O sadece kendi dinini öğretir.","O dinleri küçümser.","O din üzerine konuşmaz."]},
-  {q:"He keeps promises to his family.", correct:"O ailesine verdiği sözleri tutar.", wrong:["O aile sözlerini unutur.","O sözlerini bozar.","O aileyi önemsemez."]},
-  {q:"We help each other in difficult times.", correct:"Biz zor zamanlarda birbirimize yardım ederiz.", wrong:["Biz yalnız kalırız.","Biz birbirimizi görmezden geliriz.","Biz kavga ederiz."]},
-  {q:"She always says 'please' and 'thank you'.", correct:"O hep 'lütfen' ve 'teşekkür ederim' der.", wrong:["O kaba konuşur.","O asla konuşmaz.","O sadece selam verir."]},
-  {q:"He visits elderly neighbors often.", correct:"O yaşlı komşuları sık sık ziyaret eder.", wrong:["O yaşlılardan kaçar.","O onlara para verir.","O onlara mektup yazar."]},
-  {q:"They keep their place of worship respectful.", correct:"Onlar ibadet yerini saygılı tutarlar.", wrong:["Onlar orada yüksek sesle şarkı söyler.","Onlar orayı partileştirir.","Onlar orayı unuturlar."]},
-  {q:"She apologizes to those she hurt.", correct:"O incittiği insanlardan özür diler.", wrong:["O kimseye özür dilemez.","O tepki gösterir.","O daha çok zarar verir."]},
-  {q:"He teaches children to be kind.", correct:"O çocuklara nazik olmayı öğretir.", wrong:["O çocuklara kötü davranmayı öğretir.","O onları görmezden gelir.","O sadece ders verir."]},
-  {q:"We pray for peace in the world.", correct:"Biz dünya için barış adına dua ederiz.", wrong:["Biz savaş çıkarırız.","Biz barış istemeyiz.","Biz dua etmeyiz."]},
-  {q:"She keeps a calm and patient heart.", correct:"O sakin ve sabırlı bir kalp taşır.", wrong:["O hep sinirli olur.","O hızlı karar verir.","O sabırsızdır."]}
+{q:"She reads books every day.", correct:"She reads books every day.", wrong:["She never reads.","She writes only.","She sleeps all day."]},
+{q:"He goes to school at 8 a.m.", correct:"He goes to school at 8 a.m.", wrong:["He goes at 10 p.m.","He skips school.","He walks home only."]},
+{q:"They play football on weekends.", correct:"They play football on weekends.", wrong:["They play chess only.","They sleep.","They do homework only."]},
+{q:"I drink water in the morning.", correct:"I drink water in the morning.", wrong:["I never drink water.","I drink only juice.","I sleep instead."]},
+{q:"She likes apples.", correct:"She likes apples.", wrong:["She hates apples.","She eats only bananas.","She never eats."]},
+{q:"He writes in his notebook.", correct:"He writes in his notebook.", wrong:["He draws only.","He reads only.","He does not write."]},
+{q:"We walk to the park.", correct:"We walk to the park.", wrong:["We drive only.","We stay home.","We run away."]},
+{q:"They watch TV in the evening.", correct:"They watch TV in the evening.", wrong:["They never watch TV.","They sleep early.","They read books only."]},
+{q:"I eat breakfast at 7 a.m.", correct:"I eat breakfast at 7 a.m.", wrong:["I skip breakfast.","I eat at 10 p.m.","I never eat."]},
+{q:"She listens to music.", correct:"She listens to music.", wrong:["She never listens.","She only watches TV.","She plays only."]},
+{q:"He cleans his room.", correct:"He cleans his room.", wrong:["He makes it messy.","He ignores it.","He sleeps there only."]},
+{q:"We study English at school.", correct:"We study English at school.", wrong:["We never study.","We study only Math.","We play games only."]},
+{q:"They ride bicycles.", correct:"They ride bicycles.", wrong:["They never ride.","They walk only.","They drive only."]},
+{q:"I help my friends.", correct:"I help my friends.", wrong:["I ignore them.","I fight with them.","I run away."]},
+{q:"She cooks dinner every day.", correct:"She cooks dinner every day.", wrong:["She never cooks.","She orders food.","She burns it."]},
+{q:"He brushes his teeth.", correct:"He brushes his teeth.", wrong:["He never brushes.","He eats only.","He washes only."]},
+{q:"We clean the classroom.", correct:"We clean the classroom.", wrong:["We make it dirty.","We sleep there.","We skip cleaning."]},
+{q:"They listen to the teacher.", correct:"They listen to the teacher.", wrong:["They talk instead.","They ignore.","They sleep."]},
+{q:"I play the piano.", correct:"I play the piano.", wrong:["I play the guitar only.","I never play.","I sing only."]},
+{q:"She goes shopping on Saturdays.", correct:"She goes shopping on Saturdays.", wrong:["She stays home.","She shops every day.","She sleeps only."]},
+{q:"He helps his brother.", correct:"He helps his brother.", wrong:["He ignores him.","He fights.","He leaves him."]},
+{q:"We write letters to our friends.", correct:"We write letters to our friends.", wrong:["We never write.","We send emails only.","We read only."]},
+{q:"They visit the library.", correct:"They visit the library.", wrong:["They never visit.","They play outside only.","They sleep."]},
+{q:"I wake up at 6 a.m.", correct:"I wake up at 6 a.m.", wrong:["I wake up at noon.","I sleep all day.","I wake up at 8 p.m."]},
+{q:"She cleans her shoes.", correct:"She cleans her shoes.", wrong:["She never cleans.","She throws them away.","She dirties them."]},
+{q:"He waters the plants.", correct:"He waters the plants.", wrong:["He never waters.","He burns them.","He ignores them."]},
+{q:"We feed our pets.", correct:"We feed our pets.", wrong:["We ignore them.","We starve them.","We sleep."]},
+{q:"They practice sports.", correct:"They practice sports.", wrong:["They never practice.","They play games only.","They sleep."]},
+{q:"I read newspapers.", correct:"I read newspapers.", wrong:["I never read.","I read books only.","I watch TV."]},
+{q:"She draws pictures.", correct:"She draws pictures.", wrong:["She never draws.","She writes only.","She watches TV."]},
+{q:"He eats lunch at noon.", correct:"He eats lunch at noon.", wrong:["He eats at midnight.","He skips lunch.","He eats breakfast."]},
+{q:"We play board games.", correct:"We play board games.", wrong:["We never play.","We only watch TV.","We read only."]},
+{q:"They study math.", correct:"They study math.", wrong:["They never study.","They study only English.","They play only."]},
+{q:"I wash my hands before meals.", correct:"I wash my hands before meals.", wrong:["I never wash.","I wash after meals only.","I sleep instead."]},
+{q:"She takes the bus to school.", correct:"She takes the bus to school.", wrong:["She walks only.","She drives only.","She skips school."]},
+{q:"He opens the window.", correct:"He opens the window.", wrong:["He closes it.","He breaks it.","He ignores it."]},
+{q:"We sing songs.", correct:"We sing songs.", wrong:["We never sing.","We dance only.","We sleep."]},
+{q:"They jump on the trampoline.", correct:"They jump on the trampoline.", wrong:["They never jump.","They sit only.","They run only."]},
+{q:"I write in my diary.", correct:"I write in my diary.", wrong:["I never write.","I draw only.","I read only."]},
+{q:"She rides a horse.", correct:"She rides a horse.", wrong:["She never rides.","She rides a bike.","She walks only."]},
+{q:"He plays chess.", correct:"He plays chess.", wrong:["He never plays.","He plays cards only.","He reads only."]},
+{q:"We go swimming in summer.", correct:"We go swimming in summer.", wrong:["We never swim.","We swim only in winter.","We stay home."]},
+{q:"They paint the wall.", correct:"They paint the wall.", wrong:["They never paint.","They clean only.","They break it."]},
+{q:"I listen to the radio.", correct:"I listen to the radio.", wrong:["I never listen.","I watch TV only.","I read only."]},
+{q:"She exercises daily.", correct:"She exercises daily.", wrong:["She never exercises.","She sleeps only.","She watches TV."]},
+{q:"He reads stories to children.", correct:"He reads stories to children.", wrong:["He never reads.","He writes only.","He ignores them."]},
+{q:"We plant trees.", correct:"We plant trees.", wrong:["We never plant.","We cut trees.","We ignore nature."]},
+{q:"They clean the streets.", correct:"They clean the streets.", wrong:["They make it dirty.","They ignore.","They sleep."]},
+{q:"I brush my hair.", correct:"I brush my hair.", wrong:["I never brush.","I comb only.","I wash only."]}
 ];
 
-/* ====== Prepare shuffled questions with randomized options (so correct index varies) ====== */
-let questions = rawQuestions.map(item => {
-  const options = [ item.correct, ...item.wrong.slice(0,3) ]; // ensure exactly 4
+/* prepare shuffled questions with randomized options */
+let questions = rawQuestions.map(item=>{
+  const options = [item.correct, ...item.wrong.slice(0,3)];
   shuffle(options);
   const correctIndex = options.indexOf(item.correct);
-  return { q: item.q, a: options, correct: correctIndex };
+  return {q:item.q, a:options, correct:correctIndex};
 });
-shuffle(questions); // shuffle question order
+shuffle(questions);
 
-/* ========= State ========= */
-let current = 0;
-let scores = [0,0,0]; // group scores
-let groupIndex = 0;
-let timer = 65;
-let interval = null;
-let answered = false; // prevents multi-click score changes
+/* ========= STATE ========= */
+let current=0, scores=[0,0,0], groupIndex=0, timer=65, interval=null, answered=false;
+const startBtn=document.getElementById("startBtn"), qEl=document.getElementById("question"), answersEl=document.getElementById("answers"), msgEl=document.getElementById("msg"), timerEl=document.getElementById("timer"), sndCorrect=document.getElementById("sndCorrect"), sndWrong=document.getElementById("sndWrong"), sndTime=document.getElementById("sndTime");
 
-/* ========= Elements ========= */
-const startBtn = document.getElementById("startBtn");
-const qEl = document.getElementById("question");
-const answersEl = document.getElementById("answers");
-const msgEl = document.getElementById("msg");
-const timerEl = document.getElementById("timer");
-const sndCorrect = document.getElementById("sndCorrect");
-const sndWrong = document.getElementById("sndWrong");
-const sndTime = document.getElementById("sndTime");
+function playSound(audioEl){try{const a=audioEl.cloneNode();a.play().catch(()=>{});}catch(e){}}
 
-/* ====== Sound play helper (clones audio to avoid blocking) ====== */
-function playSound(audioEl){
-  try{
-    const a = audioEl.cloneNode();
-    a.play().catch(()=>{/* autoplay blocked until user interaction — startBtn click will enable */});
-  }catch(e){}
-}
-
-/* ========= Start sequence ========= */
-startBtn.addEventListener("click", () => {
-  // ensure user interaction unlocked audio
+/* START */
+startBtn.addEventListener("click",()=>{
   playSound(sndCorrect); playSound(sndWrong);
-  startBtn.style.display = "none";
-  msgEl.textContent = "";
-  if (current === 0) startTimer();
+  startBtn.style.display="none"; msgEl.textContent="";
+  if(current===0) startTimer();
   showQuestion();
 });
 
-/* ========= Timer ========= */
+/* TIMER */
 function startTimer(){
   clearInterval(interval);
-  timer = 65;
-  timerEl.textContent = "⏱️ " + timer;
-  interval = setInterval(() => {
-    timer--;
-    timerEl.textContent = "⏱️ " + timer;
-    if (timer <= 0) {
+  timer=65; timerEl.textContent="⏱️ "+timer;
+  interval=setInterval(()=>{
+    timer--; timerEl.textContent="⏱️ "+timer;
+    if(timer<=0){
       clearInterval(interval);
-      // time expired for current question
-      applyScore(-150);
-      playSound(sndTime);
-      showMessage("⏰ Süre doldu! -150 puan", "#ff5555");
-      // disable answers if visible
+      applyScore(-150); playSound(sndTime);
+      showMessage("⏰ Time's up! -150 points","#ff5555");
       disableAnswers();
-      setTimeout(prepareNext, 3000);
+      setTimeout(prepareNext,3000);
     }
-  }, 1000);
+  },1000);
 }
 
-/* ========= Render question ========= */
+/* SHOW QUESTION */
 function showQuestion(){
-  answered = false;
-  const item = questions[current];
-  qEl.style.display = "block";
-  qEl.textContent = item.q;
-  answersEl.innerHTML = "";
-  item.a.forEach((opt, idx) => {
-    const btn = document.createElement("button");
-    btn.className = "ans-btn";
-    btn.textContent = opt;
-    btn.dataset.idx = idx;
-    btn.addEventListener("click", () => handleAnswer(idx, btn));
+  answered=false;
+  const item=questions[current];
+  qEl.style.display="block"; qEl.textContent=item.q;
+  answersEl.innerHTML="";
+  item.a.forEach((opt,idx)=>{
+    const btn=document.createElement("button");
+    btn.className="ans-btn"; btn.textContent=opt; btn.dataset.idx=idx;
+    btn.addEventListener("click",()=>handleAnswer(idx,btn));
     answersEl.appendChild(btn);
   });
 }
 
-/* disable all answer buttons (prevent further clicks) */
-function disableAnswers(){
-  const btns = answersEl.querySelectorAll("button");
-  btns.forEach(b => {
-    b.disabled = true;
-    b.style.cursor = "default";
-  });
+function disableAnswers(){answersEl.querySelectorAll("button").forEach(b=>{b.disabled=true;b.style.cursor="default";});}
+
+/* HANDLE ANSWER */
+function handleAnswer(idx,btn){
+  if(answered) return;
+  answered=true; clearInterval(interval);
+  const item=questions[current]; const btns=answersEl.querySelectorAll("button"); 
+  const isCorrect=idx===item.correct;
+  if(isCorrect){btn.classList.add("green"); playSound(sndCorrect); showMessage("✅ Correct! +150 points","#1aff7a"); applyScore(150);}
+  else{btn.classList.add("red"); const correctBtn=[...btns].find(b=>Number(b.dataset.idx)===item.correct); if(correctBtn) correctBtn.classList.add("green"); playSound(sndWrong); showMessage("❌ Wrong! -150 points","#ff6b6b"); applyScore(-150);}
+  disableAnswers(); setTimeout(prepareNext,3000);
 }
 
-/* ========= Handle answer (single authoritative click) ========= */
-function handleAnswer(idx, btn){
-  if (answered) return;            // prevent multiple click score changes
-  answered = true;
-  clearInterval(interval);         // stop timer for this question
-
-  const item = questions[current];
-  const isCorrect = idx === item.correct;
-  const btns = answersEl.querySelectorAll("button");
-
-  // mark correct/incorrect visuals
-  if (isCorrect) {
-    btn.classList.add("green");
-    playSound(sndCorrect);
-    showMessage("✅ Doğru! +150 puan", "#1aff7a");
-    applyScore(+150);
-  } else {
-    btn.classList.add("red");
-    // highlight correct one
-    const correctBtn = [...btns].find(b => Number(b.dataset.idx) === item.correct);
-    if (correctBtn) correctBtn.classList.add("green");
-    playSound(sndWrong);
-    showMessage("❌ Yanlış! -150 puan", "#ff6b6b");
-    applyScore(-150);
-  }
-
-  // disable all buttons immediately so repeated clicks do nothing
-  disableAnswers();
-
-  // after 3 seconds prepare next (shows start button)
-  setTimeout(prepareNext, 3000);
-}
-
-/* ========= Apply score to current group (does not allow double application) ========= */
-function applyScore(amount){
-  scores[groupIndex] += amount;
-  const el = document.getElementById("s"+(groupIndex+1));
-  if (el) el.textContent = scores[groupIndex];
-}
-
-/* ========= Show message ========= */
-function showMessage(text, color="#fff"){
-  msgEl.style.color = color;
-  msgEl.textContent = text;
-}
-
-/* ========= Prepare next question (show start button again or end) ========= */
+function applyScore(amount){scores[groupIndex]+=amount; const el=document.getElementById("s"+(groupIndex+1)); if(el) el.textContent=scores[groupIndex];}
+function showMessage(text,color="#fff"){msgEl.style.color=color; msgEl.textContent=text;}
 function prepareNext(){
-  // clear message, move to next
-  msgEl.textContent = "";
-  qEl.textContent = "";
-  answersEl.innerHTML = "";
-  current++;
-  groupIndex = (groupIndex + 1) % 3;
-
-  if (current >= questions.length) {
-    // game end
-    endGame();
-    return;
-  }
-
-  // reset timer for next question, but only start when user clicks start
-  timer = 65;
-  timerEl.textContent = "⏱️ " + timer;
-  startBtn.style.display = "inline-block";
+  msgEl.textContent=""; qEl.textContent=""; answersEl.innerHTML="";
+  current++; groupIndex=(groupIndex+1)%3;
+  if(current>=questions.length){endGame(); return;}
+  timer=65; timerEl.textContent="⏱️ "+timer; startBtn.style.display="inline-block";
 }
-
-/* ========= End ========= */
 function endGame(){
-  clearInterval(interval);
-  qEl.style.display = "block";
-  qEl.textContent = "🎉 Oyun Bitti!";
-  answersEl.innerHTML = `
-    <div style="text-align:center; margin-top:12px;">
-      <p style="font-weight:700">Puanlar</p>
-      <p>Group 1: ${scores[0]}</p>
-      <p>Group 2: ${scores[1]}</p>
-      <p>Group 3: ${scores[2]}</p>
-      <button class="btn-start" id="restart">🔁 Yeniden Başla</button>
-    </div>
-  `;
-  document.getElementById("restart").addEventListener("click", () => location.reload());
+  clearInterval(interval); qEl.style.display="block"; qEl.textContent="🎉 Game Over!";
+  answersEl.innerHTML=`<div style="text-align:center; margin-top:12px;"><p style="font-weight:700">Scores</p><p>Group 1: ${scores[0]}</p><p>Group 2: ${scores[1]}</p><p>Group 3: ${scores[2]}</p><button class="btn-start" id="restart">🔁 Restart</button></div>`;
+  document.getElementById("restart").addEventListener("click",()=>location.reload());
 }
 
-/* ========= Initialize: shuffle options for each question again (extra randomness) ========= */
-(function initShuffle(){
-  // Already prepared above, but double shuffle to be safe
-  questions.forEach(q => shuffle(q.a));
-  shuffle(questions);
-})();
+(function initShuffle(){questions.forEach(q=>shuffle(q.a)); shuffle(questions);})();
 </script>
-
-<footer>Hazırlayan: Quiz Generator — Simple Present (din/ahlak örnekleri). İyi şanslar! ✨</footer>
+<footer>Prepared by Quiz Generator — Simple Present (English only). Good luck! ✨</footer>
 </body>
 </html>
 
