@@ -1,240 +1,359 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6th Grade English Quiz</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Simple Present — Din / Ahlak Quiz (6th Grade)</title>
 <style>
-  * {
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+  * { box-sizing: border-box; font-family: "Verdana", sans-serif; }
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    background: linear-gradient(135deg,#ff9ad6,#7aa1ff);
+    background-size:400% 400%;
+    animation:bgMove 10s ease infinite;
+    color:#fff;
+    padding:18px;
   }
-  body {
-    margin: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #ff7acb, #6a5cff);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    overflow: hidden;
-    color: white;
+  @keyframes bgMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
   }
-  h1 {
-    margin-top: 15px;
-    font-size: 2.4em;
-    animation: glow 2s infinite alternate;
+  h1{margin:10px 0 6px; font-size:1.9rem; text-align:center; text-shadow:0 0 8px rgba(255,255,255,0.6);}
+  .groups{display:flex;gap:12px;margin:10px 0}
+  .group{background:rgba(255,255,255,0.12); padding:10px 14px;border-radius:10px; text-align:center; min-width:110px;}
+  .score{font-size:1.2rem;color:#fff9bd}
+  .timer{margin:8px 0; font-size:1.1rem; color:#fff9bd;}
+  .card{
+    background:rgba(255,255,255,0.12);
+    width:100%;
+    max-width:760px;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    margin-top:12px;
   }
-  @keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #ff7acb; }
-    to { text-shadow: 0 0 30px #fff, 0 0 40px #6a5cff; }
+  #question{font-size:1.25rem; margin:6px 0 12px; min-height:48px; animation:fadeIn 0.6s;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
+  .answers{display:flex;flex-direction:column;gap:10px}
+  .ans-btn{
+    background:linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+    border:1px solid rgba(255,255,255,0.12);
+    color:#fff;
+    padding:12px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    text-align:left;
+    font-size:1rem;
+    transition: transform .14s ease, box-shadow .14s ease;
   }
-  .groups {
-    display: flex;
-    gap: 25px;
-    margin: 15px;
+  .ans-btn:hover{ transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.18); }
+  .btn-start{
+    display:inline-block;
+    margin:8px 0 12px;
+    padding:12px 20px;
+    border-radius:12px;
+    background:linear-gradient(90deg,#ffd1f0,#9ab0ff);
+    color:#111;
+    font-weight:700;
+    cursor:pointer;
+    border:none;
+    transition:transform .18s ease;
   }
-  .group {
-    background: rgba(255,255,255,0.15);
-    border-radius: 15px;
-    padding: 10px 20px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(255,255,255,0.3);
-  }
-  .score {
-    font-size: 1.5em;
-    color: #ffeb3b;
-  }
-  .quiz {
-    background: rgba(255,255,255,0.15);
-    border-radius: 25px;
-    padding: 30px;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-    margin-top: 20px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.3);
-    animation: slideIn 1s ease;
-  }
-  @keyframes slideIn {
-    from { transform: translateY(100vh); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  button {
-    background: linear-gradient(45deg, #ff6ec4, #7873f5);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    padding: 12px 25px;
-    margin: 8px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  button:hover {
-    transform: scale(1.08);
-    box-shadow: 0 0 20px #fff;
-  }
-  .timer {
-    font-size: 1.5em;
-    margin-top: 10px;
-    color: #ffeb3b;
-  }
-  .message {
-    font-size: 1.6em;
-    margin-top: 15px;
-  }
-  #startBtn {
-    background: linear-gradient(90deg, #ff82c9, #705cff);
-    animation: pulse 1.5s infinite;
-    margin-top: 15px;
-  }
-  @keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 10px #fff; }
-    50% { transform: scale(1.05); box-shadow: 0 0 20px #fff; }
-    100% { transform: scale(1); box-shadow: 0 0 10px #fff; }
+  .btn-start:hover{ transform:scale(1.03); }
+  .msg{margin-top:12px; min-height:34px; font-weight:700; font-size:1.05rem; text-align:center;}
+  .green{background:#00c853 !important; color:#002200 !important;}
+  .red{background:#ff3d00 !important; color:#220000 !important;}
+  footer{margin-top:14px; color:rgba(255,255,255,0.8); font-size:0.85rem}
+  @media (max-width:520px){
+    .groups{flex-direction:column; gap:8px}
+    .group{min-width:unset; width:100%}
   }
 </style>
 </head>
 <body>
+  <h1>Simple Present — Din &amp; Ahlak Quiz</h1>
 
-<h1>🎯 6th Grade English Quiz 🎯</h1>
+  <div class="groups">
+    <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
+    <div class="group">Group 2<br><span class="score" id="s2">0</span></div>
+    <div class="group">Group 3<br><span class="score" id="s3">0</span></div>
+  </div>
 
-<div class="groups">
-  <div class="group">Group 1<br><span class="score" id="s1">0</span></div>
-  <div class="group">Group 2<br><span class="score" id="s2">0</span></div>
-  <div class="group">Group 3<br><span class="score" id="s3">0</span></div>
-</div>
+  <div class="timer" id="timer">⏱️ 65</div>
 
-<div class="timer" id="timer">⏱️ 65</div>
+  <div class="card" id="card">
+    <div style="text-align:center">
+      <button id="startBtn" class="btn-start">🚀 Soruya Başla</button>
+    </div>
 
-<div class="quiz" id="quiz">
-  <button id="startBtn" onclick="startQuestion()">✨ Soruya Başla ✨</button>
-  <h2 id="question"></h2>
-  <div id="answers"></div>
-  <div class="message" id="msg"></div>
-</div>
+    <div id="question" style="display:none"></div>
+    <div class="answers" id="answers"></div>
+    <div class="msg" id="msg"></div>
+  </div>
 
-<audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7b9b1b75f5.mp3?filename=correct-2-46134.mp3"></audio>
-<audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7b3df5b7f6.mp3?filename=wrong-47985.mp3"></audio>
+  <audio id="sndCorrect" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_45a84bdb8c.mp3?filename=correct-2-46134.mp3" preload="auto"></audio>
+  <audio id="sndWrong" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5e6b1d64a0.mp3?filename=wrong-answer-126515.mp3" preload="auto"></audio>
+  <audio id="sndTime" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6d6e99ea48.mp3?filename=alarm-clock-24608.mp3" preload="auto"></audio>
 
 <script>
-const questions = [
-  {q:"She ___ like apples.", a:["doesn't","don't","do","isn't"], correct:4},
-  {q:"___ you play football every day?", a:["Do","Does","Is","Are"], correct:2},
-  {q:"He ___ go to school on Sundays.", a:["doesn't","don't","isn't","does"], correct:2},
-  {q:"My mother ___ cook delicious meals.", a:["always","never","rarely","often"], correct:1},
-  {q:"They ___ TV every evening.", a:["watch","watches","watched","watching"], correct:0},
-  {q:"She ___ to music after dinner.", a:["listens","listen","listening","listened"], correct:3},
-  {q:"He ___ do his homework every night.", a:["does","do","did","done"], correct:4},
-  {q:"I ___ breakfast at 7 o’clock.", a:["have","has","had","having"], correct:4},
-  {q:"We ___ go to the park on weekends.", a:["usually","always","never","sometimes"], correct:3},
-  {q:"My brother ___ basketball on Mondays.", a:["plays","play","playing","played"], correct:2},
-  {q:"She ___ in a bank.", a:["works","work","worked","working"], correct:1},
-  {q:"He ___ like fast food.", a:["doesn't","don't","isn't","aren't"], correct:3},
-  {q:"I ___ my teeth every morning.", a:["brush","brushes","brushed","brushing"], correct:2},
-  {q:"She ___ coffee every day.", a:["drinks","drink","drinking","drank"], correct:2},
-  {q:"He ___ to music in the car.", a:["listens","listen","listened","listening"], correct:4},
-  {q:"We ___ have lunch at school.", a:["always","never","sometimes","rarely"], correct:3},
-  {q:"___ she play the piano?", a:["Does","Do","Is","Are"], correct:0},
-  {q:"They ___ go to bed late.", a:["never","always","often","sometimes"], correct:3},
-  {q:"He ___ go to work by car.", a:["usually","never","rarely","sometimes"], correct:1},
-  {q:"My father ___ drive a taxi.", a:["doesn't","don't","isn't","aren't"], correct:2},
-  // ... (benzer şekilde 30 tane daha eklersin, bu yapı aynı)
-];
-
-// 🔀 Karıştırma fonksiyonu
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+/* ========= helper: shuffle ========= */
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
   }
+  return arr;
 }
 
-shuffle(questions);
-questions.forEach(q => shuffle(q.a));
+/* ========= QUESTIONS (50) - Simple Present, religion/morals theme =========
+   format before processing: { q: "English sentence", correct: "correct Turkish", wrong: [..3 wrong Turkish translations] }
+*/
+const rawQuestions = [
+  {q:"He prays every morning.", correct:"O her sabah dua eder.", wrong:["O her sabah koşar.","O sabahları yemek yer.","O sabah ders çalışır."]},
+  {q:"She helps the poor.", correct:"O fakirlere yardım eder.", wrong:["O fakirleri görmez.","O para kazanır.","O fakirlere kızar."]},
+  {q:"We visit the mosque on Fridays.", correct:"Biz Cuma günleri camiyi ziyaret ederiz.", wrong:["Biz pazar günü sinemaya gideriz.","Biz cuma okula gideriz.","Biz cuma alışverişe çıkarız."]},
+  {q:"He always tells the truth.", correct:"O her zaman doğruyu söyler.", wrong:["O yalan söyler.","O kimseye söylemez.","O hikaye yazar."]},
+  {q:"They give food to the needy.", correct:"Onlar muhtaçlara yiyecek verir.", wrong:["Onlar yabancılara meydan okur.","Onlar evde yemek yapmaz.","Onlar kimseye vermez."]},
+  {q:"She forgives her friends when they say sorry.", correct:"Arkadaşları özür dilediğinde o onları affeder.", wrong:["O kimseyi affetmez.","O intikam alır.","O ağlar ve gider."]},
+  {q:"He attends the religious class every week.", correct:"O her hafta din dersine katılır.", wrong:["O haftada bir spor yapar.","O her gün film izler.","O her ay tatile gider."]},
+  {q:"We respect our parents.", correct:"Biz ebeveynlerimize saygı duyarız.", wrong:["Biz ebeveynlerimizi küçümseriz.","Biz yalnız kalırız.","Biz onlara bağırırız."]},
+  {q:"She donates money to the charity.", correct:"O hayır kurumuna para bağışlar.", wrong:["O parayı saklar.","O parayı harcar.","O parayı çalar."]},
+  {q:"He says 'thank you' to people often.", correct:"O insanlara sık sık 'teşekkür ederim' der.", wrong:["O kimseye teşekkür etmez.","O asla konuşmaz.","O bağırarak konuşur."]},
+  {q:"They fast during certain holy days.", correct:"Onlar bazı kutsal günlerde oruç tutarlar.", wrong:["Onlar her gün yemek yemez.","Onlar tatilde yemek yerler.","Onlar asla dua etmez."]},
+  {q:"She reads moral stories to children.", correct:"O çocuklara ahlaki hikâyeler okur.", wrong:["O çocuklara ders vermez.","O onlara şarkı söylemez.","O onlarla oyun oynamaz."]},
+  {q:"He forgives even when it's hard.", correct:"O zor olsa bile affeder.", wrong:["O sadece kendini affeder.","O asla affetmez.","O kimseyi dinlemez."]},
+  {q:"We say a short prayer before meals.", correct:"Biz yemeklerden önce kısa bir dua ederiz.", wrong:["Biz yemekten sonra dua ederiz.","Biz dua etmeyiz.","Biz yemekleri paylaşmayız."]},
+  {q:"She visits the sick in the hospital.", correct:"O hastanede hastaları ziyaret eder.", wrong:["O hastaları görmezden gelir.","O hastane için şarkı söyler.","O hastanede uyur."]},
+  {q:"He keeps his promises.", correct:"O sözünü tutar.", wrong:["O sözünü unutur.","O sözünü bozar.","O söz vermez."]},
+  {q:"They teach children to be honest.", correct:"Onlar çocuklara dürüst olmayı öğretir.", wrong:["Onlar yalan söylemeyi öğretir.","Onlar sadece oyun öğretir.","Onlar kimseyi eğitmez."]},
+  {q:"She thanks God for small blessings.", correct:"O küçük nimetler için Tanrı'ya şükreder.", wrong:["O hiçbir şeye şükretmez.","O sadece büyük şeyler için şükreder.","O Tanrı'yı unutmuştur."]},
+  {q:"He helps his neighbor with groceries.", correct:"O komşusuna market alışverişinde yardım eder.", wrong:["O komşusunu eleştirir.","O komşusuna ödeme yapar.","O komşusunun işine karışmaz."]},
+  {q:"We celebrate religious holidays with family.", correct:"Biz dini bayramları aileyle kutlarız.", wrong:["Biz bayramları yalnız kutlarız.","Biz bayramları unuturuz.","Biz bayramlarda iş yaparız."]},
+  {q:"She shows kindness to strangers.", correct:"O yabancılara karşı nazik davranır.", wrong:["O yabancılardan kaçınır.","O onlara kızar.","O onlara bağırır."]},
+  {q:"He volunteers at the community center.", correct:"O toplum merkezinde gönüllü çalışır.", wrong:["O merkezden para alır.","O merkezde çalışmaz.","O merkezle ilgilenmez."]},
+  {q:"They keep their promises to God.", correct:"Onlar Tanrı'ya verdikleri sözleri tutarlar.", wrong:["Onlar söz vermezler.","Onlar sözlerini bozarlar.","Onlar inançsızdır."]},
+  {q:"She teaches children to share.", correct:"O çocuklara paylaşmayı öğretir.", wrong:["O çocuklara bencilliği öğretir.","O yalnızca yarıştırtır.","O oyun oynamayı öğretir."]},
+  {q:"He speaks gently to everyone.", correct:"O herkese nazikçe konuşur.", wrong:["O bağırarak konuşur.","O kimseyle konuşmaz.","O alay eder."]},
+  {q:"We forgive others for their mistakes.", correct:"Biz başkalarını hataları için affederiz.", wrong:["Biz kimseyi affetmeyiz.","Biz intikam alırız.","Biz onları görmezden geliriz."]},
+  {q:"She helps children do their homework.", correct:"O çocukların ödevlerini yapmalarına yardım eder.", wrong:["O çocuklarla kavga eder.","O çocukları cezalandırır.","O çocukların ödevlerini yok eder."]},
+  {q:"He shows respect to teachers.", correct:"O öğretmenlere saygı gösterir.", wrong:["O öğretmenleri eleştirir.","O öğretmenleri görmezden gelir.","O öğretmenlere karşı kaba davranır."]},
+  {q:"They keep the place of worship clean.", correct:"Onlar ibadet yerini temiz tutarlar.", wrong:["Onlar orayı kirletirler.","Onlar oraya gitmezler.","Onlar orada yemek yerler."]},
+  {q:"She always helps at home without being asked.", correct:"O hep evde sorulmadan yardım eder.", wrong:["O sadece sorulunca yardım eder.","O hiç yardım etmez.","O hep dışarıda olur."]},
+  {q:"He practices patience with children.", correct:"O çocuklarla sabırlı davranır.", wrong:["O çocuklara kızar.","O sabırsızdır.","O çocuklardan kaçınır."]},
+  {q:"We honor the elderly in our community.", correct:"Biz toplumumuzdaki yaşlılara saygı gösteririz.", wrong:["Biz yaşlıları küçümseriz.","Biz onları unuturuz.","Biz onları görmezden geliriz."]},
+  {q:"She returns lost items when she finds them.", correct:"O bulduğu kayıp eşyaları sahibine verir.", wrong:["O eşyayı saklar.","O eşyayı satar.","O eşyayı zarar verir."]},
+  {q:"He apologizes when he is wrong.", correct:"O haksız olduğunda özür diler.", wrong:["O asla özür dilemez.","O suçlamayı sürdürür.","O karşılık verir."]},
+  {q:"They attend the community meal together.", correct:"Onlar toplum yemeğine birlikte katılırlar.", wrong:["Onlar yalnız yerler.","Onlar yemeğe katılmazlar.","Onlar evde yemek yerler."]},
+  {q:"She keeps promises to her friends.", correct:"O arkadaşlarına verdiği sözleri tutar.", wrong:["O söz vermez.","O sözlerini bozar.","O arkadaşlarına yalan söyler."]},
+  {q:"He shares his food with others.", correct:"O yiyeceğini başkalarıyla paylaşır.", wrong:["O yiyeceğini saklar.","O yiyeceği satar.","O yiyeceğini atar."]},
+  {q:"We encourage good behavior at school.", correct:"Biz okulda iyi davranışı teşvik ederiz.", wrong:["Biz kötü davranışı teşvik ederiz.","Biz davranışı umursamayız.","Biz cezalandırırız."]},
+  {q:"She volunteers to teach needy children.", correct:"O muhtaç çocuklara öğretmek için gönüllü olur.", wrong:["O sadece para toplar.","O çocuklarla konuşmaz.","O onlardan uzak durur."]},
+  {q:"He prays quietly at home.", correct:"O evde sessizce dua eder.", wrong:["O yüksek sesle şarkı söyler.","O dua etmez.","O evde bağırır."]},
+  {q:"They forgive and forget to move on.", correct:"Onlar affeder ve ilerlemek için unutur.", wrong:["Onlar kin tutar.","Onlar intikam alır.","Onlar asla unutmaz."]},
+  {q:"She teaches respect for all religions.", correct:"O tüm dinlere saygıyı öğretir.", wrong:["O sadece kendi dinini öğretir.","O dinleri küçümser.","O din üzerine konuşmaz."]},
+  {q:"He keeps promises to his family.", correct:"O ailesine verdiği sözleri tutar.", wrong:["O aile sözlerini unutur.","O sözlerini bozar.","O aileyi önemsemez."]},
+  {q:"We help each other in difficult times.", correct:"Biz zor zamanlarda birbirimize yardım ederiz.", wrong:["Biz yalnız kalırız.","Biz birbirimizi görmezden geliriz.","Biz kavga ederiz."]},
+  {q:"She always says 'please' and 'thank you'.", correct:"O hep 'lütfen' ve 'teşekkür ederim' der.", wrong:["O kaba konuşur.","O asla konuşmaz.","O sadece selam verir."]},
+  {q:"He visits elderly neighbors often.", correct:"O yaşlı komşuları sık sık ziyaret eder.", wrong:["O yaşlılardan kaçar.","O onlara para verir.","O onlara mektup yazar."]},
+  {q:"They keep their place of worship respectful.", correct:"Onlar ibadet yerini saygılı tutarlar.", wrong:["Onlar orada yüksek sesle şarkı söyler.","Onlar orayı partileştirir.","Onlar orayı unuturlar."]},
+  {q:"She apologizes to those she hurt.", correct:"O incittiği insanlardan özür diler.", wrong:["O kimseye özür dilemez.","O tepki gösterir.","O daha çok zarar verir."]},
+  {q:"He teaches children to be kind.", correct:"O çocuklara nazik olmayı öğretir.", wrong:["O çocuklara kötü davranmayı öğretir.","O onları görmezden gelir.","O sadece ders verir."]},
+  {q:"We pray for peace in the world.", correct:"Biz dünya için barış adına dua ederiz.", wrong:["Biz savaş çıkarırız.","Biz barış istemeyiz.","Biz dua etmeyiz."]},
+  {q:"She keeps a calm and patient heart.", correct:"O sakin ve sabırlı bir kalp taşır.", wrong:["O hep sinirli olur.","O hızlı karar verir.","O sabırsızdır."]}
+];
 
+/* ====== Prepare shuffled questions with randomized options (so correct index varies) ====== */
+let questions = rawQuestions.map(item => {
+  const options = [ item.correct, ...item.wrong.slice(0,3) ]; // ensure exactly 4
+  shuffle(options);
+  const correctIndex = options.indexOf(item.correct);
+  return { q: item.q, a: options, correct: correctIndex };
+});
+shuffle(questions); // shuffle question order
+
+/* ========= State ========= */
 let current = 0;
-let scores = [0,0,0];
+let scores = [0,0,0]; // group scores
 let groupIndex = 0;
 let timer = 65;
-let interval;
+let interval = null;
+let answered = false; // prevents multi-click score changes
 
-function startTimer() {
+/* ========= Elements ========= */
+const startBtn = document.getElementById("startBtn");
+const qEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const msgEl = document.getElementById("msg");
+const timerEl = document.getElementById("timer");
+const sndCorrect = document.getElementById("sndCorrect");
+const sndWrong = document.getElementById("sndWrong");
+const sndTime = document.getElementById("sndTime");
+
+/* ====== Sound play helper (clones audio to avoid blocking) ====== */
+function playSound(audioEl){
+  try{
+    const a = audioEl.cloneNode();
+    a.play().catch(()=>{/* autoplay blocked until user interaction — startBtn click will enable */});
+  }catch(e){}
+}
+
+/* ========= Start sequence ========= */
+startBtn.addEventListener("click", () => {
+  // ensure user interaction unlocked audio
+  playSound(sndCorrect); playSound(sndWrong);
+  startBtn.style.display = "none";
+  msgEl.textContent = "";
+  if (current === 0) startTimer();
+  showQuestion();
+});
+
+/* ========= Timer ========= */
+function startTimer(){
+  clearInterval(interval);
+  timer = 65;
+  timerEl.textContent = "⏱️ " + timer;
   interval = setInterval(() => {
     timer--;
-    document.getElementById("timer").textContent = "⏱️ " + timer;
-    if (timer <= 0) endGame("⏰ Süre doldu!");
+    timerEl.textContent = "⏱️ " + timer;
+    if (timer <= 0) {
+      clearInterval(interval);
+      // time expired for current question
+      applyScore(-150);
+      playSound(sndTime);
+      showMessage("⏰ Süre doldu! -150 puan", "#ff5555");
+      // disable answers if visible
+      disableAnswers();
+      setTimeout(prepareNext, 3000);
+    }
   }, 1000);
 }
 
-function startQuestion() {
-  document.getElementById("startBtn").style.display = "none";
-  if (current === 0) startTimer();
-  showQuestion();
-}
-
-function showQuestion() {
-  const q = questions[current];
-  const qText = document.getElementById("question");
-  const ansDiv = document.getElementById("answers");
-  qText.textContent = q.q;
-  ansDiv.innerHTML = "";
-  q.a.forEach((opt,i)=>{
+/* ========= Render question ========= */
+function showQuestion(){
+  answered = false;
+  const item = questions[current];
+  qEl.style.display = "block";
+  qEl.textContent = item.q;
+  answersEl.innerHTML = "";
+  item.a.forEach((opt, idx) => {
     const btn = document.createElement("button");
+    btn.className = "ans-btn";
     btn.textContent = opt;
-    btn.onclick = ()=>checkAnswer(i,btn);
-    ansDiv.appendChild(btn);
+    btn.dataset.idx = idx;
+    btn.addEventListener("click", () => handleAnswer(idx, btn));
+    answersEl.appendChild(btn);
   });
 }
 
-function checkAnswer(i,btn) {
-  const msg = document.getElementById("msg");
-  const correctSound = document.getElementById("correctSound");
-  const wrongSound = document.getElementById("wrongSound");
-  const ansDiv = document.getElementById("answers").children;
-  
-  if (i === questions[current].correct) {
-    btn.style.background = "#00e676";
-    msg.textContent = "✅ Doğru! +150 puan";
-    msg.style.color = "#00ff7f";
-    correctSound.play();
-    scores[groupIndex]+=150;
-    document.getElementById("s"+(groupIndex+1)).textContent=scores[groupIndex];
+/* disable all answer buttons (prevent further clicks) */
+function disableAnswers(){
+  const btns = answersEl.querySelectorAll("button");
+  btns.forEach(b => {
+    b.disabled = true;
+    b.style.cursor = "default";
+  });
+}
+
+/* ========= Handle answer (single authoritative click) ========= */
+function handleAnswer(idx, btn){
+  if (answered) return;            // prevent multiple click score changes
+  answered = true;
+  clearInterval(interval);         // stop timer for this question
+
+  const item = questions[current];
+  const isCorrect = idx === item.correct;
+  const btns = answersEl.querySelectorAll("button");
+
+  // mark correct/incorrect visuals
+  if (isCorrect) {
+    btn.classList.add("green");
+    playSound(sndCorrect);
+    showMessage("✅ Doğru! +150 puan", "#1aff7a");
+    applyScore(+150);
   } else {
-    btn.style.background = "#ff1744";
-    msg.textContent = "❌ Yanlış! -150 puan";
-    msg.style.color = "#ff4444";
-    wrongSound.play();
-    scores[groupIndex]-=150;
-    document.getElementById("s"+(groupIndex+1)).textContent=scores[groupIndex];
-    [...ansDiv][questions[current].correct].style.background="#00e676";
+    btn.classList.add("red");
+    // highlight correct one
+    const correctBtn = [...btns].find(b => Number(b.dataset.idx) === item.correct);
+    if (correctBtn) correctBtn.classList.add("green");
+    playSound(sndWrong);
+    showMessage("❌ Yanlış! -150 puan", "#ff6b6b");
+    applyScore(-150);
   }
 
+  // disable all buttons immediately so repeated clicks do nothing
+  disableAnswers();
+
+  // after 3 seconds prepare next (shows start button)
+  setTimeout(prepareNext, 3000);
+}
+
+/* ========= Apply score to current group (does not allow double application) ========= */
+function applyScore(amount){
+  scores[groupIndex] += amount;
+  const el = document.getElementById("s"+(groupIndex+1));
+  if (el) el.textContent = scores[groupIndex];
+}
+
+/* ========= Show message ========= */
+function showMessage(text, color="#fff"){
+  msgEl.style.color = color;
+  msgEl.textContent = text;
+}
+
+/* ========= Prepare next question (show start button again or end) ========= */
+function prepareNext(){
+  // clear message, move to next
+  msgEl.textContent = "";
+  qEl.textContent = "";
+  answersEl.innerHTML = "";
   current++;
-  groupIndex = (groupIndex+1)%3;
-  setTimeout(()=>{
-    msg.textContent="";
-    if (current < questions.length) {
-      document.getElementById("startBtn").style.display = "inline-block";
-      document.getElementById("question").textContent = "";
-      document.getElementById("answers").innerHTML="";
-    } else {
-      endGame("🎉 Tüm sorular bitti!");
-    }
-  },3000);
+  groupIndex = (groupIndex + 1) % 3;
+
+  if (current >= questions.length) {
+    // game end
+    endGame();
+    return;
+  }
+
+  // reset timer for next question, but only start when user clicks start
+  timer = 65;
+  timerEl.textContent = "⏱️ " + timer;
+  startBtn.style.display = "inline-block";
 }
 
-function endGame(txt) {
+/* ========= End ========= */
+function endGame(){
   clearInterval(interval);
-  document.getElementById("quiz").innerHTML = `<h2>${txt}</h2>`;
+  qEl.style.display = "block";
+  qEl.textContent = "🎉 Oyun Bitti!";
+  answersEl.innerHTML = `
+    <div style="text-align:center; margin-top:12px;">
+      <p style="font-weight:700">Puanlar</p>
+      <p>Group 1: ${scores[0]}</p>
+      <p>Group 2: ${scores[1]}</p>
+      <p>Group 3: ${scores[2]}</p>
+      <button class="btn-start" id="restart">🔁 Yeniden Başla</button>
+    </div>
+  `;
+  document.getElementById("restart").addEventListener("click", () => location.reload());
 }
 
+/* ========= Initialize: shuffle options for each question again (extra randomness) ========= */
+(function initShuffle(){
+  // Already prepared above, but double shuffle to be safe
+  questions.forEach(q => shuffle(q.a));
+  shuffle(questions);
+})();
 </script>
+
+<footer>Hazırlayan: Quiz Generator — Simple Present (din/ahlak örnekleri). İyi şanslar! ✨</footer>
 </body>
 </html>
-
-
 
 
 
