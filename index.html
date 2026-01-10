@@ -2,257 +2,228 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Windows 13 Chaos</title>
+<title>Windows 13</title>
 
 <style>
-/* ===== RESET ===== */
+/* ========== RESET ========== */
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* ===== BODY ===== */
+/* ========== BODY ========== */
 body{
-  width:100vw;height:100vh;
+  width:100vw;
+  height:100vh;
   overflow:hidden;
-  font-family:"Segoe UI",system-ui;
-  background:black;
-  color:white;
+  font-family:"Segoe UI", system-ui;
+  background:#0f172a;
 }
 
-/* ===== ANIMATED WALLPAPER ===== */
-#wallpaper{
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at 10% 10%, #ff00cc55, transparent 40%),
-    radial-gradient(circle at 90% 30%, #00ffff55, transparent 45%),
-    radial-gradient(circle at 50% 80%, #7f00ff55, transparent 50%),
-    linear-gradient(120deg,#020024,#090979,#000);
-  animation:wallMove 30s linear infinite;
-  z-index:-5;
-}
-
-@keyframes wallMove{
-  0%{filter:hue-rotate(0deg)}
-  100%{filter:hue-rotate(360deg)}
-}
-
-/* ===== PARTICLES ===== */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:-4;
-}
-
-/* ===== DESKTOP ===== */
+/* ========== DESKTOP BACKGROUND ========== */
 #desktop{
   width:100%;
   height:100%;
   position:relative;
+  background:url("https://wallpaperaccess.com/full/317501.jpg") center/cover no-repeat;
 }
 
-/* ===== ICONS ===== */
+/* ========== ICONS ========== */
 .icon{
-  width:90px;
+  width:80px;
   position:absolute;
   text-align:center;
+  font-size:12px;
+  color:white;
   cursor:pointer;
-  transition:.3s;
 }
 .icon img{
-  width:48px;
-  filter:drop-shadow(0 0 10px cyan);
-}
-.icon:hover{
-  transform:scale(1.15);
+  width:40px;
+  height:40px;
 }
 .icon span{
-  font-size:13px;
-  margin-top:6px;
   display:block;
-  text-shadow:0 0 8px magenta;
+  margin-top:4px;
 }
 
-/* ===== TASKBAR ===== */
+/* ========== TASKBAR ========== */
 #taskbar{
   position:fixed;
   bottom:0;
   width:100%;
-  height:55px;
-  background:rgba(20,20,30,.7);
-  backdrop-filter:blur(20px);
+  height:44px;
+  background:rgba(20,20,20,.85);
   display:flex;
   align-items:center;
-  box-shadow:0 -5px 30px #000;
+  color:white;
+  font-size:13px;
 }
 
-#start{
-  width:70px;
+#startBtn{
+  width:60px;
   height:100%;
-  font-size:24px;
-  background:none;
   border:none;
+  background:transparent;
   color:white;
   cursor:pointer;
-  transition:.3s;
-}
-#start:hover{
-  text-shadow:0 0 20px cyan;
 }
 
 #tasks{
   flex:1;
   display:flex;
-  gap:8px;
 }
 
 #clock{
-  padding:0 15px;
-  font-size:14px;
-  text-shadow:0 0 10px cyan;
+  padding:0 12px;
 }
 
-/* ===== START MENU ===== */
+/* ========== START MENU ========== */
 #startMenu{
   position:fixed;
-  bottom:60px;
-  left:15px;
-  width:320px;
-  height:420px;
-  background:rgba(30,30,50,.85);
-  backdrop-filter:blur(25px);
-  border-radius:20px;
-  padding:15px;
+  bottom:44px;
+  left:8px;
+  width:260px;
+  height:360px;
+  background:#1e293b;
+  color:white;
   display:none;
-  animation:pop .4s ease;
+  padding:10px;
+  font-size:13px;
 }
 
-@keyframes pop{
-  from{transform:scale(.8);opacity:0}
-  to{transform:scale(1);opacity:1}
-}
-
-/* ===== WINDOWS ===== */
+/* ========== WINDOWS ========== */
 .window{
   position:absolute;
-  width:520px;
-  height:360px;
-  background:rgba(20,20,30,.85);
-  backdrop-filter:blur(25px);
-  border-radius:18px;
-  box-shadow:0 0 40px #00ffff44;
-  animation:winOpen .4s ease;
-}
-
-@keyframes winOpen{
-  from{transform:scale(.7);opacity:0}
-  to{transform:scale(1);opacity:1}
+  width:480px;
+  height:320px;
+  background:#111827;
+  color:white;
+  border:1px solid #374151;
 }
 
 .titlebar{
-  height:38px;
+  height:30px;
+  background:#1f2937;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 12px;
+  padding:0 8px;
   cursor:move;
-  background:linear-gradient(90deg,#00ffff55,#ff00cc55);
-  border-radius:18px 18px 0 0;
+  font-size:12px;
 }
 
 .controls button{
-  background:none;
   border:none;
+  background:transparent;
   color:white;
-  font-size:16px;
+  width:28px;
   cursor:pointer;
 }
 
 .content{
-  padding:12px;
-  height:calc(100% - 38px);
+  padding:8px;
+  height:calc(100% - 30px);
   overflow:auto;
+  font-size:13px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="wallpaper"></div>
-<canvas id="particles"></canvas>
-
 <div id="desktop">
-  <div class="icon" style="top:30px;left:30px" onclick="openApp('Notepad')">
-    <img src="https://cdn-icons-png.flaticon.com/512/327/327374.png">
-    <span>Notepad</span>
-  </div>
 
-  <div class="icon" style="top:140px;left:30px" onclick="openApp('Explorer')">
+  <!-- ICONS -->
+  <div class="icon" style="top:20px;left:20px" ondblclick="openApp('Explorer')">
     <img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
     <span>Explorer</span>
   </div>
 
-  <div class="icon" style="top:250px;left:30px" onclick="openApp('Calculator')">
-    <img src="https://cdn-icons-png.flaticon.com/512/992/992700.png">
-    <span>Calculator</span>
+  <div class="icon" style="top:110px;left:20px" ondblclick="openApp('Notepad')">
+    <img src="https://cdn-icons-png.flaticon.com/512/327/327374.png">
+    <span>Notepad</span>
   </div>
+
+  <div class="icon" style="top:200px;left:20px" ondblclick="openApp('Settings')">
+    <img src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png">
+    <span>Settings</span>
+  </div>
+
 </div>
 
+<!-- START MENU -->
 <div id="startMenu">
-  <h2>Windows 13</h2>
-  <p>Chaos Edition</p>
+  <strong>Windows 13</strong>
   <hr><br>
-  <button onclick="openApp('Settings')">⚙ Settings</button><br><br>
-  <button onclick="openApp('Terminal')">> Terminal</button><br><br>
-  <button onclick="openApp('Music')">🎵 Music</button><br><br>
-  <button onclick="openApp('Gallery')">🖼 Gallery</button>
+  <div onclick="openApp('Explorer')">Explorer</div><br>
+  <div onclick="openApp('Notepad')">Notepad</div><br>
+  <div onclick="openApp('Calculator')">Calculator</div><br>
+  <div onclick="openApp('Terminal')">Terminal</div><br>
+  <div onclick="openApp('Task Manager')">Task Manager</div>
 </div>
 
+<!-- TASKBAR -->
 <div id="taskbar">
-  <button id="start" onclick="toggleStart()">⊞</button>
+  <button id="startBtn" onclick="toggleStart()">⊞</button>
   <div id="tasks"></div>
   <div id="clock"></div>
 </div>
 
 <script>
-/* ===== CLOCK ===== */
+/* ========== CLOCK ========== */
 setInterval(()=>{
-  const d=new Date();
-  clock.innerText=d.toLocaleTimeString([],{
+  clock.innerText=new Date().toLocaleTimeString([],{
     hour:'2-digit',minute:'2-digit'
   });
 },1000);
 
-/* ===== START ===== */
+/* ========== START MENU ========== */
 function toggleStart(){
   startMenu.style.display =
     startMenu.style.display==='block'?'none':'block';
 }
 
-/* ===== WINDOW SYSTEM ===== */
-let z=50;
+/* ========== WINDOW MANAGER ========== */
+let z=10;
+
 function openApp(name){
   const w=document.createElement("div");
   w.className="window";
-  w.style.top=Math.random()*200+60+"px";
-  w.style.left=Math.random()*300+120+"px";
+  w.style.top="80px";
+  w.style.left="120px";
   w.style.zIndex=++z;
 
   w.innerHTML=`
     <div class="titlebar">
       <span>${name}</span>
       <div class="controls">
-        <button onclick="this.closest('.window').remove()">✖</button>
+        <button onclick="this.closest('.window').remove()">✕</button>
       </div>
     </div>
-    <div class="content">
-      <h3>${name}</h3>
-      <p>Windows 13 ${name} App</p>
-    </div>
+    <div class="content">${appContent(name)}</div>
   `;
   desktop.appendChild(w);
   drag(w);
 }
 
-/* ===== DRAG ===== */
+/* ========== APP CONTENT ========== */
+function appContent(name){
+  switch(name){
+    case "Notepad":
+      return '<textarea style="width:100%;height:100%;background:#020617;color:white;border:none;"></textarea>';
+    case "Explorer":
+      return 'This PC<br>Documents<br>Downloads<br>Pictures';
+    case "Calculator":
+      return 'Calculator (mock)';
+    case "Terminal":
+      return '&gt; Windows 13 Terminal<br>&gt; system ready';
+    case "Task Manager":
+      return 'CPU: 12%<br>RAM: 42%';
+    case "Settings":
+      return 'System<br>Personalization<br>Updates';
+    default:
+      return 'App';
+  }
+}
+
+/* ========== DRAG ========== */
 function drag(win){
   const bar=win.querySelector(".titlebar");
   let x=0,y=0,down=false;
@@ -270,41 +241,6 @@ function drag(win){
   };
   document.onmouseup=()=>down=false;
 }
-
-/* ===== PARTICLES ===== */
-const c=document.getElementById("particles");
-const ctx=c.getContext("2d");
-resize();
-window.onresize=resize;
-
-let parts=Array.from({length:120},()=>({
-  x:Math.random()*c.width,
-  y:Math.random()*c.height,
-  r:Math.random()*2+1,
-  vx:Math.random()*1-.5,
-  vy:Math.random()*1-.5
-}));
-
-function resize(){
-  c.width=innerWidth;
-  c.height=innerHeight;
-}
-
-function anim(){
-  ctx.clearRect(0,0,c.width,c.height);
-  ctx.fillStyle="cyan";
-  parts.forEach(p=>{
-    p.x+=p.vx;
-    p.y+=p.vy;
-    if(p.x<0||p.x>c.width)p.vx*=-1;
-    if(p.y<0||p.y>c.height)p.vy*=-1;
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-  });
-  requestAnimationFrame(anim);
-}
-anim();
 </script>
 
 </body>
