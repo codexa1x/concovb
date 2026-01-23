@@ -169,7 +169,7 @@ button:hover{transform:scale(1.05);background:var(--c2)}
 <div class="panel">
   <input id="username" placeholder="Kullanıcı adı">
   <textarea id="desc" placeholder="Setup açıklaması"></textarea>
-  <input type="file" id="file" accept="image/*">
+  <input type="file" id="file" accept="image/*" capture="environment">
   <button onclick="addSetup()">Setup Paylaş</button>
   <div id="limit"></div>
 </div>
@@ -189,18 +189,21 @@ button:hover{transform:scale(1.05);background:var(--c2)}
   </div>
 </div>
 
-<!-- CHAT -->
-<div id="chat">
-  <header>Canlı Destek</header>
-  <div id="msgs">
-    <div><b>Bot:</b> Setup için ne geliştirmek istiyorsun?</div>
-  </div>
-  <input id="chatInput" placeholder="Sorunu yaz...">
-</div>
-
 <script>
-let all=[], mine=[], page=1;
-const per=5;
+let all = JSON.parse(localStorage.getItem("allSetups")||"[]");
+let mine = JSON.parse(localStorage.getItem("mySetups")||"[]");
+let page=1, per=5;
+
+/* DAILY LIMIT */
+const today = new Date().toDateString();
+let daily = JSON.parse(localStorage.getItem("dailyLimit")||"{}");
+if(daily.date!==today){ daily={date:today,count:0}; }
+
+function save(){
+  localStorage.setItem("allSetups",JSON.stringify(all));
+  localStorage.setItem("mySetups",JSON.stringify(mine));
+  localStorage.setItem("dailyLimit",JSON.stringify(daily));
+}
 
 function addSetup(){
   const u=username.value.trim();
@@ -208,12 +211,21 @@ function addSetup(){
   const f=file.files[0];
   if(!u||!d||!f)return;
 
+  if(daily.count>=2){
+    limit.innerText="❗ Günlük maksimum 2 setup paylaşabilirsin";
+    return;
+  }
+
   const r=new FileReader();
   r.onload=()=>{
-    const s={u,d,img:r.result,ratings:[]};
+    const s={u,d,img:r.result,ratings:[],comments:[]};
     all.unshift(s);
     mine.unshift(s);
+    daily.count++;
+    save();
     render();
+    document.querySelector(".panel").reset?.();
+    limit.innerText="";
   };
   r.readAsDataURL(f);
 }
@@ -233,12 +245,12 @@ function renderPage(){
 
 function renderMine(){
   mySetups.innerHTML="";
-  mine.forEach(s=>{
-    mySetups.appendChild(card(s,true));
+  mine.forEach((s,i)=>{
+    mySetups.appendChild(card(s,true,i));
   });
 }
 
-function card(s,isMine){
+function card(s,isMine,index){
   const c=document.createElement("div");
   c.className="card";
   c.innerHTML=`
@@ -247,9 +259,18 @@ function card(s,isMine){
       <b>@${s.u}</b> ${isMine?'<span class="badge">Benim</span>':''}
       <p style="font-size:.85rem">${s.d}</p>
       <div class="stars">${[1,2,3,4,5].map(n=>`<span data=${n}>★</span>`).join("")}</div>
+      ${isMine?'<button onclick="del('+index+')">Sil</button>':''}
     </div>`;
   c.onclick=()=>openModal(s);
   return c;
+}
+
+function del(i){
+  const s=mine[i];
+  mine.splice(i,1);
+  all=all.filter(x=>x!==s);
+  save();
+  render();
 }
 
 function renderPagination(){
@@ -267,37 +288,14 @@ function openModal(s){
   modalContent.innerHTML=`
     <img src="${s.img}" style="width:100%;border-radius:12px">
     <p>${s.d}</p>
-    <p><b>Ortalama:</b> ${s.ratings.length?
-      (s.ratings.reduce((a,b)=>a+b,0)/s.ratings.length).toFixed(1)
-      :"Yok"}</p>
-    <div class="stars">
-      ${[1,2,3,4,5].map(n=>`<span data=${n}>★</span>`).join("")}
-    </div>`;
-  modalContent.querySelectorAll("span").forEach(st=>{
-    st.onclick=()=>{
-      s.ratings.push(+st.dataset);
-      render();
-      openModal(s);
-    };
-  });
+    <p><b>Yorumlar:</b></p>
+    ${s.comments.map(c=>`<p style="font-size:.8rem">• ${c}</p>`).join("")}
+    <input placeholder="Yorum yaz" onkeydown="if(event.key==='Enter'){s.comments.push(this.value);save();openModal(s)}">
+  `;
 }
-
 function closeModal(){modal.style.display="none"}
 
-/* CHAT */
-chatInput.onkeypress=e=>{
-  if(e.key==="Enter"){
-    const t=chatInput.value.toLowerCase();
-    msgs.innerHTML+=`<div><b>Sen:</b> ${chatInput.value}</div>`;
-    let r="Bunu Anlayamadım, Lütfen Düzgün Şekilde Yazınız";
-    if(t.includes("ışık"))r="Işıklandırma için soft LED veya masa lambası ekleyebilirsin.";
-    if(t.includes("masa"))r="Masa üstünü sadeleştir, kabloları gizle.";
-    if(t.includes("ekipman"))r="Monitör kolu ve kaliteli mousepad fark yaratır.";
-    msgs.innerHTML+=`<div><b>Bot:</b> ${r}</div>`;
-    msgs.scrollTop=msgs.scrollHeight;
-    chatInput.value="";
-  }
-};
+render();
 </script>
 
 </body>
