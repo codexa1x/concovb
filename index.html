@@ -2,190 +2,163 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>SetupRate Core</title>
-
+<title>Setup Puanlama</title>
 <style>
-*{box-sizing:border-box;font-family:Segoe UI;margin:0;padding:0}
 body{
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:#fff;min-height:100vh
+  font-family: Arial, sans-serif;
+  background:#0f172a;
+  color:white;
+  margin:0;
+  padding:20px;
 }
-header{text-align:center;padding:30px}
-header h1{
-  font-size:3rem;
-  background:linear-gradient(90deg,#00f5ff,#7cffcb);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+h1{text-align:center}
+form{
+  max-width:500px;
+  margin:20px auto;
+  background:#1e293b;
+  padding:20px;
+  border-radius:10px;
 }
-.panel{
-  max-width:500px;margin:20px auto;
-  background:rgba(255,255,255,.1);
-  padding:20px;border-radius:20px;
-  animation:fadeDown .6s ease;
-}
-.panel input,.panel textarea{
-  width:100%;margin-bottom:10px;
-  padding:10px;border-radius:10px;
-  border:none;background:rgba(255,255,255,.15);
-  color:#fff
+input,textarea,button{
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  border:none;
+  border-radius:6px;
 }
 button{
-  width:100%;padding:10px;
-  border:none;border-radius:12px;
-  background:#00f5ff;color:#000;
-  font-weight:bold;cursor:pointer
+  background:#22c55e;
+  cursor:pointer;
 }
 .setups{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:20px;padding:30px
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
 }
 .card{
-  background:rgba(255,255,255,.12);
-  border-radius:20px;
+  background:#1e293b;
+  border-radius:10px;
   overflow:hidden;
-  cursor:pointer;
-  animation:fadeUp .5s ease;
 }
-.card img{width:100%;height:200px;object-fit:cover}
-.content{padding:12px}
-.badge{
-  background:gold;color:#000;
-  padding:2px 6px;
-  border-radius:6px;
-  font-size:.7rem
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+.card .content{
+  padding:10px;
 }
 .stars span{
-  font-size:20px;cursor:pointer;color:#555
+  cursor:pointer;
+  font-size:20px;
 }
-.stars span.active{color:gold}
-
-#modal{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.7);
-  display:none;align-items:center;justify-content:center
+.active{color:gold}
+footer{
+  text-align:center;
+  font-size:12px;
+  opacity:.6;
+  margin-top:40px;
 }
-.modal-box{
-  background:#111;padding:20px;
-  border-radius:20px;
-  width:90%;max-width:420px;
-  animation:pop .3s ease
-}
-
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}}
-@keyframes pop{from{transform:scale(.85);opacity:0}}
 </style>
 </head>
-
 <body>
 
-<header>
-  <h1>SetupRate</h1>
-  <p>Çalışan çekirdek sistem</p>
-</header>
+<h1>🖥️ Setup Puanlama</h1>
 
-<div class="panel">
-  <input id="user" placeholder="Kullanıcı adı">
-  <textarea id="desc" placeholder="Setup açıklaması"></textarea>
-  <input type="file" id="file" accept="image/*">
-  <button onclick="addSetup()">Setup Paylaş</button>
-</div>
+<form id="setupForm">
+  <input id="name" placeholder="İsmin">
+  <textarea id="desc" placeholder="Açıklama"></textarea>
+  <input id="photo" type="file" accept="image/*">
+  <button>Setup Ekle</button>
+</form>
 
-<h2 style="text-align:center">🌍 Topluluk</h2>
-<section class="setups" id="world"></section>
+<h2>🌍 Tüm Setuplar</h2>
+<div class="setups" id="all"></div>
 
-<h2 style="text-align:center">👤 Benim Setuplarım</h2>
-<section class="setups" id="mine"></section>
+<h2>👤 Benim Setuplarım</h2>
+<div class="setups" id="mine"></div>
 
-<div id="modal" onclick="closeModal()">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <div id="modalContent"></div>
-    <button onclick="closeModal()">Kapat</button>
-  </div>
-</div>
+<footer>
+  Gizlilik Politikası • Çerezler • İletişim
+</footer>
 
 <script>
-const world=document.getElementById("world");
+const STORAGE="setup_data";
+let setups=JSON.parse(localStorage.getItem(STORAGE))||[];
+
+const all=document.getElementById("all");
 const mine=document.getElementById("mine");
-const modal=document.getElementById("modal");
-const modalContent=document.getElementById("modalContent");
 
-let setups=[]; // TEK KAYNAK (EN ÖNEMLİ NOKTA)
+document.getElementById("setupForm").onsubmit=e=>{
+  e.preventDefault();
 
-function addSetup(){
-  const u=user.value.trim();
-  const d=desc.value.trim();
-  const f=file.files[0];
-  if(!u||!d||!f) return alert("Boş bırakma");
+  const name=document.getElementById("name").value;
+  const desc=document.getElementById("desc").value;
+  const file=document.getElementById("photo").files[0];
+
+  if(!name||!desc||!file){
+    alert("Tüm alanları doldur");
+    return;
+  }
 
   const r=new FileReader();
   r.onload=()=>{
     setups.unshift({
       id:Date.now(),
-      user:u,
-      desc:d,
+      name,
+      desc,
       img:r.result,
       ratings:[]
     });
+    save();
     render();
   };
-  r.readAsDataURL(f);
+  r.readAsDataURL(file);
+};
+
+function save(){
+  localStorage.setItem(STORAGE,JSON.stringify(setups));
 }
 
 function render(){
-  world.innerHTML="";
+  all.innerHTML="";
   mine.innerHTML="";
+
   setups.forEach(s=>{
-    const c=createCard(s,false);
-    const m=createCard(s,true);
-    world.appendChild(c);
-    mine.appendChild(m);
+    all.appendChild(card(s,false));
+    mine.appendChild(card(s,true));
   });
 }
 
-function createCard(s,isMine){
-  const c=document.createElement("div");
-  c.className="card";
-  c.innerHTML=`
+function card(s,isMine){
+  const d=document.createElement("div");
+  d.className="card";
+  d.innerHTML=`
     <img src="${s.img}">
     <div class="content">
-      <b>@${s.user}</b>
-      ${isMine?'<span class="badge">Benim</span>':""}
-      <p style="font-size:.85rem">${s.desc}</p>
+      <b>${s.name}${isMine?" (Benim Setup)":""}</b>
+      <p>${s.desc}</p>
       <div class="stars">
         ${[1,2,3,4,5].map(n=>`<span data="${n}">★</span>`).join("")}
       </div>
-      <div style="font-size:.8rem">
-        ${s.ratings.length
-          ? "⭐ "+avg(s.ratings)
-          : "Henüz puan yok"}
-      </div>
-    </div>`;
-  c.onclick=()=>openModal(s);
-  c.querySelectorAll("span").forEach(st=>{
-    st.onclick=e=>{
-      e.stopPropagation();
+      <small>${s.ratings.length
+        ? "Ortalama: "+(s.ratings.reduce((a,b)=>a+b,0)/s.ratings.length).toFixed(1)
+        : "Henüz puan yok"}</small>
+    </div>
+  `;
+
+  d.querySelectorAll(".stars span").forEach(st=>{
+    st.onclick=()=>{
       s.ratings.push(+st.dataset);
+      save();
       render();
     };
   });
-  return c;
+
+  return d;
 }
 
-function avg(a){
-  return (a.reduce((x,y)=>x+y,0)/a.length).toFixed(1);
-}
-
-function openModal(s){
-  modal.style.display="flex";
-  modalContent.innerHTML=`
-    <img src="${s.img}" style="width:100%;border-radius:12px">
-    <p>${s.desc}</p>
-    <p><b>Ortalama:</b> ${s.ratings.length?avg(s.ratings):"Yok"}</p>
-  `;
-}
-function closeModal(){modal.style.display="none"}
+render();
 </script>
 
 </body>
