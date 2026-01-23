@@ -5,45 +5,64 @@
 <title>Setup Puanlama Sitesi</title>
 
 <style>
+/* ===== MAVİ ANİMASYONLU ARKA PLAN ===== */
 body{
   margin:0;
   padding:20px;
   font-family:Arial,sans-serif;
   color:white;
-  background:linear-gradient(270deg,#0a1f44,#0d47a1,#42a5f5);
+  background:linear-gradient(270deg,#0b1d3a,#0d47a1,#4fc3f7);
   background-size:600% 600%;
-  animation:bg 12s ease infinite;
+  animation:bg 14s ease infinite;
 }
 @keyframes bg{
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
 }
+
 h1,h2{text-align:center}
 
+/* ===== FORM ===== */
 form{
   max-width:520px;
   margin:20px auto;
-  background:rgba(0,0,0,.4);
-  padding:20px;
+  background:rgba(0,0,0,.45);
+  padding:22px;
+  border-radius:18px;
+  backdrop-filter:blur(10px);
+  animation:drop .6s ease;
+}
+@keyframes drop{
+  from{opacity:0;transform:translateY(-20px)}
+  to{opacity:1}
 }
 
-.field{position:relative;margin:15px 0}
+/* ===== ANİMASYONLU ALANLAR ===== */
+.field{position:relative;margin:18px 0}
 .field input,.field textarea{
   width:100%;
   padding:14px;
-  background:transparent;
-  border:2px solid #90caf9;
+  background:rgba(255,255,255,.05);
+  border:2px solid #81d4fa;
+  border-radius:14px;
   color:white;
+  outline:none;
+  transition:.3s;
+}
+.field input:focus,.field textarea:focus{
+  box-shadow:0 0 18px #4fc3f7;
+  transform:scale(1.02);
 }
 .field label{
   position:absolute;
-  left:10px;
+  left:14px;
   top:50%;
   transform:translateY(-50%);
-  color:#bbdefb;
+  color:#b3e5fc;
+  pointer-events:none;
   transition:.3s;
-  background:#0a1f44;
+  background:#0b1d3a;
   padding:0 6px;
 }
 .field input:focus+label,
@@ -54,37 +73,60 @@ form{
   font-size:11px;
 }
 
+/* ===== DOSYA SEÇ ===== */
 input[type=file]{
   width:100%;
-  padding:10px;
+  padding:12px;
+  border-radius:14px;
   background:#0d47a1;
   color:white;
   cursor:pointer;
+  transition:.3s;
+}
+input[type=file]:hover{
+  box-shadow:0 0 20px #4fc3f7;
+  transform:scale(1.03);
 }
 
+/* ===== BUTON ===== */
 button{
   width:100%;
-  padding:12px;
-  background:#2196f3;
-  color:white;
+  padding:14px;
   border:none;
+  border-radius:16px;
+  background:linear-gradient(135deg,#4fc3f7,#1976d2);
+  color:white;
+  font-weight:bold;
   cursor:pointer;
   transition:.3s;
 }
-button:hover{transform:scale(1.05)}
+button:hover{
+  transform:scale(1.07);
+  box-shadow:0 0 22px #4fc3f7;
+}
+button:active{transform:scale(.95)}
 
+/* ===== GRID ===== */
 .setups{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:15px;
+  gap:18px;
 }
 
+/* ===== KART ===== */
 .card{
-  background:rgba(0,0,0,.5);
-  animation:fade .5s ease;
+  background:rgba(0,0,0,.45);
+  border-radius:18px;
+  overflow:hidden;
+  animation:card .5s ease;
+  transition:.3s;
 }
-@keyframes fade{
-  from{opacity:0;transform:translateY(20px)}
+.card:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 0 25px #4fc3f7;
+}
+@keyframes card{
+  from{opacity:0;transform:scale(.9)}
   to{opacity:1}
 }
 .card img{
@@ -92,32 +134,56 @@ button:hover{transform:scale(1.05)}
   height:180px;
   object-fit:cover;
 }
-.content{padding:12px}
+.content{padding:14px}
 
+/* ===== YILDIZ ===== */
 .stars span{
   cursor:pointer;
   font-size:22px;
+  transition:.2s;
+}
+.stars span:hover{
+  transform:scale(1.4);
+  color:#ffeb3b;
 }
 .active{color:gold}
 
+/* ===== SİL BUTONU ===== */
 .delete{
-  background:#e53935;
   margin-top:8px;
+  background:#e53935;
+  border-radius:12px;
 }
 
-/* CANLI DESTEK */
-#support{
+/* ===== CANLI DESTEK ===== */
+#openSupport{
   position:fixed;
   bottom:20px;
   right:20px;
+  padding:14px;
+  border-radius:50%;
+  background:#2196f3;
+  cursor:pointer;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(79,195,247,.7)}
+  70%{box-shadow:0 0 0 15px rgba(79,195,247,0)}
+}
+#support{
+  position:fixed;
+  bottom:90px;
+  right:20px;
   width:260px;
   background:#0d47a1;
+  border-radius:16px;
   display:none;
 }
 #support header{
   padding:8px;
-  background:#1565c0;
+  background:#1976d2;
   cursor:pointer;
+  border-radius:16px 16px 0 0;
 }
 #messages{
   height:150px;
@@ -127,20 +193,15 @@ button:hover{transform:scale(1.05)}
 }
 #support input{
   width:100%;
-  padding:6px;
+  padding:8px;
   border:none;
+  border-radius:0 0 16px 16px;
 }
-#openSupport{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#2196f3;
-  padding:10px;
-  cursor:pointer;
-}
+
+/* ===== FOOTER ===== */
 footer{
   text-align:center;
-  margin-top:40px;
+  margin-top:50px;
   font-size:12px;
   opacity:.7;
 }
@@ -161,9 +222,7 @@ footer{
     <label>Setup Açıklaması</label>
   </div>
 
-  <!-- FOTO ÇEKME -->
   <input type="file" id="photo" accept="image/*" capture="environment">
-
   <button>Setup Ekle</button>
 </form>
 
@@ -175,10 +234,9 @@ footer{
 
 <footer>Gizlilik Politikası • Çerezler</footer>
 
-<!-- CANLI DESTEK -->
 <div id="openSupport">💬</div>
 <div id="support">
-  <header onclick="toggleSupport()">Canlı Destek ✖</header>
+  <header onclick="support.style.display='none'">Canlı Destek ✖</header>
   <div id="messages"></div>
   <input id="chatInput" placeholder="Setup sorusu sor...">
 </div>
@@ -190,7 +248,6 @@ let setups=JSON.parse(localStorage.getItem(KEY))||[];
 const all=document.getElementById("all");
 const mine=document.getElementById("mine");
 
-/* EKLE */
 form.onsubmit=e=>{
   e.preventDefault();
   const n=name.value,d=desc.value,f=photo.files[0];
@@ -203,12 +260,8 @@ form.onsubmit=e=>{
   r.readAsDataURL(f);
 };
 
-/* KAYDET */
-function save(){
-  localStorage.setItem(KEY,JSON.stringify(setups));
-}
+function save(){localStorage.setItem(KEY,JSON.stringify(setups));}
 
-/* GÖSTER */
 function render(){
   all.innerHTML="";mine.innerHTML="";
   setups.forEach(s=>{
@@ -217,7 +270,6 @@ function render(){
   });
 }
 
-/* CARD */
 function card(s,isMine){
   const c=document.createElement("div");
   c.className="card";
@@ -230,7 +282,7 @@ function card(s,isMine){
         ${[1,2,3,4,5].map(n=>`<span data="${n}">★</span>`).join("")}
       </div>
       <small>${s.ratings.length?
-        "Ortalama: "+(s.ratings.reduce((a,b)=>a+b,0)/s.ratings.length).toFixed(1)
+        "⭐ Ortalama: "+(s.ratings.reduce((a,b)=>a+b,0)/s.ratings.length).toFixed(1)
         :"Henüz puan yok"}</small>
       ${isMine?'<button class="delete">Sil</button>':""}
     </div>`;
@@ -239,32 +291,18 @@ function card(s,isMine){
   });
   if(isMine){
     c.querySelector(".delete").onclick=()=>{
-      setups=setups.filter(x=>x.id!==s.id);
-      save();render();
+      setups=setups.filter(x=>x.id!==s.id);save();render();
     }
   }
   return c;
 }
 
-/* CANLI DESTEK */
-function toggleSupport(){
-  support.style.display="none";
-}
-openSupport.onclick=()=>{
-  support.style.display="block";
-  openSupport.style.display="none";
-}
-support.onmouseleave=()=>{
-  openSupport.style.display="block";
-}
+openSupport.onclick=()=>support.style.display="block";
+
 chatInput.onkeydown=e=>{
   if(e.key==="Enter"){
-    const t=chatInput.value.toLowerCase();
     messages.innerHTML+=`<div>👤 ${chatInput.value}</div>`;
-    if(t.includes("setup")||t.includes("ekle"))
-      messages.innerHTML+=`<div>🤖 RGB ışık, mousepad ve monitör kolu ekleyebilirsin.</div>`;
-    else
-      messages.innerHTML+=`<div>🤖 Bunu anlayamadım, lütfen düzgün yazınız.</div>`;
+    messages.innerHTML+=`<div>🤖 RGB ışık, monitör kolu ve mousepad ekleyebilirsin.</div>`;
     chatInput.value="";
     messages.scrollTop=999;
   }
