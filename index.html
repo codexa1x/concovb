@@ -2,86 +2,96 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>SetupRate • Setup Puanlama Sitesi</title>
+<title>SetupRate • Setup Puanlama</title>
 
 <style>
-/* ===== RESET ===== */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,system-ui,sans-serif}
 
-/* ===== BODY ===== */
 body{
   min-height:100vh;
-  background: radial-gradient(circle at top, #1b2735, #090a0f);
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   color:#fff;
-  overflow-x:hidden;
 }
 
-/* ===== HEADER ===== */
 header{
   text-align:center;
   padding:50px 20px 30px;
-  animation: fadeDown 1s ease;
+  animation:fadeDown 1s ease;
 }
 
 header h1{
   font-size:3rem;
-  letter-spacing:2px;
-  background: linear-gradient(90deg,#00f5ff,#7cffcb);
+  background:linear-gradient(90deg,#00f5ff,#7cffcb);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
 
-header p{
-  margin-top:10px;
-  opacity:.8;
-}
+header p{opacity:.8;margin-top:8px}
 
-/* ===== UPLOAD ===== */
 .upload-area{
-  display:flex;
-  justify-content:center;
-  margin:30px 0;
-}
-
-.upload-box{
-  border:2px dashed rgba(255,255,255,.3);
-  padding:30px 40px;
+  max-width:500px;
+  margin:30px auto;
+  background:rgba(255,255,255,.08);
+  padding:25px;
   border-radius:20px;
+  backdrop-filter:blur(15px);
+  animation:popUp .7s ease;
+}
+
+.upload-area input,
+.upload-area textarea{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border:none;
+  border-radius:10px;
+  outline:none;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+}
+
+.upload-area textarea{resize:none;height:70px}
+
+.upload-area label{
+  display:block;
+  text-align:center;
+  padding:12px;
+  border:2px dashed rgba(255,255,255,.4);
+  border-radius:15px;
   cursor:pointer;
-  transition:.3s;
-  background:rgba(255,255,255,.05);
+  margin-bottom:10px;
 }
 
-.upload-box:hover{
-  transform:scale(1.05);
-  border-color:#00f5ff;
+.upload-area button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#00f5ff;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.upload-box input{
-  display:none;
+.limit{
+  font-size:.85rem;
+  opacity:.8;
+  text-align:center;
+  margin-top:5px;
 }
 
-/* ===== SETUP GRID ===== */
 .setups{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:30px;
+  gap:25px;
   padding:40px;
 }
 
-/* ===== CARD ===== */
 .card{
-  background:rgba(255,255,255,.08);
+  background:rgba(255,255,255,.1);
   border-radius:25px;
   overflow:hidden;
-  backdrop-filter:blur(15px);
-  animation: popUp .7s ease;
-  box-shadow:0 20px 40px rgba(0,0,0,.4);
+  animation:popUp .6s ease;
 }
 
 .card img{
@@ -90,78 +100,67 @@ header p{
   object-fit:cover;
 }
 
-/* ===== CONTENT ===== */
-.content{
-  padding:20px;
+.content{padding:20px}
+
+.username{
+  font-weight:bold;
+  margin-bottom:5px;
 }
 
-.title{
-  font-size:1.1rem;
+.desc{
+  font-size:.9rem;
+  opacity:.85;
   margin-bottom:10px;
 }
 
-/* ===== STARS ===== */
 .stars{
   display:flex;
-  gap:8px;
-  font-size:26px;
+  gap:6px;
+  font-size:24px;
 }
 
 .stars span{
   cursor:pointer;
   color:#555;
-  transition:.2s;
 }
 
-.stars span:hover,
-.stars span.active{
-  color:gold;
-  transform:scale(1.2);
-}
+.stars span.active{color:gold}
 
-/* ===== INFO ===== */
-.info{
-  margin-top:12px;
-  font-size:.9rem;
-  opacity:.85;
-}
+.info{margin-top:8px;font-size:.85rem}
 
-/* ===== COMMENT ===== */
-.comment-box{
-  margin-top:15px;
-}
-
-.comment-box input{
+.comment input{
   width:100%;
-  padding:10px;
+  margin-top:10px;
+  padding:8px;
   border-radius:10px;
   border:none;
-  outline:none;
-  background:rgba(255,255,255,.1);
+  background:rgba(255,255,255,.15);
   color:#fff;
 }
 
 .comments{
-  margin-top:10px;
-  font-size:.85rem;
+  margin-top:6px;
+  font-size:.8rem;
   max-height:80px;
   overflow:auto;
 }
 
-.comments div{
-  margin-bottom:5px;
-  opacity:.9;
+footer{
+  text-align:center;
+  font-size:.75rem;
+  opacity:.6;
+  padding:20px;
+  border-top:1px solid rgba(255,255,255,.1);
 }
 
-/* ===== ANIMATIONS ===== */
 @keyframes fadeDown{
-  from{opacity:0; transform:translateY(-30px);}
-  to{opacity:1; transform:translateY(0);}
+  from{opacity:0;transform:translateY(-30px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
 @keyframes popUp{
-  from{opacity:0; transform:scale(.8);}
-  to{opacity:1; transform:scale(1);}
+  from{opacity:0;transform:scale(.85)}
+  to{opacity:1;transform:scale(1)}
 }
 </style>
 </head>
@@ -170,41 +169,84 @@ header p{
 
 <header>
   <h1>SetupRate</h1>
-  <p>Setup'ını yükle • Topluluk puanlasın</p>
+  <p>Setup'ını paylaş • Topluluk puanlasın</p>
 </header>
 
 <div class="upload-area">
-  <label class="upload-box">
-    📸 Setup Fotoğrafı Yükle
-    <input type="file" id="fileInput" accept="image/*">
+  <input id="username" placeholder="Kullanıcı adın">
+  <textarea id="desc" placeholder="Setup açıklaması"></textarea>
+
+  <label>
+    📸 Fotoğraf Seç
+    <input type="file" id="file" accept="image/*" hidden>
   </label>
+
+  <button onclick="addSetup()">Setup'ı Paylaş</button>
+  <div class="limit" id="limitText"></div>
 </div>
 
 <section class="setups" id="setups"></section>
 
-<script>
-const fileInput = document.getElementById("fileInput");
-const setups = document.getElementById("setups");
+<footer>
+  Gizlilik Politikası: Yüklenen içerikler tarayıcıda saklanır. Kişisel veriler
+  üçüncü kişilerle paylaşılmaz. Bu site demo amaçlıdır.
+</footer>
 
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if(!file) return;
+<script>
+const setups = document.getElementById("setups");
+const limitText = document.getElementById("limitText");
+
+function getToday(){
+  return new Date().toLocaleDateString();
+}
+
+function getCount(){
+  const data = JSON.parse(localStorage.getItem("limit")) || {};
+  return data[getToday()] || 0;
+}
+
+function setCount(){
+  const data = JSON.parse(localStorage.getItem("limit")) || {};
+  data[getToday()] = getCount()+1;
+  localStorage.setItem("limit",JSON.stringify(data));
+}
+
+function updateLimit(){
+  limitText.textContent = `Bugün ${3-getCount()} setup hakkın kaldı`;
+}
+
+updateLimit();
+
+function addSetup(){
+  if(getCount()>=3){
+    alert("Günde maksimum 3 setup ekleyebilirsin.");
+    return;
+  }
+
+  const user = username.value.trim();
+  const d = desc.value.trim();
+  const file = document.getElementById("file").files[0];
+  if(!user || !d || !file) return;
 
   const reader = new FileReader();
-  reader.onload = () => createSetup(reader.result);
+  reader.onload = ()=>{
+    createCard(user,d,reader.result);
+    setCount();
+    updateLimit();
+  }
   reader.readAsDataURL(file);
-});
+}
 
-function createSetup(img){
+function createCard(user,desc,img){
   const card = document.createElement("div");
-  card.className = "card";
+  card.className="card";
+  let rates=[];
 
-  let ratings = [];
-
-  card.innerHTML = `
+  card.innerHTML=`
     <img src="${img}">
     <div class="content">
-      <div class="title">💻 Kullanıcı Setup'ı</div>
+      <div class="username">@${user}</div>
+      <div class="desc">${desc}</div>
 
       <div class="stars">
         <span data="1">★</span>
@@ -216,7 +258,7 @@ function createSetup(img){
 
       <div class="info">Henüz puan yok</div>
 
-      <div class="comment-box">
+      <div class="comment">
         <input placeholder="Yorum yaz ve Enter'a bas">
         <div class="comments"></div>
       </div>
@@ -225,35 +267,28 @@ function createSetup(img){
 
   const stars = card.querySelectorAll(".stars span");
   const info = card.querySelector(".info");
-  const commentInput = card.querySelector("input");
+  const input = card.querySelector(".comment input");
   const comments = card.querySelector(".comments");
 
-  stars.forEach(star=>{
-    star.addEventListener("click",()=>{
-      const value = Number(star.getAttribute("data"));
-      ratings.push(value);
-      updateStars(stars,value);
-      const avg = (ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1);
-      info.textContent = `⭐ Ortalama: ${avg} (${ratings.length} oy)`;
-    });
-  });
-
-  commentInput.addEventListener("keypress", e=>{
-    if(e.key==="Enter" && commentInput.value.trim()!==""){
-      const div = document.createElement("div");
-      div.textContent = "• " + commentInput.value;
-      comments.prepend(div);
-      commentInput.value="";
+  stars.forEach(s=>{
+    s.onclick=()=>{
+      const v=Number(s.dataset);
+      rates.push(v);
+      stars.forEach(x=>x.classList.toggle("active",Number(x.dataset)<=v));
+      info.textContent=`⭐ Ortalama: ${(rates.reduce((a,b)=>a+b,0)/rates.length).toFixed(1)} (${rates.length})`;
     }
   });
 
-  setups.prepend(card);
-}
+  input.onkeypress=e=>{
+    if(e.key==="Enter"&&input.value){
+      const div=document.createElement("div");
+      div.textContent="• "+input.value;
+      comments.prepend(div);
+      input.value="";
+    }
+  };
 
-function updateStars(stars,value){
-  stars.forEach(s=>{
-    s.classList.toggle("active", Number(s.getAttribute("data"))<=value);
-  });
+  setups.prepend(card);
 }
 </script>
 
