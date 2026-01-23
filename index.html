@@ -2,20 +2,20 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Setup Puanlama</title>
+<title>Raax Setup Puanlama</title>
 
 <style>
-/* ANİMASYONLU ARKA PLAN */
+/* ================== MAVİ ANİMASYONLU ARKA PLAN ================== */
 body{
   margin:0;
   padding:20px;
   font-family:Arial, sans-serif;
   color:white;
-  background:linear-gradient(270deg,#020617,#020617,#0f172a);
-  background-size:400% 400%;
-  animation:bg 10s ease infinite;
+  background:linear-gradient(270deg,#020024,#090979,#00d4ff);
+  background-size:600% 600%;
+  animation:bgMove 12s ease infinite;
 }
-@keyframes bg{
+@keyframes bgMove{
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
@@ -23,76 +23,87 @@ body{
 
 h1,h2{text-align:center}
 
-/* FORM */
+/* ================== FORM ================== */
 form{
-  max-width:500px;
-  margin:20px auto;
-  background:#020617cc;
+  max-width:520px;
+  margin:25px auto;
+  background:rgba(0,0,0,.35);
   padding:20px;
-  border-radius:14px;
-  backdrop-filter:blur(8px);
+  border-radius:16px;
+  backdrop-filter:blur(10px);
+  animation:fadeDown .6s ease;
 }
-input,textarea,button{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border:none;
-  border-radius:8px;
+@keyframes fadeDown{
+  from{opacity:0;transform:translateY(-20px)}
+  to{opacity:1;transform:none}
 }
 
-/* BUTON ANİMASYON */
+input,textarea,button{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:none;
+  border-radius:10px;
+  font-size:14px;
+}
+
+/* ================== BUTON ================== */
 button{
-  background:#22c55e;
-  color:black;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  color:white;
   font-weight:bold;
   cursor:pointer;
   transition:.3s;
 }
 button:hover{
   transform:scale(1.05);
-  background:#4ade80;
+  box-shadow:0 0 15px #38bdf8;
 }
-button:active{
-  transform:scale(.95);
-}
+button:active{transform:scale(.95)}
 
-/* SETUP KARTLARI */
+/* ================== SETUP GRID ================== */
 .setups{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:16px;
+  gap:18px;
 }
+
+/* ================== SETUP CARD ================== */
 .card{
-  background:#020617cc;
-  border-radius:14px;
+  background:rgba(0,0,0,.4);
+  border-radius:18px;
   overflow:hidden;
-  animation:fade .5s ease;
+  animation:cardIn .5s ease;
 }
-@keyframes fade{
-  from{opacity:0;transform:translateY(20px)}
+@keyframes cardIn{
+  from{opacity:0;transform:scale(.9)}
   to{opacity:1;transform:none}
 }
+
 .card img{
   width:100%;
   height:180px;
   object-fit:cover;
 }
-.content{padding:12px}
+.content{padding:14px}
 
-/* YILDIZ */
+/* ================== YILDIZ ================== */
 .stars span{
   font-size:22px;
   cursor:pointer;
   transition:.2s;
 }
-.stars span:hover{transform:scale(1.2)}
+.stars span:hover{
+  transform:scale(1.3);
+  color:#fde047;
+}
 .active{color:gold}
 
-/* FOOTER */
+/* ================== FOOTER ================== */
 footer{
   text-align:center;
   font-size:12px;
-  opacity:.6;
+  opacity:.7;
   margin-top:50px;
 }
 </style>
@@ -100,19 +111,19 @@ footer{
 
 <body>
 
-<h1>🖥️ Setup Puanlama</h1>
+<h1>💠 Raax Setup Puanlama</h1>
 
 <form id="form">
   <input id="name" placeholder="İsmin">
-  <textarea id="desc" placeholder="Açıklama"></textarea>
+  <textarea id="desc" placeholder="Setup açıklaması"></textarea>
 
-  <!-- FOTOĞRAF YÜKLEME + KAMERA -->
+  <!-- KAMERA / FOTO -->
   <input type="file" id="photo" accept="image/*" capture="environment">
 
   <button>Setup Ekle</button>
 </form>
 
-<h2>🌍 Tüm Setuplar</h2>
+<h2>🌍 Topluluk Setupları</h2>
 <div class="setups" id="all"></div>
 
 <h2>👤 Benim Setuplarım</h2>
@@ -124,12 +135,14 @@ footer{
 </footer>
 
 <script>
-const KEY="setup_data";
+/* ================== KALICI VERİ ================== */
+const KEY="raax_setup_data";
 let setups=JSON.parse(localStorage.getItem(KEY))||[];
 
 const all=document.getElementById("all");
 const mine=document.getElementById("mine");
 
+/* ================== EKLEME ================== */
 form.onsubmit=e=>{
   e.preventDefault();
 
@@ -158,10 +171,12 @@ form.onsubmit=e=>{
   r.readAsDataURL(f);
 };
 
+/* ================== KAYDET ================== */
 function save(){
   localStorage.setItem(KEY,JSON.stringify(setups));
 }
 
+/* ================== RENDER ================== */
 function render(){
   all.innerHTML="";
   mine.innerHTML="";
@@ -172,6 +187,7 @@ function render(){
   });
 }
 
+/* ================== CARD ================== */
 function card(s,isMine){
   const c=document.createElement("div");
   c.className="card";
@@ -184,9 +200,11 @@ function card(s,isMine){
       <div class="stars">
         ${[1,2,3,4,5].map(n=>`<span data="${n}">★</span>`).join("")}
       </div>
-      <small>${s.ratings.length
-        ? "Ortalama: "+(s.ratings.reduce((a,b)=>a+b,0)/s.ratings.length).toFixed(1)
-        : "Henüz puan yok"}</small>
+      <small>${
+        s.ratings.length
+        ? "⭐ Ortalama: "+(s.ratings.reduce((a,b)=>a+b,0)/s.ratings.length).toFixed(1)
+        : "Henüz puan yok"
+      }</small>
     </div>
   `;
 
