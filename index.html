@@ -2,20 +2,20 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Raax Setup Puanlama</title>
+<title>Setup Puanlama Sitesi</title>
 
 <style>
-/* ================== MAVİ ANİMASYONLU ARKA PLAN ================== */
+/* ========== MAVİ ANİMASYONLU ARKA PLAN ========== */
 body{
   margin:0;
   padding:20px;
   font-family:Arial, sans-serif;
   color:white;
-  background:linear-gradient(270deg,#020024,#090979,#00d4ff);
+  background:linear-gradient(270deg,#001f3f,#0074D9,#7FDBFF);
   background-size:600% 600%;
-  animation:bgMove 12s ease infinite;
+  animation:bg 12s ease infinite;
 }
-@keyframes bgMove{
+@keyframes bg{
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
@@ -23,32 +23,43 @@ body{
 
 h1,h2{text-align:center}
 
-/* ================== FORM ================== */
+/* ========== FORM ========== */
 form{
   max-width:520px;
   margin:25px auto;
   background:rgba(0,0,0,.35);
   padding:20px;
-  border-radius:16px;
+  border-radius:0;
   backdrop-filter:blur(10px);
-  animation:fadeDown .6s ease;
-}
-@keyframes fadeDown{
-  from{opacity:0;transform:translateY(-20px)}
-  to{opacity:1;transform:none}
 }
 
-input,textarea,button{
+input,textarea{
   width:100%;
   padding:12px;
   margin:8px 0;
   border:none;
-  border-radius:10px;
+  border-radius:0;
   font-size:14px;
 }
 
-/* ================== BUTON ================== */
+/* ========== DOSYA SEÇ (ANİMASYONLU) ========== */
+input[type=file]{
+  background:#0f172a;
+  color:#7dd3fc;
+  cursor:pointer;
+  transition:.3s;
+}
+input[type=file]:hover{
+  background:#1e3a8a;
+  box-shadow:0 0 15px #38bdf8;
+}
+
+/* ========== BUTON ========== */
 button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:0;
   background:linear-gradient(135deg,#38bdf8,#2563eb);
   color:white;
   font-weight:bold;
@@ -57,29 +68,28 @@ button{
 }
 button:hover{
   transform:scale(1.05);
-  box-shadow:0 0 15px #38bdf8;
+  box-shadow:0 0 20px #38bdf8;
 }
 button:active{transform:scale(.95)}
 
-/* ================== SETUP GRID ================== */
+/* ========== SETUP GRID ========== */
 .setups{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:18px;
 }
 
-/* ================== SETUP CARD ================== */
+/* ========== KART ========== */
 .card{
   background:rgba(0,0,0,.4);
-  border-radius:18px;
+  border-radius:0;
   overflow:hidden;
-  animation:cardIn .5s ease;
+  animation:card .5s ease;
 }
-@keyframes cardIn{
-  from{opacity:0;transform:scale(.9)}
+@keyframes card{
+  from{opacity:0;transform:translateY(20px)}
   to{opacity:1;transform:none}
 }
-
 .card img{
   width:100%;
   height:180px;
@@ -87,7 +97,7 @@ button:active{transform:scale(.95)}
 }
 .content{padding:14px}
 
-/* ================== YILDIZ ================== */
+/* ========== YILDIZ ========== */
 .stars span{
   font-size:22px;
   cursor:pointer;
@@ -99,7 +109,7 @@ button:active{transform:scale(.95)}
 }
 .active{color:gold}
 
-/* ================== FOOTER ================== */
+/* ========== FOOTER ========== */
 footer{
   text-align:center;
   font-size:12px;
@@ -111,38 +121,37 @@ footer{
 
 <body>
 
-<h1>💠 Raax Setup Puanlama</h1>
+<h1>⭐ Setup Puanlama Sitesi</h1>
 
 <form id="form">
   <input id="name" placeholder="İsmin">
   <textarea id="desc" placeholder="Setup açıklaması"></textarea>
 
-  <!-- KAMERA / FOTO -->
+  <!-- FOTOĞRAF SEÇ / KAMERA -->
   <input type="file" id="photo" accept="image/*" capture="environment">
 
   <button>Setup Ekle</button>
 </form>
 
-<h2>🌍 Topluluk Setupları</h2>
+<h2>🌍 Tüm Setuplar</h2>
 <div class="setups" id="all"></div>
 
 <h2>👤 Benim Setuplarım</h2>
 <div class="setups" id="mine"></div>
 
 <footer>
-  Gizlilik Politikası • Çerezler <br>
-  Raax Setup tarafından oluşturuldu
+  Gizlilik Politikası • Çerezler
 </footer>
 
 <script>
-/* ================== KALICI VERİ ================== */
-const KEY="raax_setup_data";
+/* ========== KALICI VERİ ========== */
+const KEY="setup_puanlama_data";
 let setups=JSON.parse(localStorage.getItem(KEY))||[];
 
 const all=document.getElementById("all");
 const mine=document.getElementById("mine");
 
-/* ================== EKLEME ================== */
+/* ========== EKLE ========== */
 form.onsubmit=e=>{
   e.preventDefault();
 
@@ -171,12 +180,12 @@ form.onsubmit=e=>{
   r.readAsDataURL(f);
 };
 
-/* ================== KAYDET ================== */
+/* ========== KAYDET ========== */
 function save(){
   localStorage.setItem(KEY,JSON.stringify(setups));
 }
 
-/* ================== RENDER ================== */
+/* ========== GÖSTER ========== */
 function render(){
   all.innerHTML="";
   mine.innerHTML="";
@@ -187,7 +196,7 @@ function render(){
   });
 }
 
-/* ================== CARD ================== */
+/* ========== KART ========== */
 function card(s,isMine){
   const c=document.createElement("div");
   c.className="card";
@@ -224,6 +233,4 @@ render();
 
 </body>
 </html>
-
-
 
