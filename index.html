@@ -3,72 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <title>Setup Puanlama</title>
+
 <style>
+/* ANİMASYONLU ARKA PLAN */
 body{
-  font-family: Arial, sans-serif;
-  background:#0f172a;
-  color:white;
   margin:0;
   padding:20px;
+  font-family:Arial, sans-serif;
+  color:white;
+  background:linear-gradient(270deg,#020617,#020617,#0f172a);
+  background-size:400% 400%;
+  animation:bg 10s ease infinite;
 }
-h1{text-align:center}
+@keyframes bg{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+h1,h2{text-align:center}
+
+/* FORM */
 form{
   max-width:500px;
   margin:20px auto;
-  background:#1e293b;
+  background:#020617cc;
   padding:20px;
-  border-radius:10px;
+  border-radius:14px;
+  backdrop-filter:blur(8px);
 }
 input,textarea,button{
   width:100%;
-  margin:8px 0;
   padding:10px;
+  margin:8px 0;
   border:none;
-  border-radius:6px;
+  border-radius:8px;
 }
+
+/* BUTON ANİMASYON */
 button{
   background:#22c55e;
+  color:black;
+  font-weight:bold;
   cursor:pointer;
+  transition:.3s;
 }
+button:hover{
+  transform:scale(1.05);
+  background:#4ade80;
+}
+button:active{
+  transform:scale(.95);
+}
+
+/* SETUP KARTLARI */
 .setups{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:15px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
 }
 .card{
-  background:#1e293b;
-  border-radius:10px;
+  background:#020617cc;
+  border-radius:14px;
   overflow:hidden;
+  animation:fade .5s ease;
+}
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:none}
 }
 .card img{
   width:100%;
   height:180px;
   object-fit:cover;
 }
-.card .content{
-  padding:10px;
-}
+.content{padding:12px}
+
+/* YILDIZ */
 .stars span{
+  font-size:22px;
   cursor:pointer;
-  font-size:20px;
+  transition:.2s;
 }
+.stars span:hover{transform:scale(1.2)}
 .active{color:gold}
+
+/* FOOTER */
 footer{
   text-align:center;
   font-size:12px;
   opacity:.6;
-  margin-top:40px;
+  margin-top:50px;
 }
 </style>
 </head>
+
 <body>
 
 <h1>🖥️ Setup Puanlama</h1>
 
-<form id="setupForm">
+<form id="form">
   <input id="name" placeholder="İsmin">
   <textarea id="desc" placeholder="Açıklama"></textarea>
-  <input id="photo" type="file" accept="image/*">
+
+  <!-- FOTOĞRAF YÜKLEME + KAMERA -->
+  <input type="file" id="photo" accept="image/*" capture="environment">
+
   <button>Setup Ekle</button>
 </form>
 
@@ -79,24 +119,25 @@ footer{
 <div class="setups" id="mine"></div>
 
 <footer>
-  Gizlilik Politikası • Çerezler • İletişim
+  Gizlilik Politikası • Çerezler <br>
+  Raax Setup tarafından oluşturuldu
 </footer>
 
 <script>
-const STORAGE="setup_data";
-let setups=JSON.parse(localStorage.getItem(STORAGE))||[];
+const KEY="setup_data";
+let setups=JSON.parse(localStorage.getItem(KEY))||[];
 
 const all=document.getElementById("all");
 const mine=document.getElementById("mine");
 
-document.getElementById("setupForm").onsubmit=e=>{
+form.onsubmit=e=>{
   e.preventDefault();
 
-  const name=document.getElementById("name").value;
-  const desc=document.getElementById("desc").value;
-  const file=document.getElementById("photo").files[0];
+  const n=name.value.trim();
+  const d=desc.value.trim();
+  const f=photo.files[0];
 
-  if(!name||!desc||!file){
+  if(!n||!d||!f){
     alert("Tüm alanları doldur");
     return;
   }
@@ -105,19 +146,20 @@ document.getElementById("setupForm").onsubmit=e=>{
   r.onload=()=>{
     setups.unshift({
       id:Date.now(),
-      name,
-      desc,
+      name:n,
+      desc:d,
       img:r.result,
       ratings:[]
     });
     save();
     render();
+    form.reset();
   };
-  r.readAsDataURL(file);
+  r.readAsDataURL(f);
 };
 
 function save(){
-  localStorage.setItem(STORAGE,JSON.stringify(setups));
+  localStorage.setItem(KEY,JSON.stringify(setups));
 }
 
 function render(){
@@ -131,9 +173,10 @@ function render(){
 }
 
 function card(s,isMine){
-  const d=document.createElement("div");
-  d.className="card";
-  d.innerHTML=`
+  const c=document.createElement("div");
+  c.className="card";
+
+  c.innerHTML=`
     <img src="${s.img}">
     <div class="content">
       <b>${s.name}${isMine?" (Benim Setup)":""}</b>
@@ -147,7 +190,7 @@ function card(s,isMine){
     </div>
   `;
 
-  d.querySelectorAll(".stars span").forEach(st=>{
+  c.querySelectorAll(".stars span").forEach(st=>{
     st.onclick=()=>{
       s.ratings.push(+st.dataset);
       save();
@@ -155,7 +198,7 @@ function card(s,isMine){
     };
   });
 
-  return d;
+  return c;
 }
 
 render();
@@ -163,5 +206,6 @@ render();
 
 </body>
 </html>
+
 
 
