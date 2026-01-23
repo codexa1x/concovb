@@ -8,21 +8,24 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
 body{
   background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:#fff;min-height:100vh
+  color:#fff;min-height:100vh;
 }
-header{text-align:center;padding:40px}
+
+/* ===== HEADER ===== */
+header{text-align:center;padding:30px}
 header h1{
   font-size:3rem;
   background:linear-gradient(90deg,#00f5ff,#7cffcb);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 header p{opacity:.8}
 
+/* ===== PANEL ===== */
 .panel{
   max-width:520px;margin:20px auto;
   background:rgba(255,255,255,.1);
   padding:20px;border-radius:20px;
-  backdrop-filter:blur(15px)
 }
 .panel input,.panel textarea{
   width:100%;padding:10px;margin-bottom:10px;
@@ -30,73 +33,62 @@ header p{opacity:.8}
   background:rgba(255,255,255,.15);color:#fff
 }
 .panel textarea{resize:none;height:70px}
-
 .panel button{
   width:100%;padding:12px;border:none;
   border-radius:12px;background:#00f5ff;
   color:#000;font-weight:bold;cursor:pointer
 }
-
 .limit{text-align:center;font-size:.85rem;opacity:.8}
 
-.setups{
+/* ===== SECTIONS ===== */
+.section-title{
+  padding:10px 30px;
+  font-weight:bold;
+  opacity:.9;
+}
+
+/* ===== GRID ===== */
+.grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:25px;padding:30px
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;padding:20px 30px;
 }
+
 .card{
-  background:rgba(255,255,255,.1);
-  border-radius:20px;overflow:hidden;
-  animation:pop .5s ease
+  background:rgba(255,255,255,.12);
+  border-radius:18px;overflow:hidden;
+  animation:pop .4s ease;
 }
-.card img{width:100%;height:220px;object-fit:cover}
-.content{padding:15px}
+.card img{width:100%;height:200px;object-fit:cover}
+.content{padding:12px}
 .user{font-weight:bold}
-.desc{font-size:.9rem;opacity:.85;margin:6px 0}
+.desc{font-size:.85rem;opacity:.8;margin:5px 0}
 
-.stars span{font-size:22px;cursor:pointer;color:#555}
+.stars span{
+  font-size:20px;cursor:pointer;color:#555
+}
 .stars span.active{color:gold}
-.info{font-size:.85rem;margin-top:5px}
 
-.comment input{
-  width:100%;margin-top:8px;
-  padding:8px;border-radius:10px;border:none;
-  background:rgba(255,255,255,.15);color:#fff
-}
-.comments{font-size:.8rem;margin-top:5px;max-height:70px;overflow:auto}
+.info{font-size:.8rem;margin-top:5px}
 
-/* ===== CAMERA ===== */
-#cameraBox{display:none;text-align:center}
-video,canvas{
-  width:100%;border-radius:15px;margin-bottom:10px
+/* ===== PAGINATION ===== */
+.pagination{
+  text-align:center;padding:15px
 }
-
-/* ===== CHAT SUPPORT ===== */
-#chat{
-  position:fixed;bottom:20px;right:20px;
-  width:260px;background:#111;
-  border-radius:15px;overflow:hidden;
-  box-shadow:0 10px 30px rgba(0,0,0,.6)
+.pagination span{
+  display:inline-block;
+  margin:0 5px;
+  padding:6px 12px;
+  border-radius:8px;
+  background:rgba(255,255,255,.15);
+  cursor:pointer;
 }
-#chat header{
-  padding:10px;font-size:.9rem;
-  background:#00f5ff;color:#000;text-align:center
-}
-#chat .msgs{
-  height:180px;padding:10px;
-  overflow:auto;font-size:.8rem
-}
-#chat .msgs div{margin-bottom:6px}
-#chat input{
-  width:100%;border:none;padding:8px;
-  outline:none;font-size:.8rem
+.pagination span.active{
+  background:#00f5ff;
+  color:#000;
 }
 
-footer{
-  text-align:center;font-size:.75rem;
-  opacity:.6;padding:15px
-}
-
+/* ===== ANIM ===== */
 @keyframes pop{
   from{opacity:0;transform:scale(.9)}
   to{opacity:1;transform:scale(1)}
@@ -108,45 +100,31 @@ footer{
 
 <header>
   <h1>SetupRate</h1>
-  <p>Setup'ını paylaş • Puan al • Geliştir</p>
+  <p>Setup paylaş • Puan al • Geliştir</p>
 </header>
 
+<!-- ===== UPLOAD PANEL ===== -->
 <div class="panel">
   <input id="username" placeholder="Kullanıcı adı">
   <textarea id="desc" placeholder="Setup açıklaması"></textarea>
-
-  <button onclick="openCamera()">📷 Kamerayla Çek</button>
   <input type="file" id="file" accept="image/*">
-
   <button onclick="addSetup()">Setup'ı Paylaş</button>
   <div class="limit" id="limitText"></div>
-
-  <div id="cameraBox">
-    <video id="video" autoplay></video>
-    <button onclick="takePhoto()">Fotoğraf Çek</button>
-    <canvas id="canvas"></canvas>
-  </div>
 </div>
 
-<section class="setups" id="setups"></section>
+<!-- ===== MY SETUPS ===== -->
+<div class="section-title">👤 Benim Setuplarım</div>
+<div class="grid" id="mySetups"></div>
 
-<footer>
-  Gizlilik Politikası: İçerikler tarayıcıda saklanır. Kişisel veriler
-  üçüncü kişilerle paylaşılmaz. Demo amaçlı bir projedir.
-</footer>
+<!-- ===== ALL SETUPS ===== -->
+<div class="section-title">🌍 Tüm Setuplar</div>
+<div class="grid" id="allSetups"></div>
 
-<!-- ===== CANLI DESTEK ===== -->
-<div id="chat">
-  <header>Canlı Destek</header>
-  <div class="msgs" id="msgs">
-    <div><b>Destek:</b> Merhaba! Setup için ne eklenebilir?</div>
-  </div>
-  <input id="chatInput" placeholder="Mesaj yaz...">
-</div>
+<!-- ===== PAGINATION ===== -->
+<div class="pagination" id="pagination"></div>
 
 <script>
 /* ===== LIMIT ===== */
-const limitText=document.getElementById("limitText");
 const today=()=>new Date().toLocaleDateString();
 const getCount=()=>JSON.parse(localStorage.getItem("limit")||"{}")[today()]||0;
 const setCount=()=>{
@@ -154,92 +132,120 @@ const setCount=()=>{
   d[today()]=getCount()+1;
   localStorage.setItem("limit",JSON.stringify(d));
 };
+const limitText=document.getElementById("limitText");
 const updateLimit=()=>limitText.textContent=`Bugün ${3-getCount()} setup hakkın kaldı`;
 updateLimit();
 
-/* ===== CAMERA ===== */
-let cameraImage=null;
-async function openCamera(){
-  const box=document.getElementById("cameraBox");
-  box.style.display="block";
-  const stream=await navigator.mediaDevices.getUserMedia({video:true});
-  video.srcObject=stream;
-}
-function takePhoto(){
-  canvas.width=video.videoWidth;
-  canvas.height=video.videoHeight;
-  canvas.getContext("2d").drawImage(video,0,0);
-  cameraImage=canvas.toDataURL("image/png");
-  alert("Fotoğraf çekildi!");
-}
+/* ===== DATA ===== */
+let setupsData = JSON.parse(localStorage.getItem("setupsData")||"[]");
+const PER_PAGE = 5;
+let currentPage = 1;
 
 /* ===== ADD SETUP ===== */
 function addSetup(){
   if(getCount()>=3){alert("Günde max 3 setup!");return;}
+
   const u=username.value.trim();
   const d=desc.value.trim();
   const f=file.files[0];
-  if(!u||!d||(!f&&!cameraImage))return;
+  if(!u||!d||!f)return;
 
   const reader=new FileReader();
   reader.onload=()=>{
-    createCard(u,d,reader.result);
+    setupsData.unshift({
+      user:u,
+      desc:d,
+      img:reader.result,
+      rates:[]
+    });
+    localStorage.setItem("setupsData",JSON.stringify(setupsData));
     setCount();updateLimit();
+    render();
   };
-  if(f) reader.readAsDataURL(f);
-  else createCard(u,d,cameraImage);
+  reader.readAsDataURL(f);
 }
 
-function createCard(u,d,img){
+/* ===== RENDER ===== */
+function render(){
+  renderMySetups();
+  renderAllSetups();
+  renderPagination();
+}
+
+/* ===== MY SETUPS ===== */
+function renderMySetups(){
+  mySetups.innerHTML="";
+  const myName=username.value.trim();
+  setupsData.filter(s=>s.user===myName).forEach(s=>{
+    mySetups.appendChild(createCard(s,false));
+  });
+}
+
+/* ===== ALL SETUPS + PAGINATION ===== */
+function renderAllSetups(){
+  allSetups.innerHTML="";
+  const start=(currentPage-1)*PER_PAGE;
+  const pageData=setupsData.slice(start,start+PER_PAGE);
+  pageData.forEach(s=>{
+    allSetups.appendChild(createCard(s,true));
+  });
+}
+
+/* ===== PAGINATION ===== */
+function renderPagination(){
+  pagination.innerHTML="";
+  const pages=Math.ceil(setupsData.length/PER_PAGE);
+  for(let i=1;i<=pages;i++){
+    const span=document.createElement("span");
+    span.textContent=i;
+    if(i===currentPage) span.classList.add("active");
+    span.onclick=()=>{currentPage=i;render();}
+    pagination.appendChild(span);
+  }
+}
+
+/* ===== CARD ===== */
+function createCard(data,rateable){
   const card=document.createElement("div");
   card.className="card";
-  let rates=[];
+
   card.innerHTML=`
-    <img src="${img}">
+    <img src="${data.img}">
     <div class="content">
-      <div class="user">@${u}</div>
-      <div class="desc">${d}</div>
+      <div class="user">@${data.user}</div>
+      <div class="desc">${data.desc}</div>
       <div class="stars">
         ${[1,2,3,4,5].map(n=>`<span data="${n}">★</span>`).join("")}
       </div>
-      <div class="info">Henüz puan yok</div>
-      <div class="comment">
-        <input placeholder="Yorum yaz">
-        <div class="comments"></div>
-      </div>
-    </div>`;
+      <div class="info"></div>
+    </div>
+  `;
+
   const stars=card.querySelectorAll(".stars span");
   const info=card.querySelector(".info");
-  stars.forEach(s=>s.onclick=()=>{
-    const v=+s.dataset;
-    rates.push(v);
-    stars.forEach(x=>x.classList.toggle("active",+x.dataset<=v));
-    info.textContent=`⭐ Ortalama ${(rates.reduce((a,b)=>a+b,0)/rates.length).toFixed(1)}`;
-  });
-  setups.prepend(card);
+
+  const avg = data.rates.length
+    ? (data.rates.reduce((a,b)=>a+b,0)/data.rates.length).toFixed(1)
+    : null;
+
+  info.textContent = avg ? `⭐ Ortalama: ${avg} (${data.rates.length})` : "Henüz puan yok";
+
+  if(rateable){
+    stars.forEach(s=>{
+      s.onclick=()=>{
+        const v=+s.dataset;
+        data.rates.push(v);
+        localStorage.setItem("setupsData",JSON.stringify(setupsData));
+        render();
+      }
+    });
+  }
+
+  return card;
 }
 
-/* ===== CHATBOT ===== */
-const msgs=document.getElementById("msgs");
-chatInput.onkeypress=e=>{
-  if(e.key==="Enter"&&chatInput.value){
-    const text=chatInput.value.toLowerCase();
-    msgs.innerHTML+=`<div><b>Sen:</b> ${chatInput.value}</div>`;
-    let reply="Bunu Anlayamadım Lütfen Düzgün Şekilde Yazınız";
-
-    if(text.includes("setup")||text.includes("ekle")){
-      reply="RGB ışık, masa üstü düzeni, mousepad, monitör kolu ve kablo düzenleme ekleyebilirsin.";
-    }else if(text.includes("gaming")){
-      reply="144Hz monitör, mekanik klavye ve kaliteli kulaklık gaming setup için çok iyi olur.";
-    }else if(text.includes("ders")){
-      reply="Minimal masa, göz yormayan ışık ve laptop standı ders için ideal.";
-    }
-
-    msgs.innerHTML+=`<div><b>Destek:</b> ${reply}</div>`;
-    msgs.scrollTop=msgs.scrollHeight;
-    chatInput.value="";
-  }
-};
+/* ===== INIT ===== */
+render();
 </script>
 
 </body>
