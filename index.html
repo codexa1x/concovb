@@ -5,13 +5,12 @@
 <title>Setup Puanlama Sitesi</title>
 
 <style>
-/* ========== MAVİ ANİMASYONLU ARKA PLAN ========== */
 body{
   margin:0;
   padding:20px;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   color:white;
-  background:linear-gradient(270deg,#001f3f,#0074D9,#7FDBFF);
+  background:linear-gradient(270deg,#0a1f44,#0d47a1,#42a5f5);
   background-size:600% 600%;
   animation:bg 12s ease infinite;
 }
@@ -20,101 +19,130 @@ body{
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
 }
-
 h1,h2{text-align:center}
 
-/* ========== FORM ========== */
 form{
   max-width:520px;
-  margin:25px auto;
-  background:rgba(0,0,0,.35);
+  margin:20px auto;
+  background:rgba(0,0,0,.4);
   padding:20px;
-  border-radius:0;
-  backdrop-filter:blur(10px);
 }
 
-input,textarea{
+.field{position:relative;margin:15px 0}
+.field input,.field textarea{
   width:100%;
-  padding:12px;
-  margin:8px 0;
-  border:none;
-  border-radius:0;
-  font-size:14px;
+  padding:14px;
+  background:transparent;
+  border:2px solid #90caf9;
+  color:white;
 }
-
-/* ========== DOSYA SEÇ (ANİMASYONLU) ========== */
-input[type=file]{
-  background:#0f172a;
-  color:#7dd3fc;
-  cursor:pointer;
+.field label{
+  position:absolute;
+  left:10px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#bbdefb;
   transition:.3s;
+  background:#0a1f44;
+  padding:0 6px;
 }
-input[type=file]:hover{
-  background:#1e3a8a;
-  box-shadow:0 0 15px #38bdf8;
+.field input:focus+label,
+.field textarea:focus+label,
+.field input:not(:placeholder-shown)+label,
+.field textarea:not(:placeholder-shown)+label{
+  top:-8px;
+  font-size:11px;
 }
 
-/* ========== BUTON ========== */
+input[type=file]{
+  width:100%;
+  padding:10px;
+  background:#0d47a1;
+  color:white;
+  cursor:pointer;
+}
+
 button{
   width:100%;
   padding:12px;
-  border:none;
-  border-radius:0;
-  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  background:#2196f3;
   color:white;
-  font-weight:bold;
+  border:none;
   cursor:pointer;
   transition:.3s;
 }
-button:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 20px #38bdf8;
-}
-button:active{transform:scale(.95)}
+button:hover{transform:scale(1.05)}
 
-/* ========== SETUP GRID ========== */
 .setups{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:18px;
+  gap:15px;
 }
 
-/* ========== KART ========== */
 .card{
-  background:rgba(0,0,0,.4);
-  border-radius:0;
-  overflow:hidden;
-  animation:card .5s ease;
+  background:rgba(0,0,0,.5);
+  animation:fade .5s ease;
 }
-@keyframes card{
+@keyframes fade{
   from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:none}
+  to{opacity:1}
 }
 .card img{
   width:100%;
   height:180px;
   object-fit:cover;
 }
-.content{padding:14px}
+.content{padding:12px}
 
-/* ========== YILDIZ ========== */
 .stars span{
-  font-size:22px;
   cursor:pointer;
-  transition:.2s;
-}
-.stars span:hover{
-  transform:scale(1.3);
-  color:#fde047;
+  font-size:22px;
 }
 .active{color:gold}
 
-/* ========== FOOTER ========== */
+.delete{
+  background:#e53935;
+  margin-top:8px;
+}
+
+/* CANLI DESTEK */
+#support{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:260px;
+  background:#0d47a1;
+  display:none;
+}
+#support header{
+  padding:8px;
+  background:#1565c0;
+  cursor:pointer;
+}
+#messages{
+  height:150px;
+  overflow:auto;
+  padding:6px;
+  font-size:13px;
+}
+#support input{
+  width:100%;
+  padding:6px;
+  border:none;
+}
+#openSupport{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#2196f3;
+  padding:10px;
+  cursor:pointer;
+}
 footer{
   text-align:center;
+  margin-top:40px;
   font-size:12px;
   opacity:.7;
-  margin-top:50px;
 }
 </style>
 </head>
@@ -124,10 +152,16 @@ footer{
 <h1>⭐ Setup Puanlama Sitesi</h1>
 
 <form id="form">
-  <input id="name" placeholder="İsmin">
-  <textarea id="desc" placeholder="Setup açıklaması"></textarea>
+  <div class="field">
+    <input id="name" placeholder=" ">
+    <label>İsmin</label>
+  </div>
+  <div class="field">
+    <textarea id="desc" placeholder=" "></textarea>
+    <label>Setup Açıklaması</label>
+  </div>
 
-  <!-- FOTOĞRAF SEÇ / KAMERA -->
+  <!-- FOTO ÇEKME -->
   <input type="file" id="photo" accept="image/*" capture="environment">
 
   <button>Setup Ekle</button>
@@ -139,98 +173,107 @@ footer{
 <h2>👤 Benim Setuplarım</h2>
 <div class="setups" id="mine"></div>
 
-<footer>
-  Gizlilik Politikası • Çerezler
-</footer>
+<footer>Gizlilik Politikası • Çerezler</footer>
+
+<!-- CANLI DESTEK -->
+<div id="openSupport">💬</div>
+<div id="support">
+  <header onclick="toggleSupport()">Canlı Destek ✖</header>
+  <div id="messages"></div>
+  <input id="chatInput" placeholder="Setup sorusu sor...">
+</div>
 
 <script>
-/* ========== KALICI VERİ ========== */
-const KEY="setup_puanlama_data";
+const KEY="setup_data";
 let setups=JSON.parse(localStorage.getItem(KEY))||[];
 
 const all=document.getElementById("all");
 const mine=document.getElementById("mine");
 
-/* ========== EKLE ========== */
+/* EKLE */
 form.onsubmit=e=>{
   e.preventDefault();
-
-  const n=name.value.trim();
-  const d=desc.value.trim();
-  const f=photo.files[0];
-
-  if(!n||!d||!f){
-    alert("Tüm alanları doldur");
-    return;
-  }
-
+  const n=name.value,d=desc.value,f=photo.files[0];
+  if(!n||!d||!f)return alert("Boş alan var");
   const r=new FileReader();
   r.onload=()=>{
-    setups.unshift({
-      id:Date.now(),
-      name:n,
-      desc:d,
-      img:r.result,
-      ratings:[]
-    });
-    save();
-    render();
-    form.reset();
+    setups.unshift({id:Date.now(),name:n,desc:d,img:r.result,ratings:[]});
+    save();render();form.reset();
   };
   r.readAsDataURL(f);
 };
 
-/* ========== KAYDET ========== */
+/* KAYDET */
 function save(){
   localStorage.setItem(KEY,JSON.stringify(setups));
 }
 
-/* ========== GÖSTER ========== */
+/* GÖSTER */
 function render(){
-  all.innerHTML="";
-  mine.innerHTML="";
-
+  all.innerHTML="";mine.innerHTML="";
   setups.forEach(s=>{
     all.appendChild(card(s,false));
     mine.appendChild(card(s,true));
   });
 }
 
-/* ========== KART ========== */
+/* CARD */
 function card(s,isMine){
   const c=document.createElement("div");
   c.className="card";
-
   c.innerHTML=`
     <img src="${s.img}">
     <div class="content">
-      <b>${s.name}${isMine?" (Benim Setup)":""}</b>
+      <b>${s.name}${isMine?" (Benim)":""}</b>
       <p>${s.desc}</p>
       <div class="stars">
         ${[1,2,3,4,5].map(n=>`<span data="${n}">★</span>`).join("")}
       </div>
-      <small>${
-        s.ratings.length
-        ? "⭐ Ortalama: "+(s.ratings.reduce((a,b)=>a+b,0)/s.ratings.length).toFixed(1)
-        : "Henüz puan yok"
-      }</small>
-    </div>
-  `;
-
+      <small>${s.ratings.length?
+        "Ortalama: "+(s.ratings.reduce((a,b)=>a+b,0)/s.ratings.length).toFixed(1)
+        :"Henüz puan yok"}</small>
+      ${isMine?'<button class="delete">Sil</button>':""}
+    </div>`;
   c.querySelectorAll(".stars span").forEach(st=>{
-    st.onclick=()=>{
-      s.ratings.push(+st.dataset);
-      save();
-      render();
-    };
+    st.onclick=()=>{s.ratings.push(+st.dataset);save();render();}
   });
-
+  if(isMine){
+    c.querySelector(".delete").onclick=()=>{
+      setups=setups.filter(x=>x.id!==s.id);
+      save();render();
+    }
+  }
   return c;
 }
+
+/* CANLI DESTEK */
+function toggleSupport(){
+  support.style.display="none";
+}
+openSupport.onclick=()=>{
+  support.style.display="block";
+  openSupport.style.display="none";
+}
+support.onmouseleave=()=>{
+  openSupport.style.display="block";
+}
+chatInput.onkeydown=e=>{
+  if(e.key==="Enter"){
+    const t=chatInput.value.toLowerCase();
+    messages.innerHTML+=`<div>👤 ${chatInput.value}</div>`;
+    if(t.includes("setup")||t.includes("ekle"))
+      messages.innerHTML+=`<div>🤖 RGB ışık, mousepad ve monitör kolu ekleyebilirsin.</div>`;
+    else
+      messages.innerHTML+=`<div>🤖 Bunu anlayamadım, lütfen düzgün yazınız.</div>`;
+    chatInput.value="";
+    messages.scrollTop=999;
+  }
+};
 
 render();
 </script>
 
 </body>
 </html>
+
 
