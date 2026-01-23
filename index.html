@@ -2,230 +2,302 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Setup Puanlama Sitesi</title>
+<title>SetupRate PRO</title>
 
 <style>
+:root{
+  --c1:#00f5ff;
+  --c2:#7cffcb;
+  --bg:#0f2027;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
+
 body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:linear-gradient(270deg,#0a1f44,#0d47a1,#2196f3);
-  background-size:600% 600%;
-  animation:bg 14s ease infinite;
-  color:white;
-  padding-top:70px;
-}
-@keyframes bg{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
+  min-height:100vh;
 }
 
-/* ===== ÜST MESAJ ===== */
-#topMsg{
-  position:fixed;
-  top:-60px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#22c55e;
-  padding:14px 28px;
-  border-radius:0 0 20px 20px;
-  font-weight:bold;
-  transition:.6s;
-  z-index:999;
+/* HEADER */
+header{
+  text-align:center;
+  padding:40px;
+  animation:fadeDown 1s ease;
 }
-#topMsg.show{top:0}
+header h1{
+  font-size:3rem;
+  background:linear-gradient(90deg,var(--c1),var(--c2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
 
-/* ===== FORM ===== */
-form{
-  max-width:520px;
-  margin:0 auto 20px;
-  background:rgba(0,0,0,.45);
-  padding:22px;
-  border-radius:20px;
-  backdrop-filter:blur(10px);
-}
-.field{
-  margin:18px 0;
-}
-input,textarea{
-  width:100%;
-  padding:14px;
-  border-radius:14px;
-  border:2px solid #64b5f6;
-  background:rgba(255,255,255,.08);
-  color:white;
-  outline:none;
-}
-input:focus,textarea:focus{
-  box-shadow:0 0 16px #64b5f6;
-}
+/* BUTTONS */
 button{
-  width:100%;
-  padding:14px;
+  background:var(--c1);
+  color:#000;
   border:none;
-  border-radius:16px;
-  background:linear-gradient(135deg,#64b5f6,#1976d2);
-  color:white;
-  font-weight:bold;
+  padding:10px 14px;
+  border-radius:12px;
   cursor:pointer;
+  font-weight:bold;
   transition:.3s;
 }
-button:hover{
-  transform:scale(1.08);
-  box-shadow:0 0 24px #64b5f6;
-}
+button:hover{transform:scale(1.05);background:var(--c2)}
 
-/* ===== KARTLAR ===== */
+/* FORM */
+.panel{
+  max-width:520px;
+  margin:20px auto;
+  background:rgba(255,255,255,.1);
+  padding:20px;
+  border-radius:20px;
+  backdrop-filter:blur(15px);
+  animation:pop .6s ease;
+}
+.panel input,.panel textarea{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border:none;
+  border-radius:10px;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+}
+.panel textarea{resize:none;height:70px}
+
+/* GRID */
 .setups{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:16px;
-  padding:10px;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:25px;
+  padding:30px;
 }
+
+/* CARD */
 .card{
-  background:rgba(0,0,0,.45);
+  background:rgba(255,255,255,.12);
   border-radius:20px;
   overflow:hidden;
-  animation:fade .5s;
-}
-@keyframes fade{
-  from{opacity:0;transform:scale(.9)}
-  to{opacity:1}
-}
-.card img{width:100%}
-.card .info{padding:12px}
-
-/* ===== PUAN ===== */
-.stars span{
   cursor:pointer;
-  font-size:18px;
+  transition:.3s;
+  animation:fadeUp .6s ease;
 }
-.comment{
-  width:100%;
-  margin-top:6px;
+.card:hover{transform:translateY(-6px)}
+.card img{width:100%;height:220px;object-fit:cover}
+.content{padding:15px}
+.badge{
+  font-size:.7rem;
+  background:gold;
+  color:#000;
+  padding:3px 6px;
+  border-radius:8px;
+}
+
+/* STARS */
+.stars span{
+  font-size:20px;
+  cursor:pointer;
+  color:#555;
+}
+.stars span.active{color:gold}
+
+/* PAGINATION */
+#pagination{text-align:center;margin-bottom:30px}
+#pagination button{margin:0 5px}
+
+/* MODAL */
+#modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.modal-box{
+  background:#111;
+  width:90%;
+  max-width:500px;
+  border-radius:20px;
+  padding:20px;
+  animation:pop .4s ease;
+}
+
+/* CHAT */
+#chat{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:280px;
+  background:#0b0f14;
+  border-radius:16px;
+  overflow:hidden;
+}
+#chat header{
+  background:var(--c1);
+  color:#000;
   padding:8px;
-  border-radius:10px;
+  text-align:center;
+}
+#msgs{
+  height:160px;
+  padding:8px;
+  font-size:.8rem;
+  overflow:auto;
+}
+#chat input{
+  width:100%;
   border:none;
+  padding:8px;
+  outline:none;
 }
-.comments p{
-  font-size:13px;
-  border-bottom:1px solid rgba(255,255,255,.2);
-  padding:4px 0;
-}
+
+@keyframes fadeDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1}}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
 </style>
 </head>
 
 <body>
 
-<div id="topMsg"></div>
+<header>
+  <h1>SetupRate PRO</h1>
+  <p>Gerçek setup • Gerçek puan</p>
+</header>
 
-<form>
-  <input id="name" placeholder="İsmin">
-  <textarea id="desc" placeholder="Setup Açıklaması"></textarea>
-  <input type="file" id="photo" accept="image/*">
-  <button type="button" onclick="addSetup()">Setup Paylaş</button>
-</form>
+<div class="panel">
+  <input id="username" placeholder="Kullanıcı adı">
+  <textarea id="desc" placeholder="Setup açıklaması"></textarea>
+  <input type="file" id="file" accept="image/*">
+  <button onclick="addSetup()">Setup Paylaş</button>
+  <div id="limit"></div>
+</div>
 
-<div class="setups" id="setups"></div>
+<h2 style="text-align:center">Topluluk</h2>
+<section class="setups" id="setups"></section>
+<div id="pagination"></div>
+
+<h2 style="text-align:center">Benim Setuplarım</h2>
+<section class="setups" id="mySetups"></section>
+
+<!-- MODAL -->
+<div id="modal" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div id="modalContent"></div>
+    <button onclick="closeModal()">Kapat</button>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div id="chat">
+  <header>Canlı Destek</header>
+  <div id="msgs">
+    <div><b>Bot:</b> Setup için ne geliştirmek istiyorsun?</div>
+  </div>
+  <input id="chatInput" placeholder="Sorunu yaz...">
+</div>
 
 <script>
-const setupsDiv=document.getElementById("setups");
-const topMsg=document.getElementById("topMsg");
-
-let setups=JSON.parse(localStorage.getItem("setups")||"[]");
-let today=new Date().toDateString();
-let daily=JSON.parse(localStorage.getItem("daily")||"{}");
-
-if(daily.date!==today){
-  daily={date:today,count:0};
-}
-
-function showMsg(text,color="#22c55e"){
-  topMsg.textContent=text;
-  topMsg.style.background=color;
-  topMsg.classList.add("show");
-  setTimeout(()=>topMsg.classList.remove("show"),2500);
-}
+let all=[], mine=[], page=1;
+const per=5;
 
 function addSetup(){
-  const name=nameInput.value.trim();
-  const desc=descInput.value.trim();
-  const file=photo.files[0];
-
-  if(!name||!desc||!file){
-    showMsg("❗ Boş alan bırakmayın","#ef4444");
-    return;
-  }
-  if(daily.count>=2){
-    showMsg("⛔ Günlük maksimum 2 setup paylaşabilirsin","#ef4444");
-    return;
-  }
+  const u=username.value.trim();
+  const d=desc.value.trim();
+  const f=file.files[0];
+  if(!u||!d||!f)return;
 
   const r=new FileReader();
   r.onload=()=>{
-    setups.unshift({
-      name,desc,img:r.result,
-      ratings:[],comments:[]
-    });
-    daily.count++;
-    localStorage.setItem("setups",JSON.stringify(setups));
-    localStorage.setItem("daily",JSON.stringify(daily));
+    const s={u,d,img:r.result,ratings:[]};
+    all.unshift(s);
+    mine.unshift(s);
     render();
-    showMsg("✅ Setup paylaşıldı");
-    document.querySelector("form").reset();
   };
-  r.readAsDataURL(file);
-}
-
-function rate(i,val){
-  setups[i].ratings.push(val);
-  save();
-}
-function comment(i,input){
-  if(!input.value.trim()){
-    alert("Yorum boş olamaz");
-    return;
-  }
-  setups[i].comments.push(input.value);
-  input.value="";
-  save();
-}
-function avg(arr){
-  return arr.length
-    ? (arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1)
-    : "0";
-}
-function save(){
-  localStorage.setItem("setups",JSON.stringify(setups));
-  render();
+  r.readAsDataURL(f);
 }
 
 function render(){
-  setupsDiv.innerHTML="";
-  setups.forEach((s,i)=>{
-    setupsDiv.innerHTML+=`
-    <div class="card">
-      <img src="${s.img}">
-      <div class="info">
-        <b>${s.name}</b>
-        <p>${s.desc}</p>
-        <p>⭐ Ortalama: ${avg(s.ratings)}</p>
+  renderPage();
+  renderMine();
+  renderPagination();
+}
 
-        <div class="stars">
-          ${[1,2,3,4,5].map(n=>`<span onclick="rate(${i},${n})">⭐</span>`).join("")}
-        </div>
-
-        <input class="comment" placeholder="Yorum yaz"
-          onkeydown="if(event.key==='Enter')comment(${i},this)">
-        <div class="comments">
-          ${s.comments.map(c=>`<p>${c}</p>`).join("")}
-        </div>
-      </div>
-    </div>`;
+function renderPage(){
+  setups.innerHTML="";
+  all.slice((page-1)*per,page*per).forEach(s=>{
+    setups.appendChild(card(s,false));
   });
 }
 
-render();
+function renderMine(){
+  mySetups.innerHTML="";
+  mine.forEach(s=>{
+    mySetups.appendChild(card(s,true));
+  });
+}
+
+function card(s,isMine){
+  const c=document.createElement("div");
+  c.className="card";
+  c.innerHTML=`
+    <img src="${s.img}">
+    <div class="content">
+      <b>@${s.u}</b> ${isMine?'<span class="badge">Benim</span>':''}
+      <p style="font-size:.85rem">${s.d}</p>
+      <div class="stars">${[1,2,3,4,5].map(n=>`<span data=${n}>★</span>`).join("")}</div>
+    </div>`;
+  c.onclick=()=>openModal(s);
+  return c;
+}
+
+function renderPagination(){
+  pagination.innerHTML="";
+  for(let i=1;i<=Math.ceil(all.length/per);i++){
+    const b=document.createElement("button");
+    b.textContent=i;
+    b.onclick=()=>{page=i;renderPage();}
+    pagination.appendChild(b);
+  }
+}
+
+function openModal(s){
+  modal.style.display="flex";
+  modalContent.innerHTML=`
+    <img src="${s.img}" style="width:100%;border-radius:12px">
+    <p>${s.d}</p>
+    <p><b>Ortalama:</b> ${s.ratings.length?
+      (s.ratings.reduce((a,b)=>a+b,0)/s.ratings.length).toFixed(1)
+      :"Yok"}</p>
+    <div class="stars">
+      ${[1,2,3,4,5].map(n=>`<span data=${n}>★</span>`).join("")}
+    </div>`;
+  modalContent.querySelectorAll("span").forEach(st=>{
+    st.onclick=()=>{
+      s.ratings.push(+st.dataset);
+      render();
+      openModal(s);
+    };
+  });
+}
+
+function closeModal(){modal.style.display="none"}
+
+/* CHAT */
+chatInput.onkeypress=e=>{
+  if(e.key==="Enter"){
+    const t=chatInput.value.toLowerCase();
+    msgs.innerHTML+=`<div><b>Sen:</b> ${chatInput.value}</div>`;
+    let r="Bunu Anlayamadım, Lütfen Düzgün Şekilde Yazınız";
+    if(t.includes("ışık"))r="Işıklandırma için soft LED veya masa lambası ekleyebilirsin.";
+    if(t.includes("masa"))r="Masa üstünü sadeleştir, kabloları gizle.";
+    if(t.includes("ekipman"))r="Monitör kolu ve kaliteli mousepad fark yaratır.";
+    msgs.innerHTML+=`<div><b>Bot:</b> ${r}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+    chatInput.value="";
+  }
+};
 </script>
 
 </body>
