@@ -8,7 +8,6 @@
 :root{
   --c1:#00f5ff;
   --c2:#7cffcb;
-  --bg:#0f2027;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
@@ -23,7 +22,6 @@ body{
 header{
   text-align:center;
   padding:40px;
-  animation:fadeDown 1s ease;
 }
 header h1{
   font-size:3rem;
@@ -32,39 +30,22 @@ header h1{
   -webkit-text-fill-color:transparent;
 }
 
-/* BUTTONS */
-button{
-  background:var(--c1);
-  color:#000;
-  border:none;
-  padding:10px 14px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:bold;
-  transition:.3s;
-}
-button:hover{transform:scale(1.05);background:var(--c2)}
-
 /* FORM */
 .panel{
   max-width:520px;
   margin:20px auto;
   background:rgba(255,255,255,.1);
   padding:20px;
-  border-radius:20px;
   backdrop-filter:blur(15px);
-  animation:pop .6s ease;
 }
 .panel input,.panel textarea{
   width:100%;
   padding:10px;
   margin-bottom:10px;
   border:none;
-  border-radius:10px;
   background:rgba(255,255,255,.15);
   color:#fff;
 }
-.panel textarea{resize:none;height:70px}
 
 /* GRID */
 .setups{
@@ -77,85 +58,59 @@ button:hover{transform:scale(1.05);background:var(--c2)}
 /* CARD */
 .card{
   background:rgba(255,255,255,.12);
-  border-radius:20px;
   overflow:hidden;
-  cursor:pointer;
-  transition:.3s;
   animation:fadeUp .6s ease;
 }
-.card:hover{transform:translateY(-6px)}
-.card img{width:100%;height:220px;object-fit:cover}
+.card img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+}
 .content{padding:15px}
-.badge{
-  font-size:.7rem;
-  background:gold;
-  color:#000;
-  padding:3px 6px;
-  border-radius:8px;
-}
 
-/* STARS */
-.stars span{
-  font-size:20px;
-  cursor:pointer;
-  color:#555;
+/* YORUM ALANI */
+.comment-box{
+  margin-top:10px;
 }
-.stars span.active{color:gold}
-
-/* PAGINATION */
-#pagination{text-align:center;margin-bottom:30px}
-#pagination button{margin:0 5px}
-
-/* MODAL */
-#modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-.modal-box{
-  background:#111;
-  width:90%;
-  max-width:500px;
-  border-radius:20px;
-  padding:20px;
-  animation:pop .4s ease;
-}
-
-/* CHAT */
-#chat{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  width:280px;
+.comment-input{
+  width:100%;
+  padding:10px;
+  border:none;
+  outline:none;
   background:#0b0f14;
-  border-radius:16px;
-  overflow:hidden;
+  color:#fff;
+  border-radius:0;
+  animation:commentIn .4s ease;
 }
-#chat header{
+.comment-input:focus{
+  background:#111827;
+}
+
+.comments p{
+  font-size:.8rem;
+  border-bottom:1px solid rgba(255,255,255,.2);
+  padding:4px 0;
+}
+
+/* BUTTON */
+button{
   background:var(--c1);
   color:#000;
-  padding:8px;
-  text-align:center;
-}
-#msgs{
-  height:160px;
-  padding:8px;
-  font-size:.8rem;
-  overflow:auto;
-}
-#chat input{
-  width:100%;
   border:none;
-  padding:8px;
-  outline:none;
+  padding:8px 12px;
+  cursor:pointer;
+  font-weight:bold;
 }
 
-@keyframes fadeDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1}}
-@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+/* ANİMASYON */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1}
+}
+@keyframes commentIn{
+  from{opacity:0;transform:translateY(-5px)}
+  to{opacity:1}
+}
 </style>
 </head>
 
@@ -174,126 +129,70 @@ button:hover{transform:scale(1.05);background:var(--c2)}
   <div id="limit"></div>
 </div>
 
-<h2 style="text-align:center">Topluluk</h2>
 <section class="setups" id="setups"></section>
-<div id="pagination"></div>
-
-<h2 style="text-align:center">Benim Setuplarım</h2>
-<section class="setups" id="mySetups"></section>
-
-<!-- MODAL -->
-<div id="modal" onclick="closeModal()">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <div id="modalContent"></div>
-    <button onclick="closeModal()">Kapat</button>
-  </div>
-</div>
 
 <script>
-let all = JSON.parse(localStorage.getItem("allSetups")||"[]");
-let mine = JSON.parse(localStorage.getItem("mySetups")||"[]");
-let page=1, per=5;
+let setups = JSON.parse(localStorage.getItem("setups")||"[]");
 
-/* DAILY LIMIT */
+/* GÜNLÜK LIMIT */
 const today = new Date().toDateString();
-let daily = JSON.parse(localStorage.getItem("dailyLimit")||"{}");
-if(daily.date!==today){ daily={date:today,count:0}; }
+let daily = JSON.parse(localStorage.getItem("daily")||"{}");
+if(daily.date!==today) daily={date:today,count:0};
 
 function save(){
-  localStorage.setItem("allSetups",JSON.stringify(all));
-  localStorage.setItem("mySetups",JSON.stringify(mine));
-  localStorage.setItem("dailyLimit",JSON.stringify(daily));
+  localStorage.setItem("setups",JSON.stringify(setups));
+  localStorage.setItem("daily",JSON.stringify(daily));
 }
 
 function addSetup(){
+  if(daily.count>=2){
+    limit.innerText="Günlük maksimum 2 setup paylaşabilirsin";
+    return;
+  }
+
   const u=username.value.trim();
   const d=desc.value.trim();
   const f=file.files[0];
   if(!u||!d||!f)return;
 
-  if(daily.count>=2){
-    limit.innerText="❗ Günlük maksimum 2 setup paylaşabilirsin";
-    return;
-  }
-
   const r=new FileReader();
   r.onload=()=>{
-    const s={u,d,img:r.result,ratings:[],comments:[]};
-    all.unshift(s);
-    mine.unshift(s);
+    setups.unshift({u,d,img:r.result,comments:[]});
     daily.count++;
     save();
     render();
-    document.querySelector(".panel").reset?.();
-    limit.innerText="";
   };
   r.readAsDataURL(f);
 }
 
 function render(){
-  renderPage();
-  renderMine();
-  renderPagination();
-}
-
-function renderPage(){
   setups.innerHTML="";
-  all.slice((page-1)*per,page*per).forEach(s=>{
-    setups.appendChild(card(s,false));
+  setups.forEach((s,i)=>{
+    const div=document.createElement("div");
+    div.className="card";
+    div.innerHTML=`
+      <img src="${s.img}">
+      <div class="content">
+        <b>@${s.u}</b>
+        <p style="font-size:.85rem">${s.d}</p>
+
+        <div class="comment-box">
+          <input class="comment-input" placeholder="Yorum yaz..."
+            onkeydown="if(event.key==='Enter' && this.value.trim()){
+              setups[${i}].comments.push(this.value);
+              this.value='';
+              save();
+              render();
+            }">
+          <div class="comments">
+            ${s.comments.map(c=>`<p>${c}</p>`).join("")}
+          </div>
+        </div>
+      </div>
+    `;
+    setups.appendChild(div);
   });
 }
-
-function renderMine(){
-  mySetups.innerHTML="";
-  mine.forEach((s,i)=>{
-    mySetups.appendChild(card(s,true,i));
-  });
-}
-
-function card(s,isMine,index){
-  const c=document.createElement("div");
-  c.className="card";
-  c.innerHTML=`
-    <img src="${s.img}">
-    <div class="content">
-      <b>@${s.u}</b> ${isMine?'<span class="badge">Benim</span>':''}
-      <p style="font-size:.85rem">${s.d}</p>
-      <div class="stars">${[1,2,3,4,5].map(n=>`<span data=${n}>★</span>`).join("")}</div>
-      ${isMine?'<button onclick="del('+index+')">Sil</button>':''}
-    </div>`;
-  c.onclick=()=>openModal(s);
-  return c;
-}
-
-function del(i){
-  const s=mine[i];
-  mine.splice(i,1);
-  all=all.filter(x=>x!==s);
-  save();
-  render();
-}
-
-function renderPagination(){
-  pagination.innerHTML="";
-  for(let i=1;i<=Math.ceil(all.length/per);i++){
-    const b=document.createElement("button");
-    b.textContent=i;
-    b.onclick=()=>{page=i;renderPage();}
-    pagination.appendChild(b);
-  }
-}
-
-function openModal(s){
-  modal.style.display="flex";
-  modalContent.innerHTML=`
-    <img src="${s.img}" style="width:100%;border-radius:12px">
-    <p>${s.d}</p>
-    <p><b>Yorumlar:</b></p>
-    ${s.comments.map(c=>`<p style="font-size:.8rem">• ${c}</p>`).join("")}
-    <input placeholder="Yorum yaz" onkeydown="if(event.key==='Enter'){s.comments.push(this.value);save();openModal(s)}">
-  `;
-}
-function closeModal(){modal.style.display="none"}
 
 render();
 </script>
