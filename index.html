@@ -1,104 +1,97 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <title>SetupRate – Final Sürüm</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<title>SetupRate – FIXED FINAL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
-  <style>
-    * { box-sizing: border-box; font-family: Inter, Arial; }
-    body { margin: 0; background: linear-gradient(135deg,#0f0f14,#151528); color: #fff; }
-    header { padding: 20px; text-align: center; font-size: 26px; font-weight: 800; }
-    .container { padding: 20px; max-width: 1100px; margin: auto; }
-    .card {
-      background: #1e1e2e;
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.3);
-      animation: fade .5s ease;
-    }
-    @keyframes fade { from {opacity:0; transform:translateY(20px)} to {opacity:1} }
-    img { width: 100%; border-radius: 14px; }
-    input, textarea, button {
-      width: 100%; padding: 12px; margin-top: 10px;
-      border-radius: 12px; border: none;
-    }
-    button { background: #7c5cff; color:#fff; font-weight:600; cursor:pointer }
-    button:hover { background:#927bff }
-    .rating span { font-size:24px; cursor:pointer }
-    .top { color:#ffd86b; font-weight:700 }
-  </style>
+<style>
+*{box-sizing:border-box;font-family:Arial}
+body{margin:0;background:#0f0f14;color:#fff}
+header{text-align:center;padding:20px;font-size:26px;font-weight:800}
+.container{max-width:1000px;margin:auto;padding:20px}
+.card{background:#1c1c26;border-radius:16px;padding:16px;margin-bottom:20px;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+img{width:100%;border-radius:12px}
+input,textarea,button{width:100%;padding:10px;margin-top:8px;border-radius:10px;border:none}
+button{background:#6c5ce7;color:#fff;font-weight:600;cursor:pointer}
+.rating span{font-size:22px;cursor:pointer}
+.comment{font-size:14px;opacity:.85}
+</style>
 </head>
 <body>
-<header>🚀 SetupRate – Ultimate</header>
+<header>🔥 SetupRate 🔥</header>
 
 <div class="container">
-  <div class="card">
-    <h3>📸 Setup Yükle</h3>
-    <input id="username" placeholder="İsmin" />
-    <input id="setupname" placeholder="Setup adı (örn: raax setup)" />
-    <input id="image" type="file" accept="image/*" />
-    <button onclick="uploadSetup()">Paylaş</button>
-  </div>
+<div class="card">
+<h3>📸 Setup Paylaş</h3>
+<input id="user" placeholder="İsmin" />
+<input id="title" placeholder="Setup adı (raax setup)" />
+<input id="file" type="file" accept="image/*" />
+<button onclick="upload()">Paylaş</button>
+</div>
 
-  <div id="setups"></div>
+<div id="list"></div>
 </div>
 
 <script>
-  // 🔥 FIREBASE CONFIG (BURAYA KENDİ BİLGİLERİNİ KOYACAKSIN)
-  const firebaseConfig = {
-    apiKey: "API_KEY",
-    authDomain: "PROJECT.firebaseapp.com",
-    projectId: "PROJECT_ID",
-    storageBucket: "PROJECT.appspot.com",
-    messagingSenderId: "ID",
-    appId: "APP_ID"
-  };
+// 🔴 BURAYI DOLDURMADAN ÇALIŞMAZ
+const firebaseConfig={
+ apiKey:"API_KEY",
+ authDomain:"PROJECT.firebaseapp.com",
+ projectId:"PROJECT_ID",
+ storageBucket:"PROJECT.appspot.com",
+ appId:"APP_ID"
+};
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  const storage = firebase.storage();
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+const storage=firebase.storage();
 
-  async function uploadSetup() {
-    const user = username.value;
-    const name = setupname.value;
-    const file = image.files[0];
-    if (!user || !name || !file) return alert('Hepsi zorunlu');
+async function upload(){
+ const u=user.value,t=title.value,f=file.files[0];
+ if(!u||!t||!f){alert('Hepsi zorunlu');return}
+ const ref=storage.ref('setups/'+Date.now());
+ await ref.put(f);
+ const url=await ref.getDownloadURL();
+ await db.collection('setups').add({
+  user:u,title:t,img:url,ratings:[],comments:[],time:Date.now()
+ });
+ user.value=title.value='';file.value='';
+}
 
-    const ref = storage.ref('setups/' + Date.now());
-    await ref.put(file);
-    const url = await ref.getDownloadURL();
+function rate(id,val){
+ db.collection('setups').doc(id)
+ .update({ratings:firebase.firestore.FieldValue.arrayUnion(val)});
+}
 
-    await db.collection('setups').add({
-      user, name, img: url, ratings: [], created: Date.now()
-    });
-  }
+function comment(id,input){
+ if(!input.value)return;
+ db.collection('setups').doc(id)
+ .update({comments:firebase.firestore.FieldValue.arrayUnion(input.value)});
+ input.value='';
+}
 
-  function rate(id, val) {
-    const ref = db.collection('setups').doc(id);
-    ref.update({ ratings: firebase.firestore.FieldValue.arrayUnion(val) });
-  }
-
-  db.collection('setups').orderBy('created','desc').onSnapshot(snap => {
-    setups.innerHTML = '';
-    snap.forEach(doc => {
-      const s = doc.data();
-      const avg = s.ratings.length ? (s.ratings.reduce((a,b)=>a+b)/s.ratings.length).toFixed(1) : '—';
-      setups.innerHTML += `
-        <div class="card">
-          <div class="top">${s.name} • ${s.user}</div>
-          <img src="${s.img}" />
-          ⭐ ${avg}
-          <div class="rating">${[1,2,3,4,5].map(n=>`<span onclick=\"rate('${doc.id}',${n})\">⭐</span>`).join('')}</div>
-        </div>`;
-    });
-  });
+ db.collection('setups').orderBy('time','desc').onSnapshot(snap=>{
+ list.innerHTML='';
+ snap.forEach(d=>{
+  const s=d.data();
+  const avg=s.ratings.length?(s.ratings.reduce((a,b)=>a+b)/s.ratings.length).toFixed(1):'—';
+  list.innerHTML+=`
+  <div class="card">
+   <b>${s.title}</b> • ${s.user}<br><br>
+   <img src="${s.img}" />
+   <div>⭐ ${avg}</div>
+   <div class="rating">${[1,2,3,4,5].map(n=>`<span onclick=\"rate('${d.id}',${n})\">⭐</span>`).join('')}</div>
+   <input placeholder="Yorum yaz" onkeydown="if(event.key==='Enter')comment('${d.id}',this)" />
+   ${s.comments.map(c=>`<div class='comment'>💬 ${c}</div>`).join('')}
+  </div>`;
+ });
+});
 </script>
 </body>
 </html>
