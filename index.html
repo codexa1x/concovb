@@ -1,301 +1,107 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>SetupRate PRO</title>
+  <meta charset="UTF-8" />
+  <title>SetupRate – Final Sürüm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-/* ================= ROOT ================= */
-:root{
-  --c1:#00f5ff;
-  --c2:#7cffcb;
-  --dark:#0b0f14;
-  --glass:rgba(255,255,255,.12);
-}
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
-/* ================= RESET ================= */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Segoe UI,sans-serif;
-}
-
-/* ================= BODY ================= */
-body{
-  min-height:100vh;
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  background-size:400% 400%;
-  animation:bgMove 12s ease infinite;
-  color:#fff;
-}
-@keyframes bgMove{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-/* ================= HEADER ================= */
-header{
-  text-align:center;
-  padding:40px 20px;
-  animation:fadeDown 1s ease;
-}
-header h1{
-  font-size:3rem;
-  background:linear-gradient(90deg,var(--c1),var(--c2));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-header p{opacity:.8}
-
-/* ================= PANEL ================= */
-.panel{
-  max-width:520px;
-  margin:20px auto;
-  background:var(--glass);
-  padding:22px;
-  backdrop-filter:blur(15px);
-  animation:pop .6s ease;
-}
-
-/* INPUTS */
-.panel input,
-.panel textarea{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border:none;
-  outline:none;
-  background:rgba(255,255,255,.15);
-  color:#fff;
-  animation:inputIn .6s ease;
-}
-.panel textarea{
-  resize:none;
-  height:70px;
-}
-
-/* ================= FILE INPUT ================= */
-.file-box{
-  position:relative;
-  overflow:hidden;
-  margin-bottom:12px;
-}
-.file-box input{
-  opacity:0;
-  position:absolute;
-  inset:0;
-  cursor:pointer;
-}
-.file-label{
-  display:block;
-  padding:12px;
-  text-align:center;
-  background:linear-gradient(135deg,var(--c1),var(--c2));
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-  animation:pulse 2s infinite;
-}
-@keyframes pulse{
-  0%{box-shadow:0 0 0 rgba(0,245,255,0)}
-  50%{box-shadow:0 0 20px rgba(0,245,255,.6)}
-  100%{box-shadow:0 0 0 rgba(0,245,255,0)}
-}
-
-/* ================= BUTTON ================= */
-button{
-  width:100%;
-  padding:12px;
-  background:var(--c1);
-  color:#000;
-  border:none;
-  cursor:pointer;
-  font-weight:bold;
-  transition:.3s;
-}
-button:hover{
-  transform:scale(1.05);
-  background:var(--c2);
-}
-
-/* ================= GRID ================= */
-.setups{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:25px;
-  padding:30px;
-}
-
-/* ================= CARD ================= */
-.card{
-  background:var(--glass);
-  overflow:hidden;
-  animation:fadeUp .6s ease;
-}
-.card img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-}
-.content{
-  padding:15px;
-}
-.content b{font-size:.95rem}
-.content p{
-  font-size:.85rem;
-  opacity:.9;
-}
-
-/* ================= COMMENTS ================= */
-.comment-box{
-  margin-top:12px;
-  animation:fadeIn .5s ease;
-}
-.comment-input{
-  width:100%;
-  padding:10px;
-  border:none;
-  outline:none;
-  background:var(--dark);
-  color:#fff;
-  border-radius:0;
-  transition:.3s;
-}
-.comment-input:focus{
-  background:#111827;
-}
-.comments{
-  margin-top:6px;
-}
-.comments p{
-  font-size:.8rem;
-  border-bottom:1px solid rgba(255,255,255,.2);
-  padding:4px 0;
-}
-
-/* ================= LIMIT ================= */
-#limit{
-  text-align:center;
-  font-size:.85rem;
-  margin-top:6px;
-  color:#ffb4b4;
-}
-
-/* ================= ANIMATIONS ================= */
-@keyframes fadeDown{
-  from{opacity:0;transform:translateY(-30px)}
-  to{opacity:1}
-}
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1}
-}
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-@keyframes pop{
-  from{transform:scale(.85);opacity:0}
-  to{transform:scale(1);opacity:1}
-}
-@keyframes inputIn{
-  from{opacity:0;transform:translateX(-10px)}
-  to{opacity:1}
-}
-</style>
+  <style>
+    * { box-sizing: border-box; font-family: Inter, Arial; }
+    body { margin: 0; background: linear-gradient(135deg,#0f0f14,#151528); color: #fff; }
+    header { padding: 20px; text-align: center; font-size: 26px; font-weight: 800; }
+    .container { padding: 20px; max-width: 1100px; margin: auto; }
+    .card {
+      background: #1e1e2e;
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.3);
+      animation: fade .5s ease;
+    }
+    @keyframes fade { from {opacity:0; transform:translateY(20px)} to {opacity:1} }
+    img { width: 100%; border-radius: 14px; }
+    input, textarea, button {
+      width: 100%; padding: 12px; margin-top: 10px;
+      border-radius: 12px; border: none;
+    }
+    button { background: #7c5cff; color:#fff; font-weight:600; cursor:pointer }
+    button:hover { background:#927bff }
+    .rating span { font-size:24px; cursor:pointer }
+    .top { color:#ffd86b; font-weight:700 }
+  </style>
 </head>
-
 <body>
+<header>🚀 SetupRate – Ultimate</header>
 
-<header>
-  <h1>SetupRate PRO</h1>
-  <p>Gerçek setup • Gerçek yorum</p>
-</header>
-
-<div class="panel">
-  <input id="username" placeholder="Kullanıcı adı">
-  <textarea id="desc" placeholder="Setup açıklaması"></textarea>
-
-  <div class="file-box">
-    <span class="file-label">📸 Fotoğraf Seç / Çek</span>
-    <input type="file" id="file" accept="image/*" capture="environment">
+<div class="container">
+  <div class="card">
+    <h3>📸 Setup Yükle</h3>
+    <input id="username" placeholder="İsmin" />
+    <input id="setupname" placeholder="Setup adı (örn: raax setup)" />
+    <input id="image" type="file" accept="image/*" />
+    <button onclick="uploadSetup()">Paylaş</button>
   </div>
 
-  <button onclick="addSetup()">Setup Paylaş</button>
-  <div id="limit"></div>
+  <div id="setups"></div>
 </div>
 
-<section class="setups" id="setups"></section>
-
 <script>
-let setups = JSON.parse(localStorage.getItem("setups")||"[]");
-
-/* DAILY LIMIT */
-const today=new Date().toDateString();
-let daily=JSON.parse(localStorage.getItem("daily")||"{}");
-if(daily.date!==today) daily={date:today,count:0};
-
-function save(){
-  localStorage.setItem("setups",JSON.stringify(setups));
-  localStorage.setItem("daily",JSON.stringify(daily));
-}
-
-function addSetup(){
-  if(daily.count>=2){
-    limit.innerText="Günlük maksimum 2 setup paylaşabilirsin";
-    return;
-  }
-  const u=username.value.trim();
-  const d=desc.value.trim();
-  const f=file.files[0];
-  if(!u||!d||!f)return;
-
-  const r=new FileReader();
-  r.onload=()=>{
-    setups.unshift({u,d,img:r.result,comments:[]});
-    daily.count++;
-    save();
-    render();
+  // 🔥 FIREBASE CONFIG (BURAYA KENDİ BİLGİLERİNİ KOYACAKSIN)
+  const firebaseConfig = {
+    apiKey: "API_KEY",
+    authDomain: "PROJECT.firebaseapp.com",
+    projectId: "PROJECT_ID",
+    storageBucket: "PROJECT.appspot.com",
+    messagingSenderId: "ID",
+    appId: "APP_ID"
   };
-  r.readAsDataURL(f);
-}
 
-function render(){
-  setupsEl.innerHTML="";
-  setups.forEach((s,i)=>{
-    const div=document.createElement("div");
-    div.className="card";
-    div.innerHTML=`
-      <img src="${s.img}">
-      <div class="content">
-        <b>@${s.u}</b>
-        <p>${s.d}</p>
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const storage = firebase.storage();
 
-        <div class="comment-box">
-          <input class="comment-input" placeholder="Yorum yaz..."
-          onkeydown="if(event.key==='Enter'&&this.value.trim()){
-            setups[${i}].comments.push(this.value);
-            this.value='';
-            save();
-            render();
-          }">
-          <div class="comments">
-            ${s.comments.map(c=>`<p>${c}</p>`).join("")}
-          </div>
-        </div>
-      </div>
-    `;
-    setups.appendChild(div);
+  async function uploadSetup() {
+    const user = username.value;
+    const name = setupname.value;
+    const file = image.files[0];
+    if (!user || !name || !file) return alert('Hepsi zorunlu');
+
+    const ref = storage.ref('setups/' + Date.now());
+    await ref.put(file);
+    const url = await ref.getDownloadURL();
+
+    await db.collection('setups').add({
+      user, name, img: url, ratings: [], created: Date.now()
+    });
+  }
+
+  function rate(id, val) {
+    const ref = db.collection('setups').doc(id);
+    ref.update({ ratings: firebase.firestore.FieldValue.arrayUnion(val) });
+  }
+
+  db.collection('setups').orderBy('created','desc').onSnapshot(snap => {
+    setups.innerHTML = '';
+    snap.forEach(doc => {
+      const s = doc.data();
+      const avg = s.ratings.length ? (s.ratings.reduce((a,b)=>a+b)/s.ratings.length).toFixed(1) : '—';
+      setups.innerHTML += `
+        <div class="card">
+          <div class="top">${s.name} • ${s.user}</div>
+          <img src="${s.img}" />
+          ⭐ ${avg}
+          <div class="rating">${[1,2,3,4,5].map(n=>`<span onclick=\"rate('${doc.id}',${n})\">⭐</span>`).join('')}</div>
+        </div>`;
+    });
   });
-}
-
-const setupsEl=document.getElementById("setups");
-render();
 </script>
-
 </body>
 </html>
+
 
 
