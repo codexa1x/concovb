@@ -2,118 +2,118 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>SetupRate – Tam Çalışan HTML</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAPKM - Beta</title>
 
 <style>
-*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{margin:0;background:#0f0f14;color:#fff}
-header{padding:20px;text-align:center;font-size:24px;font-weight:800}
-.container{max-width:900px;margin:auto;padding:16px}
-.card{background:#1c1c26;border-radius:14px;padding:14px;margin-bottom:16px;animation:fade .3s ease}
-@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
-img{width:100%;border-radius:10px;margin-top:10px}
-input,button{width:100%;padding:10px;margin-top:8px;border-radius:10px;border:none}
-button{background:#6c5ce7;color:#fff;font-weight:700;cursor:pointer}
-button:hover{background:#8176ff}
-.rating span{font-size:22px;cursor:pointer}
-.comment{font-size:14px;opacity:.85;margin-top:4px}
-.small{font-size:12px;opacity:.6}
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        overflow: hidden;
+    }
+
+    h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+        animation: fadeDown 1.5s ease;
+    }
+
+    .beta {
+        color: #00ffcc;
+        letter-spacing: 2px;
+        margin-bottom: 40px;
+        animation: fadeDown 2s ease;
+    }
+
+    .button {
+        padding: 15px 30px;
+        border: 2px solid #00ffcc;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        animation: pulse 2s infinite;
+    }
+
+    .button:hover {
+        background-color: #00ffcc;
+        color: black;
+        transform: scale(1.1);
+    }
+
+    .info {
+        margin-top: 30px;
+        max-width: 600px;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s ease;
+    }
+
+    .info.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    footer {
+        position: absolute;
+        bottom: 10px;
+        font-size: 14px;
+        opacity: 0.7;
+        animation: fadeUp 2s ease;
+    }
+
+    /* Animasyonlar */
+    @keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 10px #00ffcc; }
+        50% { box-shadow: 0 0 30px #00ffcc; }
+        100% { box-shadow: 0 0 10px #00ffcc; }
+    }
 </style>
 </head>
+
 <body>
 
-<header>🔥 SetupRate 🔥</header>
+    <h1>VAPKM</h1>
+    <div class="beta">BETA SÜRÜMÜ</div>
 
-<div class="container">
+    <div class="button" onclick="bilgiGoster()">
+        Bilgileri görmek için tıkla
+    </div>
 
-<div class="card">
-<h3>📸 Setup Paylaş</h3>
-<input id="user" placeholder="İsmin">
-<input id="title" placeholder="Setup adı (örn: raax setup)">
-<input id="file" type="file" accept="image/*">
-<button onclick="addSetup()">Paylaş</button>
-<div class="small">Bu sürüm %100 HTML + JS. Yenileyince silinmez.</div>
-</div>
+    <div class="info" id="infoBox">
+        <h2>🎮 VAPKM Oyunu</h2>
+        <p>
+            VAPKM oyunu en yakın zamanda çıkacaktır.<br>
+            Şu anda beta aşamasındadır.<br><br>
+            Geliştirme süreci aktif olarak devam etmektedir.
+        </p>
+    </div>
 
-<div id="list"></div>
-
-</div>
+    <footer>
+        Bu site Raax Setup tarafından HTML ile yapılmıştır
+    </footer>
 
 <script>
-// === LOCAL STORAGE ===
-const KEY = 'setuprate_data';
-let setups = JSON.parse(localStorage.getItem(KEY) || '[]');
-
-function save(){
-  localStorage.setItem(KEY, JSON.stringify(setups));
-}
-
-function addSetup(){
-  const u = user.value.trim();
-  const t = title.value.trim();
-  const f = file.files[0];
-  if(!u || !t || !f){
-    alert('İsim, setup adı ve foto zorunlu');
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = () => {
-    setups.unshift({
-      id: Date.now(),
-      user: u,
-      title: t,
-      img: reader.result,
-      ratings: [],
-      comments: []
-    });
-    save();
-    user.value = title.value = file.value = '';
-    render();
-  };
-  reader.readAsDataURL(f);
-}
-
-function rate(id, val){
-  const s = setups.find(x => x.id === id);
-  if(!s) return;
-  s.ratings.push(val);
-  save();
-  render();
-}
-
-function addComment(id, input){
-  if(!input.value.trim()) return;
-  const s = setups.find(x => x.id === id);
-  if(!s) return;
-  s.comments.push(input.value.trim());
-  input.value = '';
-  save();
-  render();
-}
-
-function avg(arr){
-  return arr.length ? (arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1) : '—';
-}
-
-function render(){
-  list.innerHTML = '';
-  setups.forEach(s => {
-    list.innerHTML += `
-      <div class="card">
-        <b>${s.title}</b> • ${s.user}<br>
-        <img src="${s.img}">
-        <div>⭐ Ortalama: ${avg(s.ratings)}</div>
-        <div class="rating">
-          ${[1,2,3,4,5].map(n=>`<span onclick=\"rate(${s.id},${n})\">⭐</span>`).join('')}
-        </div>
-        <input placeholder="Yorum yaz (Enter)" onkeydown="if(event.key==='Enter')addComment(${s.id},this)">
-        ${s.comments.map(c=>`<div class='comment'>💬 ${c}</div>`).join('')}
-      </div>`;
-  });
-}
-
-render();
+    function bilgiGoster() {
+        document.getElementById("infoBox").classList.add("show");
+    }
 </script>
 
 </body>
